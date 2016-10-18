@@ -1,0 +1,30 @@
+<div class="row">
+
+	<div class="col-lg-3">
+  </div>
+
+	<div class="col-lg-6">
+
+    <div class="header">
+      <h1>
+        <div><react-component name="HelloWorld" props="person"/></div>
+      </h1>
+      <h1>
+        <div><hello fname="person.fname" lname="person.lname"/></div>
+      </h1>
+    </div>
+
+    <form class="pure-form">
+      <fieldset>
+        <legend>Enter Name</legend>
+        <input type="text" ng-model="person.fname" placeholder="First Name"/>
+        <input type="text" ng-model="person.lname" placeholder="Last Name"/>
+      </fieldset>
+    </form>
+
+  </div>
+
+  <div class="col-lg-3">
+  </div>
+
+</div>
