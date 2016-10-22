@@ -12,7 +12,9 @@
   <!-- Custom Scripts -->
   <script type="text/javascript" src="js/dashboard.min.js"></script>
 </head>
-<body ng-controller="MasterCtrl">
+
+<!-- ng-if="isAuthenticated()"-->
+<body  ng-controller="MasterCtrl">
   <div id="page-wrapper" ng-class="{'open': toggle}" ng-cloak>
 
     <!-- Sidebar -->
@@ -25,11 +27,17 @@
           </a>
         </li>
         <li class="sidebar-title"><span>NAVIGATION</span></li>
-        <li class="sidebar-list">
+        <li ng-if="isAuthenticated()" class="sidebar-list">
           <a href="#/dashboard">Dashboard<span class="menu-icon fa fa-tachometer"></span></a>
         </li>
-        <li class="sidebar-list">
+        <li ng-if="isAuthenticated()" class="sidebar-list">
           <a href="#/display">Continue<span class="menu-icon fa fa-table"></span></a>
+        </li>
+        <li class="sidebar-list">
+          <a href="#/signin">Sign in<span class="menu-icon fa fa-table"></span></a>
+        </li>
+        <li class="sidebar-list">
+          <a href="#/hello">Hello eg.<span class="menu-icon fa fa-table"></span></a>
         </li>
       </ul>
       <div class="sidebar-footer">
@@ -59,7 +67,8 @@
         <div class="row header">
           <div class="col-xs-12">
             <div class="user pull-right">
-              <div class="item dropdown" uib-dropdown>
+              <!-- ng-if="isAuthenticated()" -->
+              <div  ng-if="isAuthenticated()" class="item dropdown" uib-dropdown>
                 <a href="#" class="dropdown-toggle" uib-dropdown-toggle>
                   <img src="img/avatar.jpg">
                 </a>
@@ -91,6 +100,8 @@
                   </li>
                 </ul>
               </div>
+
+              <!--
               <div class="item dropdown" uib-dropdown>
                <a href="#" class="dropdown-toggle" uib-dropdown-toggle>
                   <i class="fa fa-bell-o"></i>
@@ -105,6 +116,8 @@
                   </li>
                 </ul>
               </div>
+              -->
+
             </div>
             <div class="meta">
               <div class="page">
@@ -124,5 +137,11 @@
       </div><!-- End Page Content -->
     </div><!-- End Content Wrapper -->
   </div><!-- End Page Wrapper -->
+
+<!--
+  <script src="signin.js"></script>
+  <script src="signup.js"></script>
+  <script src="display.js"></script>
+-->
 </body>
 </html>

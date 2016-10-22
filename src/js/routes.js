@@ -8,8 +8,8 @@ angular.module('RDash').config(['$stateProvider', '$urlRouterProvider',
 
         //$urlRouterProvider.when('/dashboard', 'dashboard');
         // For unmatched routes
-        //$urlRouterProvider.otherwise('/signin');
-        $urlRouterProvider.otherwise('/dashboard');
+        $urlRouterProvider.otherwise('/signin');
+        //$urlRouterProvider.otherwise('/dashboard');
 
         // Application routes
         $stateProvider
@@ -32,6 +32,10 @@ angular.module('RDash').config(['$stateProvider', '$urlRouterProvider',
             .state('display', {
                 url: '/display',
                 templateUrl: 'templates/display.html'
+            })
+            .state('hello', {
+                url: '/hello',
+                templateUrl: 'templates/helloExample.html'
             })
             ;
     }

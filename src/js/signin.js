@@ -1,4 +1,4 @@
-
+/*
 'use strict';
 
 angular.module('RDash.signin', ['ngRoute'])
@@ -13,3 +13,4 @@ angular.module('RDash.signin', ['ngRoute'])
 .controller('SignInCtrl', [function() {
 
 }]);
+*/
