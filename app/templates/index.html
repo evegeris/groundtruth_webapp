@@ -33,6 +33,7 @@
    <!-- JS 末末末末末末末末末末末末末末末末末末末末末末末末末 -->
     <script src="static/node_modules/angular/angular.min.js"></script>
     <script type="text/javascript" src="static/js/app.js"></script>
+    <script type="text/javascript" src="static/js/toggle.js"></script>
     <script type="text/javascript" src="static/js/login.js"></script>
     <!-- Controllers -->
     <script type="text/javascript" src="roles/controllers.js"></script>
@@ -41,6 +42,7 @@
      <script type="text/javascript" src="static/node_modules/angular-resource/angular-resource.min.js"></script>
     <script type="text/javascript" src="static/node_modules/angularjs-toaster/toaster.min.js"></script>
     <script type="text/javascript" src="static/node_modules/satellizer/satellizer.js"></script>
+        <script type="text/javascript" src="static/node_modules/serve-favicon/index.js"></script>
     <script type="text/javascript" src="static/node_modules/angular-animate/angular-animate.min.js"></script>
     <script src="static/node_modules/angular-google-analytics/dist/angular-google-analytics.js"></script>
     <script src="static/node_modules/angular-grid/dist/angular-grid.js"></script>
@@ -54,27 +56,30 @@
     <script type="text/javascript" src="components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script type="text/javascript" src="components/angular-cookies/angular-cookies.min.js"></script>
     <script type="text/javascript" src="components/angular-ui-router/release/angular-ui-router.min.js"></script>
-
-        <script type="text/javascript" src="static/js/rdash/directives/loading.js"></script>
-
+    <script type="text/javascript" src="static/js/rdash/directives/loading.js"></script>
 
 
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- mine
+    <script type="text/javascript" src="static/dist/lib/js/main.min.js"></script>
+    <link rel="stylesheet" href="static/dist/lib/css/main.min.css"/>-->
 
 
   </head>
 
 <body  ng-controller="LogoutCtrl">
-    <header  ng-if="isAuthenticated()">
-        <button style="float:right"class="button-primary" ng-click="logout()">Logout</button>
-    </header>
 
-    <!-- Nav and Main Content Start -->
-  <!--  <div id='main'> -->
+   <!-- Nav and Main Content Start -->
+   <div ng-controller="ToggleCtrl">
 
-    <div id="page-wrapper" ng-if="isAuthenticated()" ng-cloak>
+    <div id="page-wrapper" ng-class="{'open': toggle}">
 
       <!-- Sidebar -->
-      <div id="sidebar-wrapper">
+      <div id="sidebar-wrapper" ng-if="isAuthenticated()" ng-cloak>
         <ul class="sidebar">
           <li class="sidebar-main">
             <a ng-click="toggleSidebar()">
@@ -88,9 +93,6 @@
           </li>
           <li ng-if="isAuthenticated()" class="sidebar-list">
             <a href="#/display">Continue<span class="menu-icon fa fa-table"></span></a>
-          </li>
-          <li class="sidebar-list">
-            <a href="#/signin">Sign in<span class="menu-icon fa fa-table"></span></a>
           </li>
           <li class="sidebar-list">
             <a href="#/hello">Hello eg.<span class="menu-icon fa fa-table"></span></a>
@@ -116,14 +118,43 @@
       </div>
       <!-- End Sidebar -->
 
+
+
       <div id="content-wrapper">
         <div class="page-content">
 
+
           <!-- Header Bar -->
-          <div class="row header">
+          <div class="row header" ng-if="isAuthenticated()" ng-cloak>
             <div class="col-xs-12">
               <div class="user pull-right">
                 <!-- ng-if="isAuthenticated()" -->
+
+                <div class="dropdown" >
+                  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">First Last
+                  <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li class="link">
+                      <a href="#">
+                        Profile
+                      </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li class="link">
+                      <a href ng-click="logout()">
+                        Logout
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+<!--
+
+<header  ng-if="isAuthenticated()">
+    <button style="float:right"class="button-primary" ng-click="logout()">Logout</button>
+</header>
+
+
                 <div  ng-if="isAuthenticated()" class="item dropdown" uib-dropdown>
                   <a href="#" class="dropdown-toggle" uib-dropdown-toggle>
                     <img src="static/images/avatar.jpg">
@@ -188,25 +219,34 @@
           <!-- End Header Bar -->
 
 
+          <!-- Main content Start -->
+          <article>
+              <toaster-container></toaster-container>
+              <div class="ui-view-container" ui-view="inner_page" >
+              </div>
+          </article>
+          <!-- Main content End -->
 
         </div><!-- End Page Content -->
       </div><!-- End Content Wrapper -->
     </div><!-- End Page Wrapper -->
 
 
-    <!-- Main content Start -->
+    <!-- Login content Start -->
     <article>
         <toaster-container></toaster-container>
-        <div class="ui-view-container" ui-view >
+        <div class="ui-view-container" ui-view="login_page" >
         </div>
     </article>
-    <!-- Main content End -->
+    <!-- Login content End -->
 
 
         <!-- Nav End-->
 
     <!--</div>->
   <!--  <footer ng-if="isAuthenticated()">copyright  <a href="http://techarena51.com">  Techarena51.com </a></footer> -->
+
+    </div> <!-- end ToggleCtrl scope -->
 
 
   </body>

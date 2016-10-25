@@ -1,0 +1,1 @@
+"use strict";function diff(e,t){var t,r=arguments.length,f=e.length,l=-1,i=[];if(1===r)return e;for(r>2&&(t=flatten(slice.call(arguments,1)));++l<f;)~t.indexOf(e[l])||i.push(e[l]);return i}var flatten=require("arr-flatten"),slice=[].slice;module.exports=diff;

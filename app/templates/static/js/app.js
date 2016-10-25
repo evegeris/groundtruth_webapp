@@ -45,115 +45,76 @@ angular.module('myApp').config(function( $stateProvider , $urlRouterProvider, $a
     }
 
 $stateProvider.state('login', {
-	url: '/login',
-	templateUrl: 'login.html',
-	controller: 'LoginController',
+	 url: '/login',
     title: 'Sign In',
     resolve: {
           skipIfLoggedIn: skipIfLoggedIn
-        }
+        },
+    views: {
+          'login_page': {
+          templateUrl: 'login.html',
+          controller: 'LoginController'
+    }
+}
 
   }).state('ForgotPassword', {
 	url: '/forgotpassword/:token',
-	templateUrl: 'forgotpassword.html',
-	controller: 'LoginController',
+  title: 'Forgotten Password',
     resolve: {
           skipIfLoggedIn: skipIfLoggedIn
+        },
+        views: {
+              'login_page': {
+              templateUrl: 'forgotpassword.html',
+              controller: 'LoginController'
         }
+      }
 
-  }).state('home', {
+  })
+  .state('tables', {
+      url: '/tables',
+      views: {
+        'inner_page': {
+        templateUrl: 'tables.html'
+      }
+    }
+  })
+  .state('dashboard', {
+      url: '/dashboard',
+      views: {
+        'inner_page': {
+        templateUrl: 'dashboard.html'
+      }
+    }
+  })
+  .state('display', {
+      url: '/display',
+      views: {
+        'inner_page': {
+        templateUrl: 'display.html'
+      }
+    }
+  })
+  .state('hello', {
+      url: '/hello',
+      views: {
+        'inner_page': {
+        templateUrl: 'helloExample.html'
+      }
+    }
+  })
+  .state('home', {
     url: '/',
-    templateUrl: 'home.html',
     title: 'Home',
     resolve: {
           loginRequired: loginRequired
+        },
+        views: {
+          'inner_page': {
+          templateUrl: 'home.html'
         }
-
+      }
   })
-
-  // Routes for roles
-
-
-  .state('roles', {
-        // Note: abstract state cannot be loaded, but it still needs a ui-view for its children to populate.
-        // https://github.com/angular-ui/ui-router/wiki/Nested-States-and-Nested-Views
-        abstract: true,
-        url: '/roles',
-        title: 'Roles',
-        template: '<ui-view/>'
-    })
-
-  .state('roles.list', {
-    url: '/list',
-    templateUrl: 'roles/index.html',
-    controller: 'RoleListController',
-    resolve: {
-          loginRequired: loginRequired
-        }
-
-
-  }).state('roles.new', {
-    url: '/new',
-    templateUrl: '/roles/add.html',
-    controller: 'RoleCreateController',
-    resolve: {
-          loginRequired: loginRequired
-        }
-
-    }).state('roles.edit', {
-    url: '/:id/edit',
-    templateUrl: 'roles/update.html',
-    controller: 'RoleEditController',
-    resolve: {
-          loginRequired: loginRequired
-        }
-
-        })
-
-        // End Routes for roles
-  // Routes for users
-
-   .state('users', {
-        // Note: abstract state cannot be loaded, but it still needs a ui-view for its children to populate.
-        // https://github.com/angular-ui/ui-router/wiki/Nested-States-and-Nested-Views
-        abstract: true,
-        url: '/users',
-        title: 'Users',
-        template: '<ui-view/>'
-    })
-  .state('users.list', {
-    url: '/list',
-    templateUrl: 'users/index.html',
-    controller: 'UserListController',
-    title: 'Users',
-    resolve: {
-          loginRequired: loginRequired
-        }
-
-
-  }).state('users.new', {
-    url: '/new',
-    templateUrl: '/users/add.html',
-    controller: 'UserCreateController',
-
-    resolve: {
-          loginRequired: loginRequired
-        }
-
-    }).state('users.edit', {
-    url: '/:id/edit',
-    templateUrl: 'users/update.html',
-    controller: 'UserEditController',
-    resolve: {
-          loginRequired: loginRequired
-        }
-
-        })
-
-    // End Routes for users
-
-
-   // States
 
   ;
 
@@ -214,6 +175,7 @@ $stateProvider.state('login', {
       }
 
 
+
 });
 
 
@@ -223,3 +185,10 @@ angular.module('myApp.controllers', []);
 angular.module('myApp').run(function(Analytics) {
             Analytics.pageView();
  });
+
+/*
+var app = angular.module( 'MyApp.scripts', ['ngRoute'] );
+ var bootstrap_dir = require.resolve('bootstrap')
+                            .match(/.*\/node_modules\/[^/]+\//)[0];
+ app.use('/scripts', express.static(bootstrap_dir + 'dist/'));
+*/
