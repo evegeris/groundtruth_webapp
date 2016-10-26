@@ -1,8 +1,25 @@
 # Web app based on rdash-angular example
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/rdash/rdash-angular?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+## Folder structure:
 
-[Live example](http://rdash.github.io/) of the original.
+### client
+* original RDash front-end
+* build and run development server by entering this directory and doing
+$ gulp build && gulp
+* [Live example](http://rdash.github.io/) of the original RDash dashboard.
+
+### app
+* Python Flask used to serve static content (html, css, etc.)
+* Front-end + back-end
+* from the root directory, do
+$ pip install -r requirements.txt
+$ python db.py db init
+$ python db.py db migrate
+$ python db.py db upgrade
+$ python run.py
+* More details [here](https://github.com/Leo-G/Flask-Scaffold) (this example also uses Protractor)
+
 
 ## Usage
 ### Requirements
