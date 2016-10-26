@@ -6,18 +6,18 @@
 ### client
 * original RDash front-end
 * build and run development server by entering this directory and doing
-$ gulp build && gulp
+* $ gulp build && gulp
 * [Live example](http://rdash.github.io/) of the original RDash dashboard.
 
 ### app
 * Python Flask used to serve static content (html, css, etc.)
 * Front-end + back-end
 * from the root directory, do
-$ pip install -r requirements.txt
-$ python db.py db init
-$ python db.py db migrate
-$ python db.py db upgrade
-$ python run.py
+* $ pip install -r requirements.txt
+* $ python db.py db init
+* $ python db.py db migrate
+* $ python db.py db upgrade
+* $ python run.py
 * More details [here](https://github.com/Leo-G/Flask-Scaffold) (this example also uses Protractor)
 
 
