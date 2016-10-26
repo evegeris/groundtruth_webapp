@@ -1,0 +1,1 @@
+"use strict";function flat(r,t){for(var a=r.length,n=-1;a--;){var u=r[++n];Array.isArray(u)?flat(u,t):t.push(u)}return t}module.exports=function(r){return flat(r,[])};

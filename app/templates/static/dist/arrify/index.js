@@ -1,0 +1,1 @@
+"use strict";module.exports=function(r){return null===r||void 0===r?[]:Array.isArray(r)?r:[r]};

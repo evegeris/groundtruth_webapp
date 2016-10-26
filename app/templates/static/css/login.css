@@ -1,0 +1,25 @@
+.spacer {
+    margin-top: 15px; 
+    margin-bottom: 15px;
+}
+
+.spacer-center {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.login-container {
+  margin-top: 40px;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: column;
+           flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    }

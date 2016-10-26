@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+  <html data-ng-app="myApp">
+  <head lang="en">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title ng-bind="$state.current.title + ' | Tissue Type ID App'"> </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+     <!-- <link rel="shortcut icon" href="static/images/" /> -->
+    <base href="/"/>
+
+  <!-- FONTS -->
+  <link href="http://fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <!-- STYLES -->
+  <link href="static/css/login.css" rel="stylesheet" type="text/css">
+  <link href="static/css/page-content.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="components/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="components/rdash-ui/dist/css/rdash.min.css">
+
+  <link rel="stylesheet" type="text/css" href="static/node_modules/angular-grid/dist/angular-grid.css">
+  <link rel="stylesheet" type="text/css" href="static/node_modules/angular-grid/dist/theme-fresh.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/angularjs-toaster/0.4.15/toaster.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/flexboxgrid/6.3.0/flexboxgrid.min.css" type="text/css" >
+
+   <!-- SCRIPTS -->
+   <!-- bootstrap -->
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <script src="static/node_modules/angular/angular.min.js"></script>
+    <script type="text/javascript" src="static/js/app.js"></script>
+    <script type="text/javascript" src="static/js/toggle.js"></script>
+    <script type="text/javascript" src="static/js/dash-chart.js"></script>
+    <script type="text/javascript" src="static/js/login.js"></script>
+    <!-- Controllers -->
+    <script type="text/javascript" src="roles/controllers.js"></script>
+    <script type="text/javascript" src="users/controllers.js"></script>
+    <script type="text/javascript" src="getImg/controllers.js"></script>
+   <script type="text/javascript" src="static/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
+     <script type="text/javascript" src="static/node_modules/angular-resource/angular-resource.min.js"></script>
+    <script type="text/javascript" src="static/node_modules/angularjs-toaster/toaster.min.js"></script>
+    <script type="text/javascript" src="static/node_modules/satellizer/satellizer.js"></script>
+        <script type="text/javascript" src="static/node_modules/serve-favicon/index.js"></script>
+    <script type="text/javascript" src="static/node_modules/angular-animate/angular-animate.min.js"></script>
+    <script src="static/node_modules/angular-google-analytics/dist/angular-google-analytics.js"></script>
+    <script src="static/node_modules/angular-grid/dist/angular-grid.js"></script>
+
+    <script type="text/javascript" src="components/angular/angular.min.js"></script>
+    <script type="text/javascript" src="components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script type="text/javascript" src="components/angular-cookies/angular-cookies.min.js"></script>
+    <script type="text/javascript" src="components/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="static/js/rdash/directives/loading.js"></script>
+    <!-- charts -->
+    <script src="static/node_modules/chart.js/Chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.bundle.js"></script>
+    <script src="static/node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
+
+
+  </head>
+
+<body  ng-controller="LogoutCtrl">
+
+   <!-- Nav and Main Content Start -->
+   <div ng-controller="ToggleCtrl">
+
+    <div id="page-wrapper" ng-class="{'open': toggle}">
+
+      <!-- Sidebar -->
+      <div id="sidebar-wrapper" ng-if="isAuthenticated()" ng-cloak>
+        <ul class="sidebar">
+          <li class="sidebar-main">
+            <a ng-click="toggleSidebar()">
+              Dashboard
+              <span class="menu-icon glyphicon glyphicon-transfer"></span>
+            </a>
+          </li>
+          <li class="sidebar-title"><span>NAVIGATION</span></li>
+          <li ng-if="isAuthenticated()" class="sidebar-list">
+            <a href="#/dashboard">Dashboard<span class="menu-icon fa fa-tachometer"></span></a>
+          </li>
+          <li ng-if="isAuthenticated()" class="sidebar-list">
+            <a href="#/display">Continue<span class="menu-icon fa fa-table"></span></a>
+          </li>
+          <li class="sidebar-list">
+            <a href="#/hello">Hello eg.<span class="menu-icon fa fa-table"></span></a>
+          </li>
+        </ul>
+        <div class="sidebar-footer">
+          <div class="col-xs-4">
+            <a href="https://github.com/rdash/rdash-angular" target="_blank">
+              Github
+            </a>
+          </div>
+          <div class="col-xs-4">
+            <a href="https://github.com/rdash/rdash-angular/blob/master/README.md" target="_blank">
+              About
+            </a>
+          </div>
+          <div class="col-xs-4">
+            <a href="#">
+              Support
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- End Sidebar -->
+
+
+
+      <div id="content-wrapper">
+        <div class="page-content">
+
+
+          <!-- Header Bar -->
+          <div class="row header" ng-if="isAuthenticated()" ng-cloak>
+            <div class="col-xs-12">
+              <div class="user pull-right">
+
+                <div class="dropdown" >
+                  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">First Last
+                  <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li class="link">
+                      <a href="#">
+                        Profile
+                      </a>
+                    </li>
+                    <li class="divider"></li>
+                    <li class="link">
+                      <a href ng-click="logout()">
+                        Logout
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+
+              </div>
+              <div class="meta">
+                <div class="page">
+                  Dashboard
+                </div>
+                <div class="breadcrumb-links">
+                  Home / Dashboard
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Header Bar -->
+
+
+          <!-- Main content Start -->
+          <article>
+              <toaster-container></toaster-container>
+              <div class="ui-view-container" ui-view="inner_page" >
+              </div>
+          </article>
+          <!-- Main content End -->
+
+        </div><!-- End Page Content -->
+      </div><!-- End Content Wrapper -->
+    </div><!-- End Page Wrapper -->
+
+    <!-- Login content Start -->
+    <article>
+        <toaster-container></toaster-container>
+        <div ui-view="login_page" >
+        </div>
+    </article>
+    <!-- Login content End -->
+
+
+
+    </div> <!-- end ToggleCtrl scope -->
+
+
+  </body>
+</html>
