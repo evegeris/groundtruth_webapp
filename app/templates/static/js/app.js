@@ -115,6 +115,57 @@ $stateProvider.state('login', {
         templateUrl: '/polygon-draw/polygon-draw.template.html',
         controller: function CanvasCtrl($http, $scope) {
 
+          // This is a listener on the canvas
+          $('#canvas').click(function(e){
+
+            var pos = getMousePos(canvas, e);
+            posx = pos.x;
+            posy = pos.y;
+
+            // Compare if we clicked inside of the polygon
+            // (# of vertices, array of X positions, array of Y positions, test X position, test Y position)
+            if (pnpoly($scope.polygonPoints.length,   $scope.JsonX,   $scope.JsonY, posx, posy)){
+
+              // Fill with Colour using different drawing method
+              var i = 0;
+              var c2 = document.getElementById('canvas').getContext('2d');
+              c2.fillStyle = '#f00';
+              c2.beginPath();
+              c2.moveTo($scope.JsonX[0], $scope.JsonY[0]);
+              for (i = 1; i < $scope.polygonPoints.length; i ++){
+                c2.lineTo($scope.JsonX[i], $scope.JsonY[i]);
+              }
+              c2.closePath();
+              c2.fill();
+                }
+            })
+
+            // This function will get the mouse cursor relative to the canvas
+            function  getMousePos(canvas, evt) {
+              var rect = canvas.getBoundingClientRect(), // abs. size of element
+              scaleX = canvas.width / rect.width,    // relationship bitmap vs. element for X
+              scaleY = canvas.height / rect.height;  // relationship bitmap vs. element for Y
+
+              return {
+                x: (evt.clientX - rect.left) * scaleX,   // scale mouse coordinates after they have
+                y: (evt.clientY - rect.top) * scaleY     // been adjusted to be relative to element
+              }
+            }
+
+            // This Function will check to see if you clicked inside of a polygon
+            function pnpoly( nvert, vertx, verty, testx, testy ) {
+                var i, j, c = false;
+                    for( i = 0, j = nvert-1; i < nvert; j = i++ ) {
+                          if( ( ( verty[i] > testy ) != ( verty[j] > testy ) ) &&
+                              ( testx < ( vertx[j] - vertx[i] ) * ( testy - verty[i] ) / ( verty[j] - verty[i] ) + vertx[i] ) ) {
+                            c = !c;
+                            }
+                          }
+                        return c;
+                      }
+
+
+
           // Variables Predefined for the canvas drawing implementation
             var canvas = document.getElementById('canvas');
             var context = canvas.getContext('2d');
@@ -134,6 +185,8 @@ $stateProvider.state('login', {
                 // Storing the data in a multidimensional array that can be accessed
                 // By both the .html file and other functions within this 'scope'
                 $scope.polygonPoints = response.data;
+
+
               });
 
 
@@ -142,6 +195,11 @@ $stateProvider.state('login', {
             // Copied and Pasted Function from an example online
             // When the function leads with $scope, it is called using ng-submit in the .html document
             $scope.drawJSON = function(){
+
+              $scope.JsonX = [];
+              $scope.JsonY = [];
+
+
               var i = 0;
               var id = 0;
               var length = $scope.polygonPoints.length;
@@ -153,6 +211,9 @@ $stateProvider.state('login', {
                 var p = {id: id, x: $scope.polygonPoints[i].xPosition, y: $scope.polygonPoints[i].yPosition, amount: 5};
                 $scope.data.push(p);
                 draw($scope.data);
+
+                $scope.JsonX[i] =  $scope.polygonPoints[i].xPosition;
+                $scope.JsonY[i] =  $scope.polygonPoints[i].yPosition;
               }
             }
 
