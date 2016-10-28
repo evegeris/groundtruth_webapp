@@ -1,0 +1,48 @@
+<div class="row">
+	<div class="col-lg-1">
+
+	Polygon Draw From Coordinates
+
+	<!-- ng-submit="addData()" calls the $scope.addData = function() .js code upon a submit -->
+	<form ng-submit="addData()" >
+      <input ng-model="x"  size="2" placeholder="X" required type="number" min="0" max="600">
+      <input ng-model="y"  size="2" placeholder="Y" required type="number" min="0" max="400">
+      <input ng-model="amount"  size="3" placeholder="Amount" required type="number" min="5" max="100">
+      <input class="btn-primary" type="submit" value="Add point">
+	</form>
+	<!-- Custom Button Which calls the $scope.autoAdd = function() method -->
+	<form ng-submit="autoAdd()" >
+		<input class="btn-secondary" type="submit" value="Draw Traingle">
+	</form>
+
+	<canvas id="canvas" style="border: 1px gray solid; float: left"></canvas>
+  </div>
+
+
+	<div id="list" style="margin-left: 620px; float; left">
+        Points:
+        <ul>
+            <li ng-repeat="point in data">
+                [{{point.x}}, {{point.y}}] <a ng-click="removePoint(point)">[x]</a>
+            </li>
+        </ul>
+  </div>
+
+	<form ng-submit="readJSON()" >
+			<input class="btn-secondary" type="submit" value="Read JSON">
+		<ul class="polygonPoints">
+
+			<!-- ng-repeat allows for dynamic changing of the .html script with angularJS code -->
+				<li ng-repeat="polygonPoint in polygonPoints">
+					<!-- We defined $scope.polygonPoints in the app.js file giving us access to the variable in the .html file-->
+					<span>X Position: {{polygonPoint.xPosition}} -- Y Position: {{polygonPoint.yPosition}}</span>
+				</li>
+		</ul>
+	</form>
+
+	<form ng-submit="drawJSON()" >
+			<input class="btn-secondary" type="submit" value="Draw JSON">
+	</form>
+
+
+</div>

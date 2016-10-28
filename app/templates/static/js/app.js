@@ -1,4 +1,4 @@
-angular.module('myApp', ['ui.router', 'ngResource',  "angularGrid" , 'myApp.controllers', 'myApp.services', 'satellizer','toaster', 'ngAnimate', 'angular-google-analytics', 'chart.js']);
+angular.module('myApp', ['ui.router', 'ngResource',  "angularGrid" , 'myApp.controllers', 'myApp.services', 'satellizer','toaster', 'ngAnimate', 'angular-google-analytics']);
 
 angular.module('myApp')
   .run( function($rootScope, $state){
@@ -52,7 +52,7 @@ $stateProvider.state('login', {
         },
     views: {
           'login_page': {
-          templateUrl: 'login.html',
+          templateUrl: '/login/login.html',
           controller: 'LoginController'
     }
 }
@@ -65,7 +65,7 @@ $stateProvider.state('login', {
         },
         views: {
               'login_page': {
-              templateUrl: 'forgotpassword.html',
+              templateUrl: '/forgot-password/forgotpassword.html',
               controller: 'LoginController'
         }
       }
@@ -83,7 +83,7 @@ $stateProvider.state('login', {
       url: '/dashboard',
       views: {
         'inner_page': {
-        templateUrl: 'dashboard.html'
+        templateUrl: '/dashboard/dashboard.html'
       }
     }
   })
@@ -91,7 +91,7 @@ $stateProvider.state('login', {
       url: '/display',
       views: {
         'inner_page': {
-        templateUrl: 'display.html'
+        templateUrl: '/display/display.html'
       }
     }
   })
@@ -99,7 +99,166 @@ $stateProvider.state('login', {
       url: '/hello',
       views: {
         'inner_page': {
-        templateUrl: 'helloExample.html'
+        templateUrl: '/hello-example/helloExample.html'
+
+      }
+      }
+
+  })
+/* New State Added Here called polygon */
+/* State uses the controller function CanvasCtrl, this is where angularJs code lives */
+
+.state('polygon', {
+      url: '/polygonDraw',
+      views: {
+        'inner_page': {
+        templateUrl: '/polygon-draw/polygon-draw.template.html',
+        controller: function CanvasCtrl($http, $scope) {
+
+          // Variables Predefined for the canvas drawing implementation
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext('2d');
+
+            // Empty data file which lives within the
+            // Note: The use of $scope is the bridge between html and javascript
+            $scope.data = [
+            ];
+
+            // Custom Function for Reading in a JSON file - Is called from polygon-draw.template.html
+            // Navigation is from the index.html directory
+            $scope.readJSON = function(){
+
+              // The .get command assumes a JSON file type.
+              // The .then determines how we handle the file that has been read
+              $http.get('/polygon-draw/polygon.json').then(function(response) {
+                // Storing the data in a multidimensional array that can be accessed
+                // By both the .html file and other functions within this 'scope'
+                $scope.polygonPoints = response.data;
+              });
+
+
+            }
+
+            // Copied and Pasted Function from an example online
+            // When the function leads with $scope, it is called using ng-submit in the .html document
+            $scope.drawJSON = function(){
+              var i = 0;
+              var id = 0;
+              var length = $scope.polygonPoints.length;
+              if($scope.data.length > 0) {
+                  id = $scope.data[$scope.data.length-1].id + 1;
+              }
+
+              for (i = 0; i < length; i++){
+                var p = {id: id, x: $scope.polygonPoints[i].xPosition, y: $scope.polygonPoints[i].yPosition, amount: 5};
+                $scope.data.push(p);
+                draw($scope.data);
+              }
+            }
+
+
+            // This function is called from the .html document
+            // It was the starting point for automating a drawing tool for a triangle
+            $scope.autoAdd = function(){
+
+                var id = 0;
+                if($scope.data.length > 0) {
+                    id = $scope.data[$scope.data.length-1].id + 1;
+                }
+
+                // Variables that define for loop control and the coodinates to plot
+                var loopStart = 0;
+                var numPoints = 4;
+                var xPoints = [50, 75, 25, 50];
+                var yPoints = [50, 100, 100, 50];
+
+                // Simple For loop iterating through the data points
+                for (loopStart = 0; loopStart < numPoints; loopStart++) {
+
+                    // Package the points to draw
+                    var p = {id: id, x: xPoints[loopStart], y: yPoints[loopStart], amount: 5};
+                    $scope.data.push(p);
+
+                    // Call the draw function
+                    draw($scope.data);
+                  }
+            }
+
+            // This is the origional function to draw a single Dot
+            $scope.addData = function() {
+
+                var id = 0;
+                if($scope.data.length > 0) {
+                    id = $scope.data[$scope.data.length-1].id + 1;
+                }
+
+                // Packaging point to draw
+                var p = {id: id, x: 10, y: 50, amount: 5};
+                $scope.data.push(p);
+
+                // Cleans the .html interface
+                $scope.x = '';
+                $scope.y = '';
+                $scope.amount = '';
+
+                // Calls the draw function
+                draw($scope.data);
+            };
+
+            // This is the clickable remove function for the points (Have not explored)
+            $scope.removePoint = function(point) {
+                console.log(point);
+                for(var i=0; i<$scope.data.length; i++) {
+                    if($scope.data[i].id === point.id) {
+                        console.log("removing item at position: "+i);
+                        $scope.data.splice(i, 1);
+                    }
+                }
+
+                context.clearRect(0,0,600,400);
+                draw($scope.data);
+                console.log($scope.data);
+            }
+
+            // Notice this Function call does not have a $scope attached
+            // It cannot be directly called through the .html interface
+            function draw(data) {
+                for(var i=0; i<data.length; i++) {
+                    drawDot(data[i]);
+                    if(i > 0) {
+                        drawLine(data[i], data[i-1]);
+                    }
+                }
+            }
+
+            // Draws a dot
+            function drawDot(data) {
+                context.beginPath();
+                context.arc(data.x, data.y, data.amount, 0, 2*Math.PI, false);
+                context.fillStyle = "#ccddff";
+                context.fill();
+                context.lineWidth = 1;
+                context.strokeStyle = "#666666";
+                context.stroke();
+            }
+
+            // Draws a line
+            function drawLine(data1, data2) {
+                context.beginPath();
+                context.moveTo(data1.x, data1.y);
+                context.lineTo(data2.x, data2.y);
+                context.strokeStyle = "black";
+                context.stroke();
+            }
+
+            // Sets up the canvas dimensions (have not explored)
+            canvas.width = 600;
+            canvas.height = 400;
+            context.globalAlpha = 1.0;
+            context.beginPath();
+            draw($scope.data);
+        }
+
       }
     }
   })
@@ -111,7 +270,7 @@ $stateProvider.state('login', {
         },
         views: {
           'inner_page': {
-          templateUrl: 'dashboard.html'
+          templateUrl: 'home.html'
         }
       }
   })

@@ -36,8 +36,6 @@
     <script type="text/javascript" src="static/js/toggle.js"></script>
     <script type="text/javascript" src="static/js/login.js"></script>
     <!-- Controllers -->
-		<script type="text/javascript" src="polygon-draw/polygon-draw.components.js"></script>
-		<script type="text/javascript" src="polygon-draw/polygon-draw.modules.js"></script>
     <script type="text/javascript" src="roles/controllers.js"></script>
     <script type="text/javascript" src="users/controllers.js"></script>
    <script type="text/javascript" src="static/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
