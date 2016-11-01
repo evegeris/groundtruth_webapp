@@ -32,14 +32,18 @@
 
 	<form ng-submit="readJSON()" >
 			<input class="btn-secondary" type="submit" value="Read JSON">
-		<ul class="polygonPoints">
 
+		<ul class="polygonPoints">
 			<!-- ng-repeat allows for dynamic changing of the .html script with angularJS code -->
 				<li ng-repeat="polygonPoint in polygonPoints">
 					<!-- We defined $scope.polygonPoints in the app.js file giving us access to the variable in the .html file-->
-					<span>X Position: {{polygonPoint.xPosition}} -- Y Position: {{polygonPoint.yPosition}}</span>
+					<span ng-repeat="polygon in polygonPoint">
+						<p>X: {{polygon.xPosition}} -- Y: {{polygon.yPosition}}</p>
+					</span>
 				</li>
+
 		</ul>
+		
 	</form>
 
 	<form ng-submit="drawJSON()" >
