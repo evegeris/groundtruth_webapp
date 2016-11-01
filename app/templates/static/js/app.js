@@ -186,9 +186,7 @@ $stateProvider.state('login', {
                 // By both the .html file and other functions within this 'scope'
                 $scope.polygonPoints = response.data;
 
-
               });
-
 
             }
 
@@ -215,6 +213,7 @@ $stateProvider.state('login', {
                 $scope.JsonX[i] =  $scope.polygonPoints[i].xPosition;
                 $scope.JsonY[i] =  $scope.polygonPoints[i].yPosition;
               }
+
             }
 
 
@@ -318,6 +317,10 @@ $stateProvider.state('login', {
             context.globalAlpha = 1.0;
             context.beginPath();
             draw($scope.data);
+
+            $("#display_img").attr("src", "http://i.imgur.com/PWSOy.jpg");
+            var background = document.getElementById('display_img');
+            context.drawImage(background, 0, 0);
         }
 
       }
