@@ -318,9 +318,10 @@ $stateProvider.state('login', {
             context.beginPath();
             draw($scope.data);
 
+
             $("#display_img").attr("src", "http://i.imgur.com/PWSOy.jpg");
             var background = document.getElementById('display_img');
-            context.drawImage(background, 0, 0);
+            context.drawImage(background, 0, 0, canvas.width, canvas.height);
         }
 
       }
