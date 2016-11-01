@@ -5,29 +5,35 @@
 
 	<div class="col-lg-6">
 
-
-
     <div class="login-container">
 
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1024px-Python-logo-notext.svg.png"  height="80px" width="80px">
+			<div class="spacer-center">
+		    <img src="static/images/avatar.jpg"  height="80px" width="80px">
+		 </div>
 
     <!-- Create customer Form -->
       <div  ng-show="signUp">
               <form class="form-signin" ng-submit="addUser()">
 
 
-                <input type="text" placeholder="Name" ng-model="name" required>
+								  <div class="spacer">
+                    <input type="text" class="form-control" placeholder="Name" ng-model="name" required>
+									</div>
 
-                    <label for="inputEmail" class="sr-only">Email address</label>
-                    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="" ng-model="email">
+										<div class="spacer">
+	                    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="" ng-model="email">
+											<label for="inputEmail" class="sr-only">Email address</label>
+										</div>
 
+										<div class="spacer">
                       <label for="inputPassword" class="sr-only">Password</label>
                       <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" ng-model="password">
+										</div>
 
-                    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="loading" >Sign in</button>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="loading" >Create</button>
 
 
-                    <span ng-hide="loading">Create</span>
+
                     <span ng-show="loading">Loading....</span></button>
 
               </form>
@@ -38,12 +44,15 @@
         <div class="login-form"   ng-show="login">
             <form ng-submit="signIn()" >
 
-
+						<div class="spacer">
               <label for="inputEmail" class="sr-only">Email address</label>
               <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="" ng-model="email">
+						</div>
 
+						<div class="spacer">
                 <label for="inputPassword" class="sr-only">Password</label>
                 <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" ng-model="password">
+							</div>
 
                 <div class="checkbox">
                   <label>
@@ -54,7 +63,6 @@
               <button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="loading" >Sign in</button>
 
 
-                  <span ng-hide="loading">Sign In</span>
                   <span ng-show="loading">Loading....</span></button>
 
             </form>
@@ -75,7 +83,7 @@
                  <button id="fpass-button"  ng-disabled="loading" type="submit" class="button-primary">
 
 
-                   <span ng-hide="loading">Resend</span>
+                   <!--<span ng-hide="loading">Resend</span>-->
                    <span ng-show="loading">Loading....</span></button>
 
              </form>
