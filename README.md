@@ -4,41 +4,41 @@
 ## Folder structure:
 
 ### Full Installation Instructions (Ubuntu 14.04)
-1. Install git
-* sudo apt-get update
-* sudo apt-get install git
-2. Clone Repository
-* git clone https://github.com/evegeris/groundtruth_webapp.git
-3. Get pip
-* sudo apt-get install python-pip
-4. Get nodejs
-* sudo apt-get install nodejs
-5. Get npm
-* sudo apt-get install npm
-6. Get python developer
-* sudo apt-get install python-dev
-* sudo apt-get install libpq-dev python-dev
-7. Get Flask
-* sudo apt-get install Flask
-8. Get bower
-* sudo npm install -g bower
-9. Get mysql-server
-* sudo apt-get update
-* sudo apt-get install mysql-server
-* sudo mysql_secure_installation
-* sudo mysql_install_db
-10. Set up a blank db in mysql titled 'groundtruth_db'
-* mysql -u root -p
-* CREAT DATABASE groundtruth_db;
-11. Delete 'migrations' folder if present
-12. Install additional pip requirements
-* sudo pip install -r requirements.txt 
-13. Initialize Database
-* python db.py db init 
-* python db.py db migrate 
-* python db.py db upgrade 
-14. Run the program
-* python run.py
+* 1. Install git
+* $sudo apt-get update
+* $sudo apt-get install git
+* 2. Clone Repository
+* $git clone https://github.com/evegeris/groundtruth_webapp.git
+* 3. Get pip
+* $sudo apt-get install python-pip
+* 4. Get nodejs
+* $sudo apt-get install nodejs
+* 5. Get npm
+* $sudo apt-get install npm
+* 6. Get python developer
+* $sudo apt-get install python-dev
+* $sudo apt-get install libpq-dev python-dev
+* 7. Get Flask
+* $sudo apt-get install Flask
+* 8. Get bower
+* $sudo npm install -g bower
+* 9. Get mysql-server
+* $sudo apt-get update
+* $sudo apt-get install mysql-server
+* $sudo mysql_secure_installation
+* $sudo mysql_install_db
+* 10. Set up a blank db in mysql titled 'groundtruth_db'
+* $mysql -u root -p
+* $CREAT DATABASE groundtruth_db;
+* 11. Delete 'migrations' folder if present
+* 12. Install additional pip requirements
+* $sudo pip install -r requirements.txt 
+* 13. Initialize Database
+* $python db.py db init 
+* $python db.py db migrate 
+* $python db.py db upgrade 
+* 14. Run the program
+* $python run.py
 
 
 ### client
