@@ -450,17 +450,53 @@ $stateProvider.state('login', {
                   context.stroke();
               }
 
-              // Sets up the canvas dimensions (have not explored)
-              canvas.width = 600;
-              canvas.height = 400;
-              context.globalAlpha = 1.0;
-              context.beginPath();
-              draw($scope.data);
 
-              // Put an Image on the Canvas
-              $("#display_img").attr("src", "http://i.imgur.com/PWSOy.jpg");
-              var background = document.getElementById('display_img');
-              context.drawImage(background, 0, 0, canvas.width, canvas.height);
+
+              function resize() {
+
+                  var canvasRatio = canvas.height / canvas.width;
+                  var windowRatio = window.innerHeight / window.innerWidth;
+                  var width;
+                  var height;
+
+                  if (windowRatio < canvasRatio) {
+                      height = window.innerHeight;
+                      width = height / canvasRatio;
+                  } else {
+                      width = window.innerWidth;
+                      height = width * canvasRatio;
+                  }
+
+                  canvas.style.width = width + 'px';
+                  canvas.style.height = height + 'px';
+              };
+              //window.addEventListener('resize', resize, false);
+              //resize();
+
+
+                function onPhotoDataSuccess(imageData)
+                {
+                  var myImage = new Image();
+
+
+                   myImage.onload = function() {
+                     var draw_w = myImage.width * 0.4;
+                     var draw_h = myImage.height * 0.4;
+
+                     context.canvas.width  = draw_w;
+                     context.canvas.height = draw_h;
+                     context.drawImage(myImage, 0, 0, draw_w, draw_h);
+                   }
+
+                   myImage.src = "static/images/Pressure08.jpg";
+                }
+
+                onPhotoDataSuccess(null);
+
+
+                context.globalAlpha = 1.0;
+                context.beginPath();
+                draw($scope.data);
 
 
 });
