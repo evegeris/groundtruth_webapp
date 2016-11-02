@@ -91,7 +91,8 @@ $stateProvider.state('login', {
       url: '/display',
       views: {
         'inner_page': {
-        templateUrl: '/display/display.html'
+        templateUrl: '/display/display.html',
+        controller: 'CanvasCtrl_'
       }
     }
   })

@@ -77,7 +77,7 @@ class PostProc:
 
 
 def test():
-    filepath = "/home/mmccar04/Downloads/TestImages/raptor.jpg"
+    filepath = "/home/lainey/Pictures/Research Images Not For Distribution/Artificial/Pressure08.jpg"
     im = cv2.imread(filepath)
     postprocessor = PostProc(im)
     postprocessor.segment()

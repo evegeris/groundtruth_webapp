@@ -81,18 +81,16 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
 
             // Use Satellizer's $auth.login method to verify the username and password
             $auth.login($scope.credentials).then(function(data) {
-
                 $state.go('home');
             })
             .catch(function(response){ // If login is unsuccessful, display relevant error message.
-
 
                toaster.pop({
                 type: 'error',
                 title: 'Login Error',
                 body: response.data,
                 showCloseButton: true,
-                timeout: 0
+                timeout: 2000
                 });
                 $scope.loading = false;
                });
@@ -120,7 +118,7 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                                             title: 'Sucess',
                                             body: "User created successfully",
                                             showCloseButton: true,
-                                            timeout: 0
+                                            timeout: 2000
                                             });
                                    $scope.loading = false;
 
@@ -130,7 +128,7 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                                             title: 'Error',
                                             body: error,
                                             showCloseButton: true,
-                                            timeout: 0
+                                            timeout: 2000
                                             });
                                  $scope.loading = false;
                                            });
@@ -159,7 +157,7 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                                             title: 'Sucess',
                                             body: "Password reset email has been sent successfully",
                                             showCloseButton: true,
-                                            timeout: 0
+                                            timeout: 2000
                                             });
                                    $scope.loading = false;
 
@@ -169,7 +167,7 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                                             title: 'Error',
                                             body: error,
                                             showCloseButton: true,
-                                            timeout: 0
+                                            timeout: 2000
                                             });
                                  $scope.loading = false;
                                            });
@@ -201,7 +199,7 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                                             title: 'Sucess',
                                             body: "We have successfully updated your password :)",
                                             showCloseButton: true,
-                                            timeout: 0
+                                            timeout: 2000
                                             });
                                    $scope.loading = false;
 
@@ -211,7 +209,7 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                                             title: 'Error',
                                             body: error,
                                             showCloseButton: true,
-                                            timeout: 0
+                                            timeout: 2000
                                             });
                                  $scope.loading = false;
                                            });
