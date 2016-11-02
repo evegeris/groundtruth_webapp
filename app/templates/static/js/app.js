@@ -116,30 +116,83 @@ $stateProvider.state('login', {
         templateUrl: '/polygon-draw/polygon-draw.template.html',
         controller: function CanvasCtrl($http, $scope) {
 
-          // This is a listener on the canvas
+          // This is a listener on the canvas to fill the polygona
           $('#canvas').click(function(e){
 
             var pos = getMousePos(canvas, e);
             posx = pos.x;
             posy = pos.y;
 
-            // Compare if we clicked inside of the polygon
+            var i = 0;
+            var k = 0;
+            var length_1 = $scope.polygonPoints.length;
+            var length_2 = 0;
+
+            // Need to create an array structure to check each point
+            $scope.JsonX = [];
+            $scope.JsonY = [];
+
+            // Iterate through first dimension of the JSON file
+            for (i = 0; i < length_1; i++){
+
+              length_2 = $scope.polygonPoints[i].length;
+
+              // Iterate through the second dimension of the JSON file
+              for(k = 0; k < length_2; k++){
+
+                // Set a temporary array to the entire polygon
+                $scope.JsonX[k] = $scope.polygonPoints[i][k].xPosition;
+                $scope.JsonY[k] = $scope.polygonPoints[i][k].yPosition;
+              }
+
+
+            // Compare if we clicked inside of the polygon for each polygon
             // (# of vertices, array of X positions, array of Y positions, test X position, test Y position)
-            if (pnpoly($scope.polygonPoints.length,   $scope.JsonX,   $scope.JsonY, posx, posy)){
+            if (pnpoly(length_2,  $scope.JsonX, $scope.JsonY, posx, posy)){
 
               // Fill with Colour using different drawing method
-              var i = 0;
+              var j = 0;
               var c2 = document.getElementById('canvas').getContext('2d');
-              c2.fillStyle = '#f00';
+
+              // Custom Fill colour
+              c2.fillStyle = $scope.colour_f;
+
               c2.beginPath();
               c2.moveTo($scope.JsonX[0], $scope.JsonY[0]);
-              for (i = 1; i < $scope.polygonPoints.length; i ++){
-                c2.lineTo($scope.JsonX[i], $scope.JsonY[i]);
+              for (j = 1; j < length_2; j ++){
+                c2.lineTo($scope.JsonX[j], $scope.JsonY[j]);
               }
               c2.closePath();
               c2.fill();
                 }
+              }
             })
+
+            // Keyboard listern! Lets us change the colour of the fill
+            window.onkeyup = function(e) {
+                var key = e.keyCode ? e.keyCode : e.which;
+
+                    // Key '1'
+                    if (key == 49) {
+                        // Colour 'red'
+                        $scope.colour_f = '#f00';
+                    }
+                    // Key '2'
+                    else if (key == 50) {
+                        // Colour 'Mahogony'
+                        $scope.colour_f = '#400'
+                    }
+                    // Key '3'
+                    else if (key == 51) {
+                        // Colour 'Dark Yellow'
+                        $scope.colour_f = '#C90'
+                    }
+                    // Key '4'
+                    else if (key == 52) {
+                      // Colour 'Orange'
+                      $scope.colour_f = '#930'
+                    }
+}
 
             // This function will get the mouse cursor relative to the canvas
             function  getMousePos(canvas, evt) {
@@ -182,39 +235,47 @@ $stateProvider.state('login', {
 
               // The .get command assumes a JSON file type.
               // The .then determines how we handle the file that has been read
-              $http.get('/polygon-draw/polygon.json').then(function(response) {
+              //**************************BUG****************************************//
+                // We can only read in a file once. Then the same file is re-used
+
+              $http.get('/polygon-draw/polygon6.json').then(function(response) {
                 // Storing the data in a multidimensional array that can be accessed
                 // By both the .html file and other functions within this 'scope'
                 $scope.polygonPoints = response.data;
-
               });
-
             }
 
             // Copied and Pasted Function from an example online
             // When the function leads with $scope, it is called using ng-submit in the .html document
             $scope.drawJSON = function(){
 
-              $scope.JsonX = [];
-              $scope.JsonY = [];
-
-
               var i = 0;
+              var k = 0;
               var id = 0;
-              var length = $scope.polygonPoints.length;
-              if($scope.data.length > 0) {
-                  id = $scope.data[$scope.data.length-1].id + 1;
+
+              var length_1 = $scope.polygonPoints.length;
+              var length_2 =0;
+              // Iterate through first dimension
+              for (i = 0; i < length_1; i++){
+
+                // Reset the count for each Polygon to disconnect them
+                $scope.data.length = 0;
+                length_2 = $scope.polygonPoints[i].length;
+
+                // Iterate through the second dimension
+                for(k = 0; k < length_2; k++){
+
+                  // Update the ID for connections
+                  if($scope.data.length > 0) {
+                      id = $scope.data[$scope.data.length-1].id + 1;
+                  }
+
+                  // Extract each point and Draw
+                  var p = {id: id, x: $scope.polygonPoints[i][k].xPosition, y: $scope.polygonPoints[i][k].yPosition, amount: 5};
+                  $scope.data.push(p);
+                  draw($scope.data);
+                }
               }
-
-              for (i = 0; i < length; i++){
-                var p = {id: id, x: $scope.polygonPoints[i].xPosition, y: $scope.polygonPoints[i].yPosition, amount: 5};
-                $scope.data.push(p);
-                draw($scope.data);
-
-                $scope.JsonX[i] =  $scope.polygonPoints[i].xPosition;
-                $scope.JsonY[i] =  $scope.polygonPoints[i].yPosition;
-              }
-
             }
 
 
@@ -319,7 +380,7 @@ $stateProvider.state('login', {
             context.beginPath();
             draw($scope.data);
 
-
+            // Put an Image on the Canvas
             $("#display_img").attr("src", "http://i.imgur.com/PWSOy.jpg");
             var background = document.getElementById('display_img');
             context.drawImage(background, 0, 0, canvas.width, canvas.height);
