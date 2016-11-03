@@ -88,9 +88,9 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                toaster.pop({
                 type: 'error',
                 title: 'Login Error',
-                body: response.data,
+                body: response.data.message,
                 showCloseButton: true,
-                timeout: 2000
+                timeout: 200
                 });
                 $scope.loading = false;
                });
@@ -118,7 +118,7 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                                             title: 'Sucess',
                                             body: "User created successfully",
                                             showCloseButton: true,
-                                            timeout: 2000
+                                            timeout: 200
                                             });
                                    $scope.loading = false;
 
@@ -128,7 +128,7 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                                             title: 'Error',
                                             body: error,
                                             showCloseButton: true,
-                                            timeout: 2000
+                                            timeout: 200
                                             });
                                  $scope.loading = false;
                                            });
@@ -157,7 +157,7 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                                             title: 'Sucess',
                                             body: "Password reset email has been sent successfully",
                                             showCloseButton: true,
-                                            timeout: 2000
+                                            timeout: 200
                                             });
                                    $scope.loading = false;
 
@@ -167,7 +167,7 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                                             title: 'Error',
                                             body: error,
                                             showCloseButton: true,
-                                            timeout: 2000
+                                            timeout: 200
                                             });
                                  $scope.loading = false;
                                            });
@@ -199,7 +199,7 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                                             title: 'Sucess',
                                             body: "We have successfully updated your password :)",
                                             showCloseButton: true,
-                                            timeout: 2000
+                                            timeout: 200
                                             });
                                    $scope.loading = false;
 
@@ -209,7 +209,7 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                                             title: 'Error',
                                             body: error,
                                             showCloseButton: true,
-                                            timeout: 2000
+                                            timeout: 200
                                             });
                                  $scope.loading = false;
                                            });
