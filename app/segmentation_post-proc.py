@@ -86,14 +86,14 @@ class PostProc:
 
         contours = contours[0] # get contour
         polyArray = []
-
+        tmp_scale = 0.4
         for coords in contours:
             #coords = coords[0] # discard unnecessary array if outside of this loop
             xy_coords = coords[0]
             #print xy_coords[0] # x
             #print xy_coords[1] # y
 
-            polyDict = dict([['xPosition', int(xy_coords[0])], ['yPosition', int(xy_coords[1])]])
+            polyDict = dict([['xPosition', int(xy_coords[0]*tmp_scale)], ['yPosition', int(xy_coords[1]*tmp_scale)]])
             polyArray.append(polyDict)
 
         print polyArray

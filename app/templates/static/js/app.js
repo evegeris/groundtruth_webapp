@@ -477,11 +477,12 @@ $stateProvider.state('login', {
                 function onPhotoDataSuccess(imageData)
                 {
                   var myImage = new Image();
-
+                  var scaleImgX = 0.4;
+                  var scaleImgY = 0.4;
 
                    myImage.onload = function() {
-                     var draw_w = myImage.width * 0.4;
-                     var draw_h = myImage.height * 0.4;
+                     var draw_w = myImage.width * scaleImgX;
+                     var draw_h = myImage.height * scaleImgY;
 
                      context.canvas.width  = draw_w;
                      context.canvas.height = draw_h;
