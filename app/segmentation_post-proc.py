@@ -7,7 +7,18 @@ import matplotlib.pyplot as plt
 import cv2
 import numpy as np
 import random
+import json
 
+class MyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        else:
+            return super(MyEncoder, self).default(obj)
 
 class PostProc:
 
@@ -68,20 +79,44 @@ class PostProc:
                 continue
 
             cv2.drawContours(self.im_rgb, contours, index, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), -1)
+            #with open('data.txt', 'w') as outfile:
+            #    json.dump(contours[index], outfile)
             #print "hierarchy["+str(index)+"]: " + str(hierarchy[index])
+
+
+        contours = contours[0] # get contour
+        polyArray = []
+
+        for coords in contours:
+            #coords = coords[0] # discard unnecessary array if outside of this loop
+            xy_coords = coords[0]
+            #print xy_coords[0] # x
+            #print xy_coords[1] # y
+
+            polyDict = dict([['xPosition', int(xy_coords[0])], ['yPosition', int(xy_coords[1])]])
+            polyArray.append(polyDict)
+
+        print polyArray
+
+        with open('polygon.json', 'w') as outfile:
+         json.dump(polyArray, outfile, indent=2)
+
+
 
 
         cv2.imshow("contour img", self.im_rgb)
         cv2.imshow("im2", im2)
-        cv2.waitKey(0)
+        #cv2.waitKey(0)
 
 
 def test():
-    filepath = "/home/mmccar04/Downloads/TestImages/raptor.jpg"
+    #filepath = "/home/mmccar04/Downloads/TestImages/raptor.jpg"
+    filepath = "/home/lainey/code/rdash_Nov2/groundtruth_webapp/app/templates/static/images/Pressure08.jpg"
     im = cv2.imread(filepath)
     postprocessor = PostProc(im)
     postprocessor.segment()
     postprocessor.getContours()
+
 
 
 test()
