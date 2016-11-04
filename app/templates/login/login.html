@@ -1,11 +1,8 @@
-<div class="row">
-
-	<div class="col-lg-3">
-  </div>
-
-	<div class="col-lg-6">
+<div class="login-background">
 
     <div class="login-container">
+
+			<div class="form-background">
 
 			<div class="spacer-center">
 		    <img src="static/images/avatar.jpg"  height="80px" width="80px">
@@ -54,11 +51,13 @@
                 <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" ng-model="password">
 							</div>
 
+<!--
                 <div class="checkbox">
                   <label>
                   <input type="checkbox" value="remember-me"> Remember me
                   </label>
                 </div>
+							-->
 
               <button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="loading" >Sign in</button>
 
@@ -91,8 +90,9 @@
            </div>
 
 
-
+					 <div class="spacer">
              <a href="" id="logIn" ng-click="loginClick()" style="margin-right:5px" ng-hide="login"  >Login </a>
+					 </div>
              <a href="" id="signUp"   ng-click="signUpClick()" ng-hide="signUp" style="margin-right:5px">Sign Up </a>
 
              <a href="" id="forgotPassword"  ng-click="fpClick()" style="margin-right:5px" ng-hide="fp">Forgot Password </a>
@@ -101,11 +101,7 @@
         </div>
 
 
+			</div>
 
-
-      </div>
-
-      <div class="col-lg-3">
-      </div>
 
     </div>
