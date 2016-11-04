@@ -1,4 +1,4 @@
-angular.module('myApp', ['ui.router', 'ngResource',  "angularGrid" , 'myApp.controllers', 'myApp.services', 'satellizer','toaster', 'ngAnimate', 'angular-google-analytics']);
+angular.module('myApp', ['ui.router', 'ngResource',  "angularGrid" , 'myApp.controllers', 'myApp.services', 'satellizer','toaster', 'ngAnimate', 'angular-google-analytics', 'ngIdle']);
 
 angular.module('myApp')
   .run( function($rootScope, $state){
@@ -8,11 +8,16 @@ angular.module('myApp')
                 }
     );
 
-angular.module('myApp').config(function( $stateProvider , $urlRouterProvider, $authProvider, AnalyticsProvider) {
+angular.module('myApp').config(function( $stateProvider , $urlRouterProvider, $authProvider, AnalyticsProvider, IdleProvider, KeepaliveProvider) {
 
    // Google Analytics
     AnalyticsProvider.setAccount('UA-37519052-11');
     AnalyticsProvider.setDomainName('seven.leog.in');
+
+    // configure Idle settings
+    IdleProvider.idle(30*60); // in seconds
+    IdleProvider.timeout(5); // in seconds
+    KeepaliveProvider.interval(2); // in seconds
 
    // Satellizer configuration that specifies which API
   // route the JWT should be retrieved from
@@ -54,10 +59,22 @@ $stateProvider.state('login', {
           'login_page': {
           templateUrl: '/login/login.html',
           controller: 'LoginController'
-    }
-}
-
-  }).state('ForgotPassword', {
+          }
+      }
+  })
+  .state('timeout', {
+  	 url: '/timeout',
+      title: 'Session timed out!',
+      resolve: {
+            skipIfLoggedIn: skipIfLoggedIn
+          },
+      views: {
+            'login_page': {
+            templateUrl: 'timeout.html',
+            controller: 'LoginController'
+            }
+        }
+    }).state('ForgotPassword', {
 	url: '/forgotpassword/:token',
   title: 'Forgotten Password',
     resolve: {
@@ -130,6 +147,50 @@ $stateProvider.state('login', {
       }
   })
 
+  // Routes for users
+
+     .state('users', {
+          // Note: abstract state cannot be loaded, but it still needs a ui-view for its children to populate.
+          // https://github.com/angular-ui/ui-router/wiki/Nested-States-and-Nested-Views
+          abstract: true,
+          url: '/users',
+          title: 'Users',
+          template: '<ui-view/>'
+      })
+    .state('users.list', {
+      url: '/list',
+      templateUrl: 'users/index.html',
+      controller: 'UserListController',
+      title: 'Users',
+      resolve: {
+            loginRequired: loginRequired
+          }
+
+
+    }).state('users.new', {
+      url: '/new',
+      templateUrl: '/users/add.html',
+      controller: 'UserCreateController',
+
+      resolve: {
+            loginRequired: loginRequired
+          }
+
+      }).state('users.edit', {
+      url: '/:id/edit',
+      templateUrl: 'users/update.html',
+      controller: 'UserEditController',
+      resolve: {
+            loginRequired: loginRequired
+          }
+
+          })
+
+      // End Routes for users
+
+
+  // States
+
   ;
 
   })
@@ -163,9 +224,9 @@ $stateProvider.state('login', {
      // });
     }
   }
-}).controller('LogoutCtrl', function($auth, $state, $window, toaster, $scope) { // Logout the user if they are authenticated.
+}).controller('LogoutCtrl', function($auth, $state, $window, toaster, $scope, Idle) { // Logout the user if they are authenticated.
 
-  //Display the Logout button for authenticated users only
+  // check if authenticated
   $scope.isAuthenticated = function() {
       return $auth.isAuthenticated();
     };
@@ -188,6 +249,45 @@ $stateProvider.state('login', {
       });
       }
 
+
+      $scope.events = [];
+
+      $scope.$on('IdleStart', function() {
+          // the user appears to have gone idle
+      });
+
+      $scope.$on('IdleWarn', function(e, countdown) {
+          // follows after the IdleStart event, but includes a countdown until the user is considered timed out
+          // the countdown arg is the number of seconds remaining until then.
+          // you can change the title or display a warning dialog from here.
+          // you can let them resume their session by calling Idle.watch()
+      });
+
+      $scope.$on('IdleTimeout', function() {
+          // the user has timed out (meaning idleDuration + timeout has passed without any activity)
+          if (!$auth.isAuthenticated()) { return; }
+          $auth.logout()
+           .then(function() {
+
+             toaster.pop({
+                     type: 'success',
+                     body: 'Timeout logout',
+                     showCloseButton: true,
+
+                     });
+
+             $state.go('timeout');
+
+           });
+      });
+
+      $scope.$on('IdleEnd', function() {
+          // the user has come back from AFK and is doing stuff. if you are warning them, you can use this to hide the dialog
+      });
+
+      $scope.$on('Keepalive', function() {
+          // do something to keep the user's session alive
+      });
 
 
 })
@@ -480,6 +580,10 @@ $stateProvider.state('login', {
                 draw($scope.data);
 
 
+})
+.run(function(Idle){
+    // start watching for timeout when the app runs. also starts the Keepalive service by default.
+    Idle.watch();
 });
 
 

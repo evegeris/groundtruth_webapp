@@ -1,0 +1,36 @@
+<!--[if lte IE 8]><script src="static/timeout-assets/assets/js/html5shiv.js"></script><![endif]-->
+<link rel="stylesheet" href="static/timeout-assets/assets/css/main.css" />
+<!--[if lte IE 9]><link rel="stylesheet" href="static/timeout-assets/assets/css/ie9.css" /><![endif]-->
+<!--[if lte IE 8]><link rel="stylesheet" href="static/timeout-assets/assets/css/ie8.css" /><![endif]-->
+<noscript><link rel="stylesheet" href="static/timeout-assets/assets/css/noscript.css" /></noscript>
+
+
+    <div class="is-loading">
+
+    <!-- Wrapper -->
+      <div id="wrapper">
+
+        <!-- Main -->
+          <section id="main">
+            <header>
+              <span class="avatar"><img src="static/timeout-assets/images/avatar.jpg" alt="" /></span>
+              <h1>You have been logged out</h1>
+              <ul class="actions">
+                <li><a href="#" class="button">Log Back In</a></li>
+              </ul>
+            </header>
+
+          </section>
+
+      </div>
+
+    <!-- Scripts -->
+      <!--[if lte IE 8]><script src="assets/js/respond.min.js"></script><![endif]-->
+      <script>
+        if ('addEventListener' in window) {
+          window.addEventListener('load', function() { document.body.className = document.body.className.replace(/\bis-loading\b/, ''); });
+          document.body.className += (navigator.userAgent.match(/(MSIE|rv:11\.0)/) ? ' is-ie' : '');
+        }
+      </script>
+
+    </div>
