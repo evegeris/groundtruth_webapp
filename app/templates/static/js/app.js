@@ -564,8 +564,11 @@ $stateProvider.state('login', {
                      var draw_w = myImage.width * $scope.scaleImgX;
                      var draw_h = myImage.height * $scope.scaleImgY;
 
-                     context.canvas.width  = draw_w;
-                     context.canvas.height = draw_h;
+
+                     context.canvas.width  = window.innerWidth*0.9;
+                     context.canvas.height = window.innerHeight*0.9;
+                     //context.canvas.width  = draw_w;
+                     //context.canvas.height = draw_h;
                      context.drawImage(myImage, 0, 0, draw_w, draw_h);
                    }
 
