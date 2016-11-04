@@ -30,35 +30,37 @@ class PostProc:
         self.im_height, self.im_width, self.im_channels = self.im.shape
 
         #self.im = cv2.resize(self.im, (0,0), fx=self.scale, fy=self.scale)
-        cv2.imshow("input", self.im)
+        #cv2.imshow("input", self.im)
         self.im_rgb = np.array(self.im)
-
 
 
     def segment(self):
 
-        numSegments = 300
-        # apply SLIC and extract (approximately) the supplied number of segments
-        segments = slic(self.im, n_segments=numSegments, sigma=5)
+	for i in range (1,5):
+		self.newIm = self.im;
 
-        b = segments.tolist() # nested lists with same data, indices
-        file_path = "file.json" ## your path variable
+        	numSegments = 200 + i*50
+        	# apply SLIC and extract (approximately) the supplied number of segments
+        	segments = slic(self.im, n_segments=numSegments, sigma=5)
 
-        with open('segmentedImg.json', 'w') as outfile:
-            json.dump(b, outfile, indent=2)
+        	b = segments.tolist() # nested lists with same data, indices
+        	file_path = "file.json" ## your path variable
 
-        # show the output of SLIC
-        fig = plt.figure("Superpixels -- %d segments" % (numSegments))
-        ax = fig.add_subplot(1, 1, 1)
-        self.im = mark_boundaries(self.im, segments, color=(0, 0, 0)) # fn normalises img bw 1 and 0 apparently
-        ax.imshow(self.im)
-        plt.axis("off")
-        cv2.waitKey(0)
+        	with open('segmentedImg.json', 'w') as outfile:
+            		json.dump(b, outfile, indent=2)
 
-        self.im = (self.im * 255.0).astype('u1')
-        cv2.imshow("after astype", self.im)
-        cv2.imwrite("/home/madison/Documents/working_41x/groundtruth_webapp/app/segmentedImg.jpg", self.im)
-        cv2.waitKey(0)
+        	# show the output of SLIC
+        	fig = plt.figure("Superpixels -- %d segments" % (numSegments))
+        	ax = fig.add_subplot(1, 1, 1)
+        	self.newIm = mark_boundaries(self.im, segments, color=(0, 0, 0)) # fn normalises img bw 1 and 0 apparently
+        	#ax.imshow(self.im)
+        	plt.axis("off")
+        	#cv2.waitKey(0)
+
+        	self.newIm = (self.newIm * 255.0).astype('u1')
+        	cv2.imshow("after astype", self.newIm)
+        	cv2.imwrite("/home/madison/Documents/41x/groundtruth_webapp/app/segmentedImg.jpg", self.newIm)
+        	cv2.waitKey(0)
 
 
 
@@ -124,8 +126,9 @@ class PostProc:
 def test():
     #filepath = "/home/mmccar04/Downloads/TestImages/raptor.jpg"
     #filepath = "/home/lainey/code/rdash_Nov2/groundtruth_webapp/app/templates/static/images/Pressure08.jpg"
-    filepath = "/home/madison/Documents/working_41x/groundtruth_webapp/app/templates/static/images/wound_2.jpg"
+    filepath = "/home/madison/Documents/41x/groundtruth_webapp/app/templates/static/images/wound_2.jpg"
     im = cv2.imread(filepath)
+    newIm = cv2.imread(filepath)
     postprocessor = PostProc(im)
     postprocessor.segment()
     #postprocessor.getContours()
