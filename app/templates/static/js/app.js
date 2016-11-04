@@ -231,6 +231,11 @@ $stateProvider.state('login', {
       return $auth.isAuthenticated();
     };
 
+    $scope.$on('$viewContentLoaded', function(){
+        $scope.user_name = "First Last";
+//        alert("ehh");
+      });
+
     $scope.logout = function(){
 
      if (!$auth.isAuthenticated()) { return; }

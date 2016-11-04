@@ -63,6 +63,10 @@
     <script type="text/javascript" src="static/dist/lib/js/main.min.js"></script>
     <link rel="stylesheet" href="static/dist/lib/css/main.min.css"/>-->
 
+    <script type="text/javascript">
+    //this is here to make plunkr work with AngularJS routing
+    angular.element(document.getElementsByTagName('head')).append(angular.element('<base href="' + window.location.pathname + '" />'));
+    </script>
 
   </head>
 
@@ -125,15 +129,13 @@
       <div id="content-wrapper">
         <div class="page-content">
 
-
           <!-- Header Bar -->
           <div class="row header" ng-if="isAuthenticated()" ng-cloak>
             <div class="col-xs-12">
               <div class="user pull-right">
-                <!-- ng-if="isAuthenticated()" -->
-
-                <div class="dropdown" ng-controller="LoginController">
-                  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">First Last {{ login }}
+                <div class="dropdown-spacing">
+                 <div class="dropdown" ng-controller="LoginController">
+                  <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" ng-bind="user_name">
                   <span class="caret"></span></button>
                   <ul class="dropdown-menu">
                     <li class="link">
@@ -149,6 +151,7 @@
                     </li>
                   </ul>
                 </div>
+              </div>
 
 <!--
 
