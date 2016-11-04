@@ -14,13 +14,16 @@
 	<form ng-submit="autoAdd()" >
 		<input class="btn-secondary" type="submit" value="Draw Triangle">
 		Click on the Pentagon!
+		<ul>
+		{{length_1}} -- {{length_2}}  -- {{the_string}} --xClick: {{posx}} -- yClick: {{posy}} -- maskValue: {{mask_value}} -- {{didHit}} --{{iter1}} -- {{iter2}}
+	</ul>
 	</form>
 
 	<canvas id="canvas" style="border: 1px gray solid; float: left"></canvas>
 	<img id="display_img" style="display: none;" />
   </div>
 
-
+<!--
 	<div id="list" style="margin-left: 620px; float; left">
         Points:
         <ul>
@@ -29,26 +32,34 @@
             </li>
         </ul>
   </div>
+-->
 
 	<form ng-submit="readJSON()" >
 			<input class="btn-secondary" type="submit" value="Read JSON">
-
+						<!-- ng-repeat allows for dynamic changing of the .html script with angularJS code -->
+						<!-- We defined $scope.polygonPoints in the app.js file giving us access to the variable in the .html file-->
+<!--
 		<ul class="polygonPoints">
-			<!-- ng-repeat allows for dynamic changing of the .html script with angularJS code -->
 				<li ng-repeat="polygonPoint in polygonPoints">
-					<!-- We defined $scope.polygonPoints in the app.js file giving us access to the variable in the .html file-->
 					<span ng-repeat="polygon in polygonPoint">
-						<p>X: {{polygon.xPosition}} -- Y: {{polygon.yPosition}}</p>
+						<p>X: {{polygon.xPosition}} - Y: {{polygon.yPosition}}</p>
 					</span>
 				</li>
-
 		</ul>
-		
+-->
 	</form>
 
 	<form ng-submit="drawJSON()" >
 
 			<input class="btn-secondary" type="submit" value="Draw JSON">
+	</form>
+	<form ng-submit="scaleDown()" >
+
+			<input class="btn-secondary" type="submit" value="Scale Down">
+	</form>
+	<form ng-submit="scaleUp()" >
+
+			<input class="btn-secondary" type="submit" value="Scale Up">
 	</form>
 
 

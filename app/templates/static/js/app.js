@@ -125,7 +125,7 @@ $stateProvider.state('login', {
         },
         views: {
           'inner_page': {
-          templateUrl: 'home.html'
+          templateUrl: 'dashboard.html'
         }
       }
   })
@@ -193,57 +193,44 @@ $stateProvider.state('login', {
 })
 .controller('CanvasCtrl', function($http, $scope) {
 
+
+            $scope.the_string = "waiting";
+            $scope.didHit = "MISS";
+
+
             // This is a listener on the canvas to fill the polygona
             $('#canvas').click(function(e){
 
               var pos = getMousePos(canvas, e);
-              posx = pos.x;
-              posy = pos.y;
+              $scope.posx = (Math.round(pos.x))/($scope.scaleImgX);
+              $scope.posy = (Math.round(pos.y))/($scope.scaleImgY);
 
               var i = 0;
               var k = 0;
-              var length_1 = $scope.polygonPoints.length;
-              var length_2 = 0;
+              $scope.length_2 = $scope.mask_data.length;
+              $scope.length_1 = $scope.mask_data[0].length;
 
-              // Need to create an array structure to check each point
-              $scope.JsonX = [];
-              $scope.JsonY = [];
+              var mask_value = $scope.mask_data[$scope.posy][$scope.posx];
 
-              // Iterate through first dimension of the JSON file
-              for (i = 0; i < length_1; i++){
+              for (i = 0; i < $scope.length_2; i ++){
+                  $scope.iter2 = i;
 
-                length_2 = $scope.polygonPoints[i].length;
+                for (k = 0; k < $scope.length_1; k++){
+                  $scope.iter1 = k;
 
-                // Iterate through the second dimension of the JSON file
-                for(k = 0; k < length_2; k++){
+                  //if (mask_value.localeCompare($scope.mask_data[i][j]) == 0){
+                  if (mask_value == $scope.mask_data[$scope.iter2][$scope.iter1]){
 
-                  // Set a temporary array to the entire polygon
-                  $scope.JsonX[k] = $scope.polygonPoints[i][k].xPosition;
-                  $scope.JsonY[k] = $scope.polygonPoints[i][k].yPosition;
-                }
-
-
-              // Compare if we clicked inside of the polygon for each polygon
-              // (# of vertices, array of X positions, array of Y positions, test X position, test Y position)
-              if (pnpoly(length_2,  $scope.JsonX, $scope.JsonY, posx, posy)){
-
-                // Fill with Colour using different drawing method
-                var j = 0;
-                var c2 = document.getElementById('canvas').getContext('2d');
-
-                // Custom Fill colour
-                c2.fillStyle = $scope.colour_f;
-
-                c2.beginPath();
-                c2.moveTo($scope.JsonX[0], $scope.JsonY[0]);
-                for (j = 1; j < length_2; j ++){
-                  c2.lineTo($scope.JsonX[j], $scope.JsonY[j]);
-                }
-                c2.closePath();
-                c2.fill();
+                    $scope.didHit = "HIT";
+                    context.fillStyle = $scope.colour_f;
+                    context.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
+                  }
+                  else {
+                    $scope.didHit = "FALSE";
                   }
                 }
-              })
+              }
+            })
 
               // Keyboard listern! Lets us change the colour of the fill
               window.onkeyup = function(e) {
@@ -252,24 +239,24 @@ $stateProvider.state('login', {
                       // Key '1'
                       if (key == 49) {
                           // Colour 'red'
-                          $scope.colour_f = '#f00';
+                          $scope.colour_f = "rgba(32, 0, 0, 0.4)";
                       }
                       // Key '2'
                       else if (key == 50) {
                           // Colour 'Mahogony'
-                          $scope.colour_f = '#400'
+                          $scope.colour_f = "rgba(0, 32, 0, 0.4)";
                       }
                       // Key '3'
                       else if (key == 51) {
                           // Colour 'Dark Yellow'
-                          $scope.colour_f = '#C90'
+                          $scope.colour_f = "rgba(0, 0, 32, 0.4)";
                       }
                       // Key '4'
                       else if (key == 52) {
                         // Colour 'Orange'
-                        $scope.colour_f = '#930'
+                        $scope.colour_f = "rgba(32, 32, 0, 0.4)";
                       }
-  }
+                    }
 
               // This function will get the mouse cursor relative to the canvas
               function  getMousePos(canvas, evt) {
@@ -282,6 +269,7 @@ $stateProvider.state('login', {
                   y: (evt.clientY - rect.top) * scaleY     // been adjusted to be relative to element
                 }
               }
+
 
               // This Function will check to see if you clicked inside of a polygon
               function pnpoly( nvert, vertx, verty, testx, testy ) {
@@ -306,19 +294,35 @@ $stateProvider.state('login', {
               $scope.data = [
               ];
 
+              // Lets you scale the image
+              $scope.scaleDown = function(){
+                $scope.ResizeValue = $scope.ResizeValue + 10;
+                resize($scope.ResizeValue);
+
+              }
+
+              // Lets you scale the image
+              $scope.scaleUp = function(){
+                $scope.ResizeValue = $scope.ResizeValue - 10;
+                resize($scope.ResizeValue);
+
+              }
+
               // Custom Function for Reading in a JSON file - Is called from polygon-draw.template.html
               // Navigation is from the index.html directory
               $scope.readJSON = function(){
 
+
                 // The .get command assumes a JSON file type.
                 // The .then determines how we handle the file that has been read
-                //**************************BUG****************************************//
+                //******************************************************************//
                   // We can only read in a file once. Then the same file is re-used
 
-                $http.get('/polygon-draw/polygon6.json').then(function(response) {
+                $http.get('/polygon-draw/segmentedImg.json').then(function(response) {
                   // Storing the data in a multidimensional array that can be accessed
                   // By both the .html file and other functions within this 'scope'
-                  $scope.polygonPoints = response.data;
+                  $scope.mask_data = response.data;
+                  $scope.the_string = "Done!";
                 });
               }
 
@@ -330,29 +334,6 @@ $stateProvider.state('login', {
                 var k = 0;
                 var id = 0;
 
-                var length_1 = $scope.polygonPoints.length;
-                var length_2 =0;
-                // Iterate through first dimension
-                for (i = 0; i < length_1; i++){
-
-                  // Reset the count for each Polygon to disconnect them
-                  $scope.data.length = 0;
-                  length_2 = $scope.polygonPoints[i].length;
-
-                  // Iterate through the second dimension
-                  for(k = 0; k < length_2; k++){
-
-                    // Update the ID for connections
-                    if($scope.data.length > 0) {
-                        id = $scope.data[$scope.data.length-1].id + 1;
-                    }
-
-                    // Extract each point and Draw
-                    var p = {id: id, x: $scope.polygonPoints[i][k].xPosition, y: $scope.polygonPoints[i][k].yPosition, amount: 5};
-                    $scope.data.push(p);
-                    draw($scope.data);
-                  }
-                }
               }
 
 
@@ -423,7 +404,8 @@ $stateProvider.state('login', {
               // It cannot be directly called through the .html interface
               function draw(data) {
                   for(var i=0; i<data.length; i++) {
-                      drawDot(data[i]);
+                      //drawDot(data[i]);
+
                       if(i > 0) {
                           drawLine(data[i], data[i-1]);
                       }
@@ -452,7 +434,7 @@ $stateProvider.state('login', {
 
 
 
-              function resize() {
+              function resize(value) {
 
                   var canvasRatio = canvas.height / canvas.width;
                   var windowRatio = window.innerHeight / window.innerWidth;
@@ -467,29 +449,27 @@ $stateProvider.state('login', {
                       height = width * canvasRatio;
                   }
 
-                  canvas.style.width = width + 'px';
-                  canvas.style.height = height + 'px';
+                  canvas.style.width = width - value + 'px';
+                  canvas.style.height = height - value + 'px';
               };
-              //window.addEventListener('resize', resize, false);
-              //resize();
-
 
                 function onPhotoDataSuccess(imageData)
                 {
                   var myImage = new Image();
-                  var scaleImgX = 0.4;
-                  var scaleImgY = 0.4;
+                  $scope.scaleImgX = 1;
+                  $scope.scaleImgY = 1;
+                  $scope.ResizeValue = 0;
 
                    myImage.onload = function() {
-                     var draw_w = myImage.width * scaleImgX;
-                     var draw_h = myImage.height * scaleImgY;
+                     var draw_w = myImage.width * $scope.scaleImgX;
+                     var draw_h = myImage.height * $scope.scaleImgY;
 
                      context.canvas.width  = draw_w;
                      context.canvas.height = draw_h;
                      context.drawImage(myImage, 0, 0, draw_w, draw_h);
                    }
 
-                   myImage.src = "static/images/Pressure08.jpg";
+                   myImage.src = "static/images/segmentedImg.jpg";
                 }
 
                 onPhotoDataSuccess(null);

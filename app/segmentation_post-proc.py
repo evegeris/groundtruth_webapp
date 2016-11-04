@@ -25,10 +25,11 @@ class PostProc:
     def __init__(self, im):
         self.im = im
 
-        self.scale = 0.2
+        #self.scale = 0.2
+        self.scale = 1
         self.im_height, self.im_width, self.im_channels = self.im.shape
 
-        self.im = cv2.resize(self.im, (0,0), fx=self.scale, fy=self.scale)
+        #self.im = cv2.resize(self.im, (0,0), fx=self.scale, fy=self.scale)
         cv2.imshow("input", self.im)
         self.im_rgb = np.array(self.im)
 
@@ -40,16 +41,24 @@ class PostProc:
         # apply SLIC and extract (approximately) the supplied number of segments
         segments = slic(self.im, n_segments=numSegments, sigma=5)
 
+        b = segments.tolist() # nested lists with same data, indices
+        file_path = "file.json" ## your path variable
+
+        with open('segmentedImg.json', 'w') as outfile:
+            json.dump(b, outfile, indent=2)
+
         # show the output of SLIC
         fig = plt.figure("Superpixels -- %d segments" % (numSegments))
         ax = fig.add_subplot(1, 1, 1)
         self.im = mark_boundaries(self.im, segments, color=(0, 0, 0)) # fn normalises img bw 1 and 0 apparently
         ax.imshow(self.im)
         plt.axis("off")
-        #cv2.waitKey(0)
+        cv2.waitKey(0)
 
         self.im = (self.im * 255.0).astype('u1')
         cv2.imshow("after astype", self.im)
+        cv2.imwrite("/home/madison/Documents/working_41x/groundtruth_webapp/app/segmentedImg.jpg", self.im)
+        cv2.waitKey(0)
 
 
 
@@ -63,11 +72,12 @@ class PostProc:
         maxValue = 255
         th, self.im = cv2.threshold(self.im, thresh, maxValue, cv2.THRESH_BINARY)
         self.im = (255-self.im) # temp, invert
-        cv2.imshow("after binary thresh", self.im)
+        #cv2.imshow("after binary thresh", self.im)
 
         im2, contours, hierarchy = cv2.findContours(self.im, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         hierarchy = hierarchy[0] # for some reason, contours is a nice list and hierarchy is an ndarray with more dimensions that necessary
 
+        polyArrayArray = []
         for index in range(len(contours)):
             area = cv2.contourArea(contours[index])
             #print "contour area: " + str(area)
@@ -83,39 +93,42 @@ class PostProc:
             #    json.dump(contours[index], outfile)
             #print "hierarchy["+str(index)+"]: " + str(hierarchy[index])
 
-
-        contours = contours[0] # get contour
-        polyArray = []
-        tmp_scale = 0.4
-        for coords in contours:
-            #coords = coords[0] # discard unnecessary array if outside of this loop
-            xy_coords = coords[0]
-            #print xy_coords[0] # x
-            #print xy_coords[1] # y
-
-            polyDict = dict([['xPosition', int(xy_coords[0]*tmp_scale)], ['yPosition', int(xy_coords[1]*tmp_scale)]])
-            polyArray.append(polyDict)
-
-        print polyArray
-
-        with open('polygon.json', 'w') as outfile:
-         json.dump(polyArray, outfile, indent=2)
+            contours = contours[index] # get contour
+            polyArray = []
+            tmp_scale = 0.4
+            for coords in contours:
+                #coords = coords[0] # discard unnecessary array if outside of this loop
+                xy_coords = coords[0]
+                #print xy_coords[0] # x
+                #print xy_coords[1] # y
+            
+                polyDict = dict([['xPosition', int(xy_coords[0]*tmp_scale)], ['yPosition', int(xy_coords[1]*tmp_scale)]])
+                polyArray.append(polyDict)
+            
+            polyArrayArray.append(polyArray)
 
 
+        #print polyArray
+
+        with open('polygon-new3.json', 'w') as outfile:
+         json.dump(polyArrayArray, outfile, indent=2)
 
 
-        cv2.imshow("contour img", self.im_rgb)
-        cv2.imshow("im2", im2)
+
+
+        #cv2.imshow("contour img", self.im_rgb)
+        #cv2.imshow("im2", im2)
         #cv2.waitKey(0)
 
 
 def test():
     #filepath = "/home/mmccar04/Downloads/TestImages/raptor.jpg"
-    filepath = "/home/lainey/code/rdash_Nov2/groundtruth_webapp/app/templates/static/images/Pressure08.jpg"
+    #filepath = "/home/lainey/code/rdash_Nov2/groundtruth_webapp/app/templates/static/images/Pressure08.jpg"
+    filepath = "/home/madison/Documents/working_41x/groundtruth_webapp/app/templates/static/images/wound_2.jpg"
     im = cv2.imread(filepath)
     postprocessor = PostProc(im)
     postprocessor.segment()
-    postprocessor.getContours()
+    #postprocessor.getContours()
 
 
 
