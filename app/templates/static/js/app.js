@@ -280,13 +280,6 @@ $stateProvider.state('login', {
      $auth.logout()
       .then(function() {
 
-        toaster.pop({
-                type: 'success',
-                body: 'Logging out',
-                showCloseButton: true,
-
-                });
-
         $state.go('login');
 
       });
