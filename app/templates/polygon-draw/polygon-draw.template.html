@@ -15,11 +15,23 @@
 		<input class="btn-secondary" type="submit" value="Draw Triangle">
 		Click on the Pentagon!
 		<ul>
-		{{length_1}} -- {{length_2}}  -- {{the_string}} --xClick: {{posx}} -- yClick: {{posy}} -- maskValue: {{mask_value}} -- {{didHit}} --{{iter1}} -- {{iter2}}
+		{{length_1}} -- {{length_2}}  -- {{the_string}} --xClick: {{posx_1}} -- yClick: {{posy_1}} -- maskValue: {{mask_value}} -- p1: {{points[0]}} -- p2: {{points[1]}} -- p3: {{points[2]}} -- p4: {{points[3]}} -- mouse: {{mouseDown}}
 	</ul>
+	<h2 id="status"> 0, 0 </h2>
+	<h2 id="mouse_down"> 0 </h2>
 	</form>
 
-	<canvas id="canvas" style="border: 1px gray solid; float: left"></canvas>
+
+	<canvas id="canvas" style="z-index: 1;
+position:absolute;
+left:200px;
+top:100px;
+"></canvas>
+	<canvas id="canvasTop" style="z-index: 2;
+position:absolute;
+left:200px;
+top:100px;
+"></canvas>
 	<img id="display_img" style="display: none;" />
   </div>
 
@@ -60,6 +72,11 @@
 	<form ng-submit="scaleUp()" >
 
 			<input class="btn-secondary" type="submit" value="Scale Up">
+	</form>
+
+	<form ng-submit="clearCanvas()" >
+
+			<input class="btn-secondary" type="submit" value="clearCanvas">
 	</form>
 
 

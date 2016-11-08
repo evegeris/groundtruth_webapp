@@ -298,10 +298,152 @@ $stateProvider.state('login', {
 })
 .controller('CanvasCtrl', function($http, $scope) {
 
+  $(document).mousemove(function(e){
+
+
+    var pos = getMousePos(canvas, e);
+    $scope.posx_1 = (Math.round(pos.x))/($scope.scaleImgX);
+    $scope.posy_1 = (Math.round(pos.y))/($scope.scaleImgY);
+
+
+    if ($scope.mouseDown == 1){
+      $('#status').html($scope.posx_1 +', '+ $scope.posy_1);
+      colourCanvas();
+
+    }
+
+  });
+
+  $scope.isPainted = [1000];
+  $scope.newValue = [1000];
+  $scope.classification;
+  var q;
+  for (q = 0; q < 1000; q ++){
+    $scope.isPainted[q] = 0;
+    $scope.newValue[q] = 0;
+  }
+
+  function colourCanvas(){
+
+    var i = 0;
+    var k = 0;
+
+
+    $scope.length_2 = $scope.mask_data.length;
+    $scope.length_1 = $scope.mask_data[0].length;
+
+    var mask_value = $scope.mask_data[$scope.posy_1][$scope.posx_1];
+
+    if ($scope.isPainted[mask_value] == 0){
+      $scope.isPainted[mask_value] = 1;
+      $scope.newValue[mask_value] = $scope.classification;
+
+    for (i = 0; i < $scope.length_2; i ++){
+        $scope.iter2 = i;
+
+      for (k = 0; k < $scope.length_1; k++){
+        $scope.iter1 = k;
+
+
+        if (mask_value == $scope.mask_data[$scope.iter2][$scope.iter1]){
+
+
+          $scope.didHit = "HIT";
+          contextTop.fillStyle = $scope.colour_f;
+          contextTop.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
+        }
+        else {
+          $scope.didHit = "FALSE";
+        }
+      }
+    }
+  }
+
+
+  }
+
+
+  function reColour(){
+
+    var i = 0;
+    var k = 0;
+    var p = 0;
+
+    // Check every classification colour
+    for (p = 0; p < 1000; p ++){
+
+        // This has been classified already! Recolour it
+        if ($scope.isPainted[p] == 1){
+
+          //context.fillStyle = $scope.colour_f;
+          //context.fillRect( 1,1, 10, 10 );
+
+          // Key '1'
+          if ($scope.newValue[p] == 1) {
+              // Colour 'red'
+              $scope.colour_f = "rgba(32, 0, 0, 0.4)";
+          }
+          // Key '2'
+          else if ($scope.newValue[p] == 2) {
+              // Colour 'Mahogony'
+              $scope.colour_f = "rgba(0, 32, 0, 0.4)";
+          }
+          // Key '3'
+          else if ($scope.newValue[p] == 3) {
+              // Colour 'Dark Yellow'
+              $scope.colour_f = "rgba(0, 0, 32, 0.4)";
+          }
+          // Key '4'
+          else if ($scope.newValue[p] == 4) {
+            // Colour 'Orange'
+            $scope.colour_f = "rgba(32, 32, 0, 0.4)";
+          }
+
+          var mask_value = p;
+          $scope.length_2 = $scope.mask_data.length;
+          $scope.length_1 = $scope.mask_data[0].length;
+
+          for (i = 0; i < $scope.length_2; i ++){
+              $scope.iter2 = i;
+
+            for (k = 0; k < $scope.length_1; k++){
+              $scope.iter1 = k;
+
+              if (mask_value == $scope.mask_data[$scope.iter2][$scope.iter1]){
+
+                $scope.didHit = "HIT";
+                contextTop.fillStyle = $scope.colour_f;
+                contextTop.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
+              }
+              else {
+                $scope.didHit = "FALSE";
+              }
+            }
+          }
+        }
+
+    }
+
+  }
 
             $scope.the_string = "waiting";
             $scope.didHit = "MISS";
 
+            $scope.mouseDown = 0;
+            $scope.pointer;
+            $scope.points;
+            document.body.onmousedown = function(e) {
+
+              $('#mouse_down').html(1);
+                $scope.mouseDown ++;
+                //$sope.po$('#status').html(e.pageX +', '+ e.pageY);inter = canvas.getPointer(o.e);
+                //$scope.points = [ $scope.pointer.x, $scope.pointer.y, $scope.pointer.x, $scope.pointer.y ];
+            }
+            document.body.onmouseup = function() {
+
+              $('#mouse_down').html(0);
+              $scope.mouseDown --;
+            }
 
             // This is a listener on the canvas to fill the polygona
             $('#canvas').click(function(e){
@@ -317,6 +459,10 @@ $stateProvider.state('login', {
 
               var mask_value = $scope.mask_data[$scope.posy][$scope.posx];
 
+              if ($scope.isPainted[mask_value] == 0){
+                $scope.isPainted[mask_value] = 1;
+                $scope.newValue[mask_value] = $scope.classification;
+
               for (i = 0; i < $scope.length_2; i ++){
                   $scope.iter2 = i;
 
@@ -327,15 +473,19 @@ $stateProvider.state('login', {
                   if (mask_value == $scope.mask_data[$scope.iter2][$scope.iter1]){
 
                     $scope.didHit = "HIT";
-                    context.fillStyle = $scope.colour_f;
-                    context.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
+                    contextTop.fillStyle = $scope.colour_f;
+                    contextTop.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
                   }
                   else {
                     $scope.didHit = "FALSE";
                   }
                 }
               }
+            }
             })
+
+
+
 
               // Keyboard listern! Lets us change the colour of the fill
               window.onkeyup = function(e) {
@@ -345,21 +495,25 @@ $stateProvider.state('login', {
                       if (key == 49) {
                           // Colour 'red'
                           $scope.colour_f = "rgba(32, 0, 0, 0.4)";
+                          $scope.classification = 1;
                       }
                       // Key '2'
                       else if (key == 50) {
                           // Colour 'Mahogony'
                           $scope.colour_f = "rgba(0, 32, 0, 0.4)";
+                          $scope.classification = 2;
                       }
                       // Key '3'
                       else if (key == 51) {
                           // Colour 'Dark Yellow'
                           $scope.colour_f = "rgba(0, 0, 32, 0.4)";
+                          $scope.classification = 3;
                       }
                       // Key '4'
                       else if (key == 52) {
                         // Colour 'Orange'
                         $scope.colour_f = "rgba(32, 32, 0, 0.4)";
+                        $scope.classification = 4;
                       }
                     }
 
@@ -393,6 +547,8 @@ $stateProvider.state('login', {
             // Variables Predefined for the canvas drawing implementation
               var canvas = document.getElementById('canvas');
               var context = canvas.getContext('2d');
+              var canvasTop = document.getElementById('canvasTop');
+              var contextTop = canvasTop.getContext('2d');
 
               // Empty data file which lives within the
               // Note: The use of $scope is the bridge between html and javascript
@@ -410,6 +566,13 @@ $stateProvider.state('login', {
               $scope.scaleUp = function(){
                 $scope.ResizeValue = $scope.ResizeValue - 10;
                 resize($scope.ResizeValue);
+
+              }
+
+              $scope.clearCanvas = function(){
+
+                  contextTop.clearRect(0, 0, canvas.width, canvas.height);
+                  reColour();
 
               }
 
@@ -572,19 +735,25 @@ $stateProvider.state('login', {
 
                      context.canvas.width  = window.innerWidth*0.9;
                      context.canvas.height = window.innerHeight*0.9;
+                     contextTop.canvas.width  = window.innerWidth*0.9;
+                     contextTop.canvas.height = window.innerHeight*0.9;
                      //context.canvas.width  = draw_w;
                      //context.canvas.height = draw_h;
                      context.drawImage(myImage, 0, 0, draw_w, draw_h);
+
                    }
 
                    myImage.src = "static/images/segmentedImg.jpg";
+
                 }
 
                 onPhotoDataSuccess(null);
 
 
                 context.globalAlpha = 1.0;
+                contextTop.globalAlpha = 1.0;
                 context.beginPath();
+                contextTop.beginPath();
                 draw($scope.data);
 
 
