@@ -32,7 +32,7 @@ angular.module('myApp.services').factory('user', function($resource) {
 });
 
 
-angular.module('myApp.controllers').controller('LoginController', function($scope, $state, $stateParams, user, $auth, toaster, $window) {
+angular.module('myApp.controllers').controller('LoginController', function($scope, $state, $stateParams, user, $auth, toaster, $window, user_info) {
 
    $scope.login = true;
    $scope.signUp= false;
@@ -74,10 +74,11 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                       "email": $scope.email,
                       "password": $scope.password,
 
-
                       }
                      }
                   }
+
+            user_info.setFirstName($scope.email);
 
             // Use Satellizer's $auth.login method to verify the username and password
             $auth.login($scope.credentials).then(function(data) {

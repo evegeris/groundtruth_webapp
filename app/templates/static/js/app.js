@@ -194,6 +194,43 @@ $stateProvider.state('login', {
   ;
 
   })
+
+  .service('user_info', function() {
+
+      var credentials = {
+            "data": {
+              "type": "users",
+              "attributes": {
+                "email":"me@place",
+                "password": "mypass",
+                "first": "first"
+                }
+             }
+          };
+
+/*
+      var user_infoService = {};
+
+      user_infoService.updateEmail = function(item) {
+          //items.push(item);
+      };
+      user_infoService.getEmail = function() {
+        alert(credentials.data.attributes.email);
+          return credentials.data.attributes.email;
+      };
+
+      return user_infoService;
+*/
+
+      this.setFirstName = function(first){
+        credentials.data.attributes.first = first;
+      };
+
+      this.sayHello = function(text){
+        return "Hello " + credentials.data.attributes.first;
+      };
+  })
+
   .directive('stringToNumber', function() {
   return {
     require: 'ngModel',
@@ -224,7 +261,7 @@ $stateProvider.state('login', {
      // });
     }
   }
-}).controller('LogoutCtrl', function($auth, $state, $window, toaster, $scope, Idle) { // Logout the user if they are authenticated.
+}).controller('LogoutCtrl', function($auth, $state, $window, toaster, $scope, Idle, user_info) { // Logout the user if they are authenticated.
 
   // check if authenticated
   $scope.isAuthenticated = function() {
@@ -232,7 +269,8 @@ $stateProvider.state('login', {
     };
 
     $scope.$on('$viewContentLoaded', function(){
-        $scope.user_name = "First Last";
+        //user_info.setFirstName("ME");
+        $scope.user_name = user_info.sayHello(); //user_info.getEmail;
 //        alert("ehh");
       });
 
@@ -241,13 +279,6 @@ $stateProvider.state('login', {
      if (!$auth.isAuthenticated()) { return; }
      $auth.logout()
       .then(function() {
-
-        toaster.pop({
-                type: 'success',
-                body: 'Logging out',
-                showCloseButton: true,
-
-                });
 
         $state.go('login');
 
