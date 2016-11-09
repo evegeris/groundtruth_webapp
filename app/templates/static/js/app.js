@@ -336,6 +336,7 @@ $stateProvider.state('login', {
   $scope.newValue = [1000];
   $scope.classification;
   var q;
+  var toggle = 0;
 
   // Initialzing the array to 0
   for (q = 0; q < 1000; q ++){
@@ -396,8 +397,8 @@ $stateProvider.state('login', {
     // Getting the integer mask at the clicked location
     var mask_value = $scope.mask_data[$scope.posy_1][$scope.posx_1];
 
-    // Only colour in the superpixel if it hasn't been coloured yet
-    if ($scope.isPainted[mask_value] == 0){
+    // Only run if it will result in a new colour to be painted
+    if (($scope.newValue[mask_value] != $scope.classification) && (toggle == 0)){
 
       // Disallow recolouring
       $scope.isPainted[mask_value] = 1;
@@ -417,24 +418,89 @@ $stateProvider.state('login', {
           // If the pixel has the ascociated mask, we want to colour it in
           if (mask_value == $scope.mask_data[$scope.iter2][$scope.iter1]){
 
-            // Set the fill colour accordingly & colour a rectangle of 1 x 1 pixels
-          contextTop.fillStyle = $scope.colour_f;
-          contextTop.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
-          }
+            // Only colour in the superpixel if it hasn't been coloured yet
+            if ($scope.isPainted[mask_value] == 0){
+
+              // Set the fill colour accordingly & colour a rectangle of 1 x 1 pixels
+              contextTop.fillStyle = $scope.colour_f;
+              contextTop.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
+            }
+            // We want to recolour these pixels
+            else {
+              contextTop.clearRect($scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
+              contextTop.fillStyle = $scope.colour_f;
+              contextTop.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
+            }
+        }
           // Do not colour in the pixel
           else {
           }
         }
       }
     }
+  }
 
-    // We want to recolour the canvas only if it isn't the same colour
-    else if ($scope.newValue[mask_value] != $scope.classification){
-        $scope.newValue[mask_value] = $scope.classification;
 
-        // call recolour function
-        contextTop.clearRect(0, 0, canvas.width, canvas.height);
-        reColour();
+  //****************************************************************//
+  // Overwrite a specific colour
+  //***************************************************************//
+  function overwriteColour(){
+
+    var i = 0;
+    var k = 0;
+    var p = 0;
+
+    // Check every superpixel to see if it has been assigned a colour
+    for (p = 0; p < 1000; p ++){
+
+        // This has been classified already! Recolour it
+        if ($scope.isPainted[p] == 1){
+
+          // Select the colour (classification) it was previously assigned
+          // Key '1'
+          if ($scope.newValue[p] == 1) {
+              // Colour 'red'
+              $scope.colour_f = "rgba(32, 0, 0, 0.4)";
+          }
+          // Key '2'
+          else if ($scope.newValue[p] == 2) {
+              // Colour 'Mahogony'
+              $scope.colour_f = "rgba(0, 32, 0, 0.4)";
+          }
+          // Key '3'
+          else if ($scope.newValue[p] == 3) {
+              // Colour 'Dark Yellow'
+              $scope.colour_f = "rgba(0, 0, 32, 0.4)";
+          }
+          // Key '4'
+          else if ($scope.newValue[p] == 4) {
+            // Colour 'Orange'
+            $scope.colour_f = "rgba(32, 32, 0, 0.4)";
+          }
+
+          // Very similar to the standard colouring function
+          var mask_value = p;
+          $scope.length_2 = $scope.mask_data.length;
+          $scope.length_1 = $scope.mask_data[0].length;
+
+          // Iterate through every pixel and colour it in
+          for (i = 0; i < $scope.length_2; i ++){
+              $scope.iter2 = i;
+
+            for (k = 0; k < $scope.length_1; k++){
+              $scope.iter1 = k;
+
+              // Colour in the single pixel the appropiate colour
+              if (mask_value == $scope.mask_data[$scope.iter2][$scope.iter1]){
+                contextTop.fillStyle = $scope.colour_f;
+                contextTop.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
+              }
+              // Do nothing
+              else {
+              }
+            }
+          }
+        }
     }
   }
 
@@ -529,14 +595,15 @@ $stateProvider.state('login', {
 
       var i = 0;
       var k = 0;
+
       $scope.length_2 = $scope.mask_data.length;
       $scope.length_1 = $scope.mask_data[0].length;
 
       // Getting the integer mask where the mouse was clicked
       var mask_value = $scope.mask_data[$scope.posy][$scope.posx];
 
-      // Only colour in the superpixel if it hasn't been assigned yet
-      if ($scope.isPainted[mask_value] == 0){
+      // Only run if it will result in a new colour to be painted
+      if (($scope.newValue[mask_value] != $scope.classification) && (toggle == 0)){
 
         // Dissalow recolouring and label the superpixel
         $scope.isPainted[mask_value] = 1;
@@ -555,9 +622,20 @@ $stateProvider.state('login', {
 
               if (mask_value == $scope.mask_data[$scope.iter2][$scope.iter1]){
 
-                // Colour in the single pixel
-                contextTop.fillStyle = $scope.colour_f;
-                contextTop.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
+                // Only colour in the superpixel if it hasn't been assigned yet
+                if ($scope.isPainted[mask_value] == 0){
+
+                  // Colour in the single pixel
+                  contextTop.fillStyle = $scope.colour_f;
+                  contextTop.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
+
+                }
+                // We want to recolour these pixels
+                else{
+                  contextTop.clearRect($scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
+                  contextTop.fillStyle = $scope.colour_f;
+                  contextTop.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
+                }
               }
               // Do nothing
               else {
@@ -565,16 +643,6 @@ $stateProvider.state('login', {
             }
           }
         }
-
-        // We want to recolour the canvas only if it isn't the same colour
-        else if ($scope.newValue[mask_value] != $scope.classification){
-            $scope.newValue[mask_value] = $scope.classification;
-
-            // call recolour function
-            contextTop.clearRect(0, 0, canvas.width, canvas.height);
-            reColour();
-        }
-
       })
 
 
@@ -623,6 +691,31 @@ $stateProvider.state('login', {
       if (map[90] && map[17] ){
         undoMethod();
       }
+      // Undo Feature (ctrl + z)
+      if (map[84] ){
+        toggleOverlay();
+      }
+    }
+
+
+    function toggleOverlay(){
+
+      // Clear canvas
+      if (toggle == 0){
+        toggle = 1;
+        contextTop.clearRect(0, 0, canvas.width, canvas.height);
+        $('#toggle_code').html("toggle on");
+
+      }
+      // rePaint the canvas
+      else {
+        toggle = 0;
+        $('#toggle_code').html("toggle off");
+        reColour();
+
+      }
+
+
     }
 
 
@@ -634,18 +727,42 @@ $stateProvider.state('login', {
   function undoMethod(){
 
     var toRemove = 0;
+    var i = 0;
+    var k = 0;
 
     // Only undo if there is something there to remove
-    if ($scope.undoPosition > 0){
+    if (($scope.undoPosition > 0) && (toggle == 0)){
+
+      // get the mask integer we want to remove
       toRemove = $scope.undoQueue[$scope.undoPosition];
+
+      // Rewind the queue one position
       $scope.undoQueue[$scope.undoPosition] = 0;
       $scope.undoPosition --;
+
+      // Clear the integer mask and set uncoloured flag
       $scope.isPainted[toRemove] = 0;
       $scope.newValue[toRemove] = 0;
 
-      // Refresh the screen
-      contextTop.clearRect(0, 0, canvas.width, canvas.height);
-      reColour();
+      // Iterate through every pixel
+      for (i = 0; i < $scope.length_2; i ++){
+          $scope.iter2 = i;
+
+          for (k = 0; k < $scope.length_1; k++){
+            $scope.iter1 = k;
+
+            if (toRemove == $scope.mask_data[$scope.iter2][$scope.iter1]){
+
+              // We want to recolour these pixels
+
+                contextTop.clearRect($scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
+              }
+
+            // Do nothing
+            else {
+            }
+          }
+        }
     }
   }
 
