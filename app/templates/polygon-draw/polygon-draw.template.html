@@ -1,6 +1,8 @@
 <div class="row">
 	<div class="col-lg-2">
 		<h2 id="status"> 0, 0 </h2>
+		<h2 id="global"> 0, 0 </h2>
+		<h2 id="overall_dim"> 0, 0 </h2>
 		<h2 id="mouse_down"> 0 </h2>
 		<h2 id="key_code"> key pressed </h2>
 		<h2 id="toggle_code"> toggle off </h2>
@@ -15,7 +17,12 @@ position:absolute;
 left:200px;
 top:100px;
 "></canvas>
-	<canvas id="canvasTop" style="z-index: 2;
+<canvas id="canvasMiddle" style="z-index: 2;
+position:absolute;
+left:200px;
+top:100px;
+"></canvas>
+	<canvas id="canvasTop" style="z-index: 3;
 position:absolute;
 left:200px;
 top:100px;

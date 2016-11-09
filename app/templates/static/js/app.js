@@ -336,6 +336,8 @@ $stateProvider.state('login', {
   $scope.newValue = [1000];
   $scope.classification;
   var q;
+
+  // Variable for the toggle feature
   var toggle = 0;
 
   // Initialzing the array to 0
@@ -357,21 +359,23 @@ $stateProvider.state('login', {
   // Variables Predefined for the canvas drawing implementation
   var canvas = document.getElementById('canvas');
   var context = canvas.getContext('2d');
+  var canvasMiddle = document.getElementById('canvasMiddle');
+  var contextMiddle = canvas.getContext('2d');
   var canvasTop = document.getElementById('canvasTop');
   var contextTop = canvasTop.getContext('2d');
 
   // Empty data file which lives within the
   // Note: The use of $scope is the bridge between html and javascript
-      $scope.data = [];
-
-
+  $scope.data = [];
 
   //***************************************************************//
   // This listener enables 'click and drag' mode
+  //***************************************************************//
   $(document).mousemove(function(e){
 
     // Getting the mouse position
     var pos = getMousePos(canvas, e);
+
     $scope.posx_1 = (Math.round(pos.x))/($scope.scaleImgX);
     $scope.posy_1 = (Math.round(pos.y))/($scope.scaleImgY);
 
@@ -383,10 +387,10 @@ $stateProvider.state('login', {
   });
 
 
-
   //***************************************************************//
   // This function will colour the canvas in 'click and drag' mode
   // Near identicle to the 'static click' mode
+  //***************************************************************//
   function colourCanvas(){
 
     var i = 0;
@@ -507,6 +511,7 @@ $stateProvider.state('login', {
 
   //***************************************************************//
   // This function will redraw the labeled superpixels
+  //***************************************************************//
   function reColour(){
 
     var i = 0;
@@ -565,11 +570,13 @@ $stateProvider.state('login', {
           }
         }
     }
+    contextMiddle.drawImage(myImageMiddle, 0, 0, $scope.draw_w, $scope.draw_h);
   }
 
 
-  //***************************************************************//
+    //***************************************************************//
     // This is a simple mouse down listener for dragging
+    //***************************************************************//
     document.body.onmousedown = function(e) {
     $('#mouse_down').html(1);
     $scope.mouseDown = 1;
@@ -584,8 +591,10 @@ $stateProvider.state('login', {
 
 
 
+
     //***************************************************************//
     // This is a listener on the canvas to fill the superpixel
+    //***************************************************************//
     $('#canvasTop').click(function(e){
 
       // Getting the mouse position
@@ -648,7 +657,8 @@ $stateProvider.state('login', {
 
 
     //***************************************************************//
-    // Keyboard listener
+    // Keyboard listeners
+    //***************************************************************//
     var map = {};
     window.onkeydown = window.onkeyup = function(e) {
       var key = e.keyCode ? e.keyCode : e.which;
@@ -698,12 +708,18 @@ $stateProvider.state('login', {
     }
 
 
+
+    //***************************************************************//
+    // This function allows for toggling of the overlay
+    //***************************************************************//
     function toggleOverlay(){
 
       // Clear canvas
       if (toggle == 0){
         toggle = 1;
         contextTop.clearRect(0, 0, canvas.width, canvas.height);
+        contextMiddle.clearRect(0, 0, canvas.width, canvas.height);
+        context.drawImage(myImageBack, 0, 0, $scope.draw_w, $scope.draw_h);
         $('#toggle_code').html("toggle on");
 
       }
@@ -712,16 +728,14 @@ $stateProvider.state('login', {
         toggle = 0;
         $('#toggle_code').html("toggle off");
         reColour();
-
       }
-
-
     }
 
 
 
   //***************************************************************//
   // This enables the undo feature
+  //***************************************************************//
   $scope.undoQueue = [];
   $scope.undoPosition = 0;
   function undoMethod(){
@@ -770,10 +784,14 @@ $stateProvider.state('login', {
 
   //***************************************************************//
   // This function will get the mouse cursor relative to the canvas
+  //***************************************************************//
   function  getMousePos(canvas, evt) {
     var rect = canvas.getBoundingClientRect(), // abs. size of element
     scaleX = canvas.width / rect.width,    // relationship bitmap vs. element for X
     scaleY = canvas.height / rect.height;  // relationship bitmap vs. element for Y
+
+    $scope.globalX = evt.clientX;
+    $scope.globalY = evt.clientY;
 
     return {
       x: (evt.clientX - rect.left) * scaleX,   // scale mouse coordinates after they have
@@ -782,28 +800,130 @@ $stateProvider.state('login', {
   }
 
 
+//***************************************************************//
+// Weird variable function code found online for the mouse scrolling
+//***************************************************************//
+var doScroll = function (e) {
+
+
+    // Only enable wheel scrolling if we are on the canvas
+    if (($scope.posx_1 > 0) && ($scope.posy_1 > 0)){
+
+      // Get the the event from the winow
+      e = window.event || e;
+      var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
+
+      // Prevent default scrolling behavoir
+      e.preventDefault();
+
+      // Scroll up
+      if (delta == 1){
+        scaleUp();
+        zoomMove(delta);
+      }
+
+      // Scroll down
+      if (delta == -1){
+        scaleDown();
+        zoomMove(delta);
+      }
+    }
+
+    // Normal Scrolling
+    else {
+    }
+};
+
+
+//***************************************************************//
+// Moves the window when you scroll zoom with the mouse wheel
+//***************************************************************//
+function zoomMove(delta) {
+
+  // Pan right
+    //var pos = getMousePos(canvas, e);
+    var scrollUp = $("html, body").scrollTop();
+    var scrollLeft = $("html, body").scrollLeft();
+
+    $('#global').html($scope.globalX +', '+ $scope.globalY);
+    $('#overall_dim').html(window.innerHeight +', '+ window.innerWidth);
+
+
+    // Middle point of window hieght plus a 20% threshold
+  if ($scope.globalY > (window.innerHeight/2 + window.innerHeight*0.1)){
+    $("html, body").scrollTop(scrollUp + 10);
+
+  }
+  // Middle point of window height minus a 20% threshold
+  else if ($scope.globalY < (window.innerHeight/2 - window.innerHeight*0.1)){
+    $("html, body").scrollTop(scrollUp - 10);
+  }
+
+  // Middle point of window width plus a 20% threshold
+if ($scope.globalX > (window.innerWidth/2 + window.innerWidth*0.1)){
+  $("html, body").scrollLeft(scrollLeft + 10);
+
+}
+// Middle point of window width minus a 20% threshold
+else if ($scope.globalX < (window.innerWidth/2 - window.innerWidth*0.1)){
+  $("html, body").scrollLeft(scrollLeft - 10);
+}
+}
+
+//***************************************************************//
+// Listeners for the mouse wheel
+//***************************************************************//
+if (window.addEventListener) {
+    window.addEventListener("mousewheel", doScroll, false);
+    window.addEventListener("DOMMouseScroll", doScroll, false);
+}
+
+
+//***************************************************************//
+// Listener for the middle mouse click
+//***************************************************************//
+$(document).mousedown(function(e){
+
+    var oldX = 0;
+    var oldY = 0;
+    // We middle clicked on the canvas, enabled drag feature
+    if ((e.which == 2) && ($scope.posx_1 > 0) && ($scope.posy_1 > 0)){
+
+    }
+    return true;// to allow the browser to know that we handled it.
+});
+
+
+
+
+
 
   //***************************************************************//
-  // Lets you scale the image
-  $scope.scaleDown = function(){
+  // Lets you scale the image smaller
+//***************************************************************//
+  scaleDown = function(){
     $scope.ResizeValue = $scope.ResizeValue + 10;
     resize($scope.ResizeValue);
   }
 
-  // Lets you scale the image
-  $scope.scaleUp = function(){
+  //***************************************************************//
+  // Lets you scale the image bigger
+  //***************************************************************//
+  scaleUp = function(){
     $scope.ResizeValue = $scope.ResizeValue - 10;
     resize($scope.ResizeValue);
   }
 
-  // Clear Canvas button for testing purposes
+  //***************************************************************//
+  // Reset user progress for the canvas
+  //***************************************************************//
   $scope.clearCanvas = function(){
-
 
     // Initialzing the array to 0
     for (q = 0; q < 1000; q ++){
       $scope.isPainted[q] = 0;
       $scope.newValue[q] = 0;
+      $scope.undoPosition = 0;
     }
     contextTop.clearRect(0, 0, canvas.width, canvas.height);
     reColour();
@@ -815,6 +935,7 @@ $stateProvider.state('login', {
   //***************************************************************//
   // Custom Function for Reading in a JSON file - Is called from polygon-draw.template.html
   // Navigation is from the index.html directory
+  //***************************************************************//
   $scope.readJSON = function(){
 
     // The .get command assumes a JSON file type.
@@ -833,13 +954,15 @@ $stateProvider.state('login', {
 
 //***************************************************************//
 // resize both top and bottom canvas
+//***************************************************************//
 function resize(value) {
 
   var canvasRatio = canvas.height / canvas.width;
   var windowRatio = window.innerHeight / window.innerWidth;
-  var width;
-  var height;
+  var width = canvas.width;
+  var height = canvas.height;
 
+  /*
   if (windowRatio < canvasRatio) {
       height = window.innerHeight;
       width = height / canvasRatio;
@@ -847,43 +970,68 @@ function resize(value) {
       width = window.innerWidth;
       height = width * canvasRatio;
   }
+  */
 
     canvas.style.width = width - value + 'px';
-    canvas.style.height = height - value + 'px';
+    canvas.style.height = height - value + ('px'*canvasRatio);
+    canvasMiddle.style.width = width - value + 'px';
+    canvasMiddle.style.height = height - value + ('px'*canvasRatio);
     canvasTop.style.width = width - value + 'px';
-    canvasTop.style.height = height - value + 'px';
+    canvasTop.style.height = height - value + ('px'*canvasRatio);
   };
 
+
+var myImageMiddle = new Image();
+myImageMiddle.src = "static/images/segmentedImg.jpg";
+var myImageBack = new Image();
+myImageBack.src = "static/images/wound_2_origin.jpg";
+
+
+  //***************************************************************//
   // Loads in the correct background image
+  //***************************************************************//
   function onPhotoDataSuccess(imageData){
 
-    var myImage = new Image();
+
     $scope.scaleImgX = 1;
     $scope.scaleImgY = 1;
     $scope.ResizeValue = 0;
 
-      myImage.onload = function() {
-      var draw_w = myImage.width * $scope.scaleImgX;
-      var draw_h = myImage.height * $scope.scaleImgY;
+      myImageMiddle.onload = function() {
+      $scope.draw_w = myImageMiddle.width * $scope.scaleImgX;
+      $scope.draw_h = myImageMiddle.height * $scope.scaleImgY;
 
+      /*
       context.canvas.width  = window.innerWidth*0.9;
       context.canvas.height = window.innerHeight*0.9;
+      contextMiddle.canvas.width  = window.innerWidth*0.9;
+      contextMiddle.canvas.height = window.innerHeight*0.9;
       contextTop.canvas.width  = window.innerWidth*0.9;
       contextTop.canvas.height = window.innerHeight*0.9;
-      //context.canvas.width  = draw_w;
-      //context.canvas.height = draw_h;
-       context.drawImage(myImage, 0, 0, draw_w, draw_h);
+
+      */
+      context.canvas.width  = $scope.draw_w;
+      context.canvas.height = $scope.draw_h;
+      contextMiddle.canvas.width  = $scope.draw_w;
+      contextMiddle.canvas.height = $scope.draw_h;
+      contextTop.canvas.width  = $scope.draw_w;
+      contextTop.canvas.height = $scope.draw_h;
+
+       contextMiddle.drawImage(myImageMiddle, 0, 0, $scope.draw_w, $scope.draw_h);
+
+       //onPhotoDataSuccess2();
        }
 
-      myImage.src = "static/images/segmentedImg.jpg";
-  }
 
+  }
       // Function call to load the image
       onPhotoDataSuccess(null);
 
       context.globalAlpha = 1.0;
+      contextMiddle.globalAlpha = 1.0
       contextTop.globalAlpha = 1.0;
       context.beginPath();
+      contextMiddle.beginPath();
       contextTop.beginPath();
 
 })
