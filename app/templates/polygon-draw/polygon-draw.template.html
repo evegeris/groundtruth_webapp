@@ -2,24 +2,28 @@
 	<div class="col-lg-2">
 		<h2 id="status"> 0, 0 </h2>
 		<h2 id="mouse_down"> 0 </h2>
-		<h2 id="key_code"> key pressed </h2>
+		<!--<h2 id="key_code"> key pressed </h2>-->
 
-	Polygon Draw From Coordinates
 
 	<!-- ng-submit="addData()" calls the $scope.addData = function() .js code upon a submit -->
-
 	<!-- Custom Button Which calls the $scope.autoAdd = function() method -->
-	<canvas id="canvas" style="z-index: 1;
-position:absolute;
-left:200px;
-top:100px;
-"></canvas>
-	<canvas id="canvasTop" style="z-index: 2;
-position:absolute;
-left:200px;
-top:100px;
-"></canvas>
-	<img id="display_img" style="display: none;" />
+
+		<div id="canvas-wrapper">
+
+				<canvas id="canvas" style="z-index: 1;
+					position:absolute;
+					left:200px;
+					top:100px;
+				"></canvas>
+				<canvas id="canvasTop" style="z-index: 2;
+					position:absolute;
+					left:200px;
+					top:100px;
+				"></canvas>
+
+		</div>
+
+
   </div>
 
 <!--

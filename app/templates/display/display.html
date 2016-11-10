@@ -1,11 +1,25 @@
 <div class="row" >
+<button id='zoom-in'>Zoom In</button>
+<button id='zoom-out'>Zoom Out</button>
+<button id='disable-panzoom'>disable</button>
+<form ng-submit="readJSON()" >
+		<input class="btn-secondary" type="submit" value="Read JSON">
+</form>
+
+
+<br/>
+</div>
+
+<div class="row" >
 
 	<div class="col-lg-12" >
 
-
+		<div onload="init()">
+			<canvas id="canvas" width="400" height="400">No canvas support</canvas>
+		</div>
 
 		<canvas id="canvas" style="border: 1px gray solid; display: inline-block; "></canvas>
-
+		<canvas id="canvasTop" style="border: 1px gray solid; display: inline-block; "></canvas>
 
 
   </div>

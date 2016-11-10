@@ -713,6 +713,17 @@ $stateProvider.state('login', {
     });
   }
 
+/*
+  var $panzoom = $('#canvas').panzoom({
+    $zoomIn: $('#zoom-in'),
+    $zoomOut: $('#zoom-out'),
+    disablePan: true
+  });
+
+function disablePanZoom(){
+  $('#canvas').panzoom("disable");
+}
+*/
 
 //***************************************************************//
 // resize both top and bottom canvas
@@ -756,6 +767,8 @@ function resize(value) {
       //context.canvas.width  = draw_w;
       //context.canvas.height = draw_h;
        context.drawImage(myImage, 0, 0, draw_w, draw_h);
+
+//       readJSON();
        }
 
       myImage.src = "static/images/segmentedImg.jpg";
@@ -763,6 +776,7 @@ function resize(value) {
 
       // Function call to load the image
       onPhotoDataSuccess(null);
+
 
       context.globalAlpha = 1.0;
       contextTop.globalAlpha = 1.0;
