@@ -1,13 +1,30 @@
 <div class="row" >
+<button id='zoom-in'>Zoom In</button>
+<button id='zoom-out'>Zoom Out</button>
+<button id='disable-panzoom'>disable</button>
+<form ng-submit="readJSON()" >
+		<input class="btn-secondary" type="submit" value="Read JSON">
+</form>
+<br/>
+</div>
 
+
+<div class="row" >
 	<div class="col-lg-12" >
 
 
+		<div class="cropArea">
+	     <img-crop image="fullsizedImg" result-image="croppedImg"></img-crop>
+	   </div>
 
 		<canvas id="canvas" style="border: 1px gray solid; display: inline-block; "></canvas>
 
 
-
   </div>
+</div>
 
+
+<div class="row" >
+<div>Cropped Image:</div>
+<div><img ng-src="{{myCroppedImage}}" /></div>
 </div>

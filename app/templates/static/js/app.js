@@ -1,4 +1,4 @@
-angular.module('myApp', ['ui.router', 'ngResource',  "angularGrid" , 'myApp.controllers', 'myApp.services', 'satellizer','toaster', 'ngAnimate', 'angular-google-analytics', 'ngIdle']);
+angular.module('myApp', ['ui.router', 'ngResource',  "angularGrid" , 'myApp.controllers', 'myApp.services', 'satellizer','toaster', 'ngAnimate', 'angular-google-analytics', 'ngIdle', 'ngImgCrop']);
 
 angular.module('myApp')
   .run( function($rootScope, $state){
@@ -124,7 +124,6 @@ $stateProvider.state('login', {
 
   })
 /* New State Added Here called polygon */
-/* State uses the controller function CanvasCtrl, this is where angularJs code lives */
 .state('polygon', {
       url: '/polygonDraw',
       views: {
