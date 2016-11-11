@@ -47,9 +47,6 @@ def create_app(config_filename):
     #Auth API
     app.register_blueprint(login1, url_prefix='/api/v1/')
 
-    from app.roles.views import roles
-    app.register_blueprint(roles, url_prefix='/api/v1/roles')
-
      # Blueprints
 
 

@@ -2,9 +2,13 @@ from marshmallow_jsonapi import Schema, fields
 from marshmallow import validate
 from app.basemodels import db, CRUD_MixIn
 
-class Superpixels(db.Model, CRUD_MixIn):
+class Images(db.Model, CRUD_MixIn):
     id = db.Column(db.Integer, primary_key=True)
-    img_filepath = db.Column(db.String(250), nullable=False, unique=True)
+
+    fullsize_orig_filepath = db.Column(db.String(250), nullable=False, unique=True)
+    crop_orig_filepath = db.Column(db.String(250), nullable=True, unique=True)
+    crop_overlay_filepath = db.Column(db.String(250), nullable=True, unique=True)
+    crop_segm_filepath = db.Column(db.String(250), nullable=True, unique=True)
 
     def __init__(self,  img_filepath):
 
@@ -22,7 +26,7 @@ class Users(db.Model, CRUD_MixIn):
     modification_time = db.Column(db.TIMESTAMP)
     role = db.Column(db.String(250), db.ForeignKey('roles.name'))
     # many users to one  role relationship
-    role_relation = db.relationship('Roles', backref="users")
+#    role_relation = db.relationship('Roles', backref="users")
 
     def __init__(self,  email,  password,  name,  active,  role):
 
@@ -43,6 +47,8 @@ class UsersSchema(Schema):
     password = fields.String(validate=not_blank)
     name = fields.String(validate=not_blank)
     active = fields.Integer()
+    classified = fields.Integer()
+    in_queue = fields.Integer()
     creation_time = fields.DateTime(dump_only=True)
     modification_time = fields.DateTime(dump_only=True)
     role = fields.String(validate=not_blank)

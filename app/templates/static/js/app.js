@@ -841,31 +841,45 @@ function zoomMove(delta) {
 
   // Pan right
     //var pos = getMousePos(canvas, e);
-    var scrollUp = $("html, body").scrollTop();
-    var scrollLeft = $("html, body").scrollLeft();
+    // "html, body" == previous setting
+    // "canvasWrapper" == zoom confined to canvas but no longer follows mouse
+    var scrollUp = $("canvasWrapper").scrollTop();
+    var scrollLeft = $("canvasWrapper").scrollLeft();
 
     $('#global').html($scope.globalX +', '+ $scope.globalY);
     $('#overall_dim').html(window.innerHeight +', '+ window.innerWidth);
 
+/*
+    // "html, body"
+    A = window.innerHeight/2;
+    B = window.innerHeight*0.1;
+    C = window.innerWidth/2;
+    D = window.innerWidth*0.1;
+*/
+
+    A = canvas.style.height/2;
+    B = canvas.style.height*0.1;
+    C = canvas.style.width/2;
+    D = canvas.style.width*0.1;
 
     // Middle point of window hieght plus a 20% threshold
-  if ($scope.globalY > (window.innerHeight/2 + window.innerHeight*0.1)){
-    $("html, body").scrollTop(scrollUp + 10);
+  if ($scope.globalY > (A + B)){
+    $("canvasWrapper").scrollTop(scrollUp + 10);
 
   }
   // Middle point of window height minus a 20% threshold
-  else if ($scope.globalY < (window.innerHeight/2 - window.innerHeight*0.1)){
-    $("html, body").scrollTop(scrollUp - 10);
+  else if ($scope.globalY < (A - B)){
+    $("canvasWrapper").scrollTop(scrollUp - 10);
   }
 
   // Middle point of window width plus a 20% threshold
-if ($scope.globalX > (window.innerWidth/2 + window.innerWidth*0.1)){
-  $("html, body").scrollLeft(scrollLeft + 10);
+if ($scope.globalX > (C + D)){
+  $("canvasWrapper").scrollLeft(scrollLeft + 10);
 
 }
 // Middle point of window width minus a 20% threshold
-else if ($scope.globalX < (window.innerWidth/2 - window.innerWidth*0.1)){
-  $("html, body").scrollLeft(scrollLeft - 10);
+else if ($scope.globalX < (C - D)){
+  $("canvasWrapper").scrollLeft(scrollLeft - 10);
 }
 }
 
@@ -959,7 +973,7 @@ $scope.restartClassification = function(){
   else{
           //some code
   }
-  
+
 }
 
 //***************************************************************//

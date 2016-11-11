@@ -59,22 +59,23 @@
 
 	<!-- ng-submit="addData()" calls the $scope.addData = function() .js code upon a submit -->
 
-	<!-- Custom Button Which calls the $scope.autoAdd = function() method -->
-	<canvas id="canvas" style="z-index: 1;
-		position:absolute;
-		left:20px;
-		top:100px;
-	"></canvas>
-	<canvas id="canvasMiddle" style="z-index: 2;
-		position:absolute;
-		left:20px;
-		top:100px;
-	"></canvas>
-		<canvas id="canvasTop" style="z-index: 3;
-		position:absolute;
-		left:20px;
-		top:100px;
-	"></canvas>
+	<div id="canvasWrapper">
+		<canvas id="canvas" style="z-index: 1;
+			position:absolute;
+			left:20px;
+			top:10px;
+		"></canvas>
+		<canvas id="canvasMiddle" style="z-index: 2;
+			position:absolute;
+			left:20px;
+			top:10px;
+		"></canvas>
+			<canvas id="canvasTop" style="z-index: 3;
+			position:absolute;
+			left:20px;
+			top:10px;
+		"></canvas>
+	</div>
 
 
 <!--
