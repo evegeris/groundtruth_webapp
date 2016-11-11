@@ -71,14 +71,21 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                   "data": {
                     "type": "users",
                     "attributes": {
+                      //"first_name": $scope.first_name,
+                      //"last_name": $scope.last_name,
                       "email": $scope.email,
                       "password": $scope.password,
+                      "classified": $scope.classified,
+                      //"in_queue": $scope.in_queue
 
                       }
                      }
                   }
 
             user_info.setFirstName($scope.email);
+            //user_info.setFirstName($scope.first_name);
+            user_info.setClassified($scope.classified);
+            //user_info.setQueue($scope.in_queue);
 
             // Use Satellizer's $auth.login method to verify the username and password
             $auth.login($scope.credentials).then(function(data) {

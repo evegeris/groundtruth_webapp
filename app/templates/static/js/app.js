@@ -202,7 +202,8 @@ $stateProvider.state('login', {
               "attributes": {
                 "email":"me@place",
                 "password": "mypass",
-                "first": "first"
+                "first": "fname",
+                "classified": "3.2"
                 }
              }
           };
@@ -225,8 +226,24 @@ $stateProvider.state('login', {
         credentials.data.attributes.first = first;
       };
 
-      this.sayHello = function(text){
+      this.sayHello = function(){
         return "Hello " + credentials.data.attributes.first;
+      };
+
+      this.setClassified = function(classified){
+        credentials.data.attributes.classified = classified;
+      };
+
+      this.getClassified = function(){
+        return "class " + credentials.data.attributes.classified;
+      };
+
+      this.setInQueue = function(in_queue){
+        credentials.data.attributes.in_queue = in_queue;
+      };
+
+      this.getInQueue = function(){
+        return "queue" + credentials.data.attributes.in_queue;
       };
   })
 
@@ -270,7 +287,8 @@ $stateProvider.state('login', {
     $scope.$on('$viewContentLoaded', function(){
         //user_info.setFirstName("ME");
         $scope.user_name = user_info.sayHello(); //user_info.getEmail;
-//        alert("ehh");
+        $scope.classified = user_info.getClassified();
+
       });
 
     $scope.logout = function(){
