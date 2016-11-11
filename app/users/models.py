@@ -9,10 +9,14 @@ class Images(db.Model, CRUD_MixIn):
     crop_orig_filepath = db.Column(db.String(250), nullable=True, unique=True)
     crop_overlay_filepath = db.Column(db.String(250), nullable=True, unique=True)
     crop_segm_filepath = db.Column(db.String(250), nullable=True, unique=True)
+    classified_segments = db.Column(db.String(250), nullable=True, unique=True)
+    algorithm = db.Column(db.String(45), nullable=True, unique=True)
+    progress = db.Column(db.Integer, nullable=True)
+    n_segments = db.Column(db.Integer, nullable=True)
 
-    def __init__(self,  img_filepath):
-
-        self.img_filepath = img_filepath
+    def __init__(self,  fullsize_orig_filepath):
+        self.fullsize_orig_filepath = fullsize_orig_filepath
+        self.progress = 0
 
 class Users(db.Model, CRUD_MixIn):
     id = db.Column(db.Integer, primary_key=True)
@@ -24,17 +28,19 @@ class Users(db.Model, CRUD_MixIn):
     creation_time = db.Column(
         db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
     modification_time = db.Column(db.TIMESTAMP)
-    role = db.Column(db.String(250), db.ForeignKey('roles.name'))
+    role = db.Column(db.String(250))
+    # db.ForeignKey('roles.name')
     # many users to one  role relationship
 #    role_relation = db.relationship('Roles', backref="users")
 
     def __init__(self,  email,  password,  name,  active,  role):
-
         self.email = email
         self.password = password
         self.name = name
         self.active = active
         self.role = role
+        self.classified = 0
+        self.in_queue = 0
 
 
 class UsersSchema(Schema):
