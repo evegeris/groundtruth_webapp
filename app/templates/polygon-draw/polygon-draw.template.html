@@ -1,34 +1,81 @@
 <div class="row">
-	<div class="col-lg-2">
-		<h2 id="status"> 0, 0 </h2>
-		<h2 id="global"> 0, 0 </h2>
-		<h2 id="overall_dim"> 0, 0 </h2>
-		<h2 id="mouse_down"> 0 </h2>
-		<h2 id="key_code"> key pressed </h2>
-		<h2 id="toggle_code"> toggle off </h2>
+	<div class="col-lg-12">
+		<h2> Polygon Draw From Coordinates </h2>
+	</div>
+</div>
 
-	Polygon Draw From Coordinates
+<div class="row" >
+	<div class="col-lg-4">
+		<form ng-submit="readJSON()" >
+				<input class="btn btn-default btn-secondary" type="submit" value="Read JSON">
+			<!--
+				<ul class="polygonPoints">
+						<li ng-repeat="polygonPoint in polygonPoints">
+							<span ng-repeat="polygon in polygonPoint">h2
+								<p>X: {{polygon.xPosition}} - Y: {{polygon.yPosition}}</p>
+							</span>
+						</li>
+				</ul>
+			-->
+		</form>
+	</div>
+	<div class="col-lg-4">
+		<form ng-submit="clearCanvas()" >
+				<input class="btn btn-default btn-secondary" type="submit" value="Clear Canvas">
+		</form>
+	</div>
+
+	<div class="col-lg-4">
+		<button ng-click="restartClassification()" class="btn btn-default">Restart</button>
+	</div>
+
+	<!--
+			<form ng-submit="scaleDown()" >
+
+					<input class="btn btn-default btn-secondary" type="submit" value="Scale Down">
+			</form>
+			<form ng-submit="scaleUp()" >
+
+					<input class="btn btn-default btn-secondary" type="submit" value="Scale Up">
+			</form>
+	-->
+</div>
+
+<div class="row" >
+	<div class="col-lg-6">
+		<p id="status"> 0, 0 </p></br>
+		<p id="global"> 0, 0 </p></br>
+		<p id="overall_dim"> 0, 0 </p>
+	</div>
+	<div class="col-lg-6">
+		<p id="mouse_down"> 0 </p></br>
+		<p id="key_code"> key pressed </p></br>
+		<p id="toggle_code"> toggle off </p>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12">
 
 	<!-- ng-submit="addData()" calls the $scope.addData = function() .js code upon a submit -->
 
 	<!-- Custom Button Which calls the $scope.autoAdd = function() method -->
 	<canvas id="canvas" style="z-index: 1;
-position:absolute;
-left:200px;
-top:100px;
-"></canvas>
-<canvas id="canvasMiddle" style="z-index: 2;
-position:absolute;
-left:200px;
-top:100px;
-"></canvas>
-	<canvas id="canvasTop" style="z-index: 3;
-position:absolute;
-left:200px;
-top:100px;
-"></canvas>
-	<img id="display_img" style="display: none;" />
-  </div>
+		position:absolute;
+		left:20px;
+		top:100px;
+	"></canvas>
+	<canvas id="canvasMiddle" style="z-index: 2;
+		position:absolute;
+		left:20px;
+		top:100px;
+	"></canvas>
+		<canvas id="canvasTop" style="z-index: 3;
+		position:absolute;
+		left:20px;
+		top:100px;
+	"></canvas>
+
 
 <!--
 	<div id="list" style="margin-left: 620px; float; left">
@@ -40,35 +87,5 @@ top:100px;
         </ul>
   </div>
 -->
-
-	<form ng-submit="readJSON()" >
-			<input class="btn-secondary" type="submit" value="Read JSON">
-						<!-- ng-repeat allows for dynamic changing of the .html script with angularJS code -->
-						<!-- We defined $scope.polygonPoints in the app.js file giving us access to the variable in the .html file-->
-<!--
-		<ul class="polygonPoints">
-				<li ng-repeat="polygonPoint in polygonPoints">
-					<span ng-repeat="polygon in polygonPoint">
-						<p>X: {{polygon.xPosition}} - Y: {{polygon.yPosition}}</p>
-					</span>
-				</li>
-		</ul>
--->
-	</form>
-
-	<form ng-submit="scaleDown()" >
-
-			<input class="btn-secondary" type="submit" value="Scale Down">
-	</form>
-	<form ng-submit="scaleUp()" >
-
-			<input class="btn-secondary" type="submit" value="Scale Up">
-	</form>
-
-	<form ng-submit="clearCanvas()" >
-
-			<input class="btn-secondary" type="submit" value="clearCanvas">
-	</form>
-
-
+  </div>
 </div>

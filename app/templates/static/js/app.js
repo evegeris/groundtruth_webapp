@@ -950,6 +950,17 @@ $(document).mousedown(function(e){
     });
   }
 
+$scope.restartClassification = function(){
+
+  var answer = confirm("You can restart, but all of your progress will be lost for this image!\nProceed?")
+  if (answer){
+         //some code
+  }
+  else{
+          //some code
+  }
+  
+}
 
 //***************************************************************//
 // resize both top and bottom canvas
