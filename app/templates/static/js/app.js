@@ -98,6 +98,7 @@ $stateProvider.state('login', {
   })
   .state('dashboard', {
       url: '/dashboard',
+      title: 'Dashboard',
       views: {
         'inner_page': {
         templateUrl: '/dashboard/dashboard.html'
@@ -126,6 +127,7 @@ $stateProvider.state('login', {
 /* New State Added Here called polygon */
 .state('polygon', {
       url: '/polygonDraw',
+      title: 'Continue identification',
       views: {
         'inner_page': {
         templateUrl: '/polygon-draw/polygon-draw.template.html',
@@ -147,8 +149,7 @@ $stateProvider.state('login', {
   })
 
   // Routes for users
-
-     .state('users', {
+  .state('users', {
           // Note: abstract state cannot be loaded, but it still needs a ui-view for its children to populate.
           // https://github.com/angular-ui/ui-router/wiki/Nested-States-and-Nested-Views
           abstract: true,
@@ -158,15 +159,18 @@ $stateProvider.state('login', {
       })
     .state('users.list', {
       url: '/list',
-      templateUrl: 'users/index.html',
-      controller: 'UserListController',
       title: 'Users',
+      views: {
+            'inner_page': {
+            templateUrl: 'users/index.html',
+            controller: 'UserListController'
+          }
+        },
       resolve: {
             loginRequired: loginRequired
-          }
-
-
-    }).state('users.new', {
+        }
+    })
+    .state('users.new', {
       url: '/new',
       templateUrl: '/users/add.html',
       controller: 'UserCreateController',
@@ -235,7 +239,7 @@ $stateProvider.state('login', {
       };
 
       this.getClassified = function(){
-        return "class " + credentials.data.attributes.classified;
+        return credentials.data.attributes.classified;
       };
 
       this.setInQueue = function(in_queue){

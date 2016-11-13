@@ -1,20 +1,28 @@
-<div ng-if="isAuthenticated()" style="height:100%">
+<div class="row">
+	<div class="col-lg-12">
 
-       <div class="index-button">
+test
+    <div ng-if="isAuthenticated()" style="height:100%">
 
-        <input placeholder="Search" type="text" ng-model="gridOptions.quickFilterText"/>
+           <div class="index-button">
 
-      <div>
-        <a ui-sref="users.new"><button class="button-primary">New</button></a>
+            <input placeholder="Search" type="text" ng-model="gridOptions.quickFilterText"/>
 
-        <span ng-repeat="selectedRow in gridOptions.selectedRows">
-          <a ui-sref="users.edit({id:selectedRow.id })" ><button class="button-primary" id="editButton" >Edit</button></a>
+          <div>
+            <a ui-sref="users.new"><button class="button-primary">New</button></a>
 
-          <button ng-click="deleteUser(selectedRow.id)" class="button-primary" id="deleteButton"> Delete </button>
-        </span>
-       </div>
+            <span ng-repeat="selectedRow in gridOptions.selectedRows">
+              <a ui-sref="users.edit({id:selectedRow.id })" ><button class="button-primary" id="editButton" >Edit</button></a>
+
+              <button ng-click="deleteUser(selectedRow.id)" class="button-primary" id="deleteButton"> Delete </button>
+            </span>
+           </div>
+        </div>
+
+        <div ag-grid="gridOptions" class="ag-fresh"  ></div>
+
     </div>
 
-    <div ag-grid="gridOptions" class="ag-fresh"  ></div>
 
+  </div>
 </div>

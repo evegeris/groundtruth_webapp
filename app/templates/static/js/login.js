@@ -1,17 +1,35 @@
 angular.module('myApp.services').factory('user', function($resource) {
   return{
-     SignUp:$resource('api/v1/signup.json', { },{},
 
-                 {
-                stripTrailingSlashes: false
-                }),
+     SignUp: $resource('api/v1/signup.json', {},{},
+                 { stripTrailingSlashes: false }),
      ForgotPassword: $resource('api/v1/forgotpassword', null, null,
-
                                                              {
                                                 stripTrailingSlashes: false
                                                 }),
 
+    UserInfo: $resource('api/v1/userinfo',
+            {
+              query:'@query'
+            },
+            {
+              /*search: {
+                    method: 'GET',
+                    params: {
+                        //action: "search",
+                        //query: '@query'
 
+                    }
+                }
+                */
+              },
+              { stripTrailingSlashes: false }),
+/*
+    UserInfo: $resource('api/v1/userinfo', null, null,
+                                      {
+                               stripTrailingSlashes: false
+                                       }),
+*/
      UpdatePassword: function (token) {
                        return $resource('api/v1/forgotpassword', {}, {
                                                                 update: {
@@ -65,6 +83,7 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
 
 
    $scope.signIn = function() {
+
             $scope.loading = true;
             $scope.credentials = {
 
@@ -73,22 +92,59 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                     "attributes": {
                       //"first_name": $scope.first_name,
                       //"last_name": $scope.last_name,
+                      //"name": $scope.name,
                       "email": $scope.email,
-                      "password": $scope.password,
-                      "classified": $scope.classified,
+                      "password": $scope.password
+                      //"classified": $scope.classified,
                       //"in_queue": $scope.in_queue
 
                       }
                      }
                   }
 
-            user_info.setFirstName($scope.email);
-            //user_info.setFirstName($scope.first_name);
-            user_info.setClassified($scope.classified);
-            //user_info.setQueue($scope.in_queue);
-
             // Use Satellizer's $auth.login method to verify the username and password
             $auth.login($scope.credentials).then(function(data) {
+
+              $scope.user = new user.UserInfo();
+              $scope.user.data = {
+                   "type": "users",
+                   "attributes": {
+                     "email": $scope.email
+                     }
+                    }
+
+              $scope.user.$save(function(user) {
+                /*
+                alert("hello");
+                alert(typeof user.data);
+                alert(user.data.email);
+                */
+                                    toaster.pop({
+                                                type: 'success',
+                                                title: 'Sucess',
+                                                body: "userinfo $save",
+                                                showCloseButton: true,
+                                                timeout: 200
+                                                });
+                                       $scope.loading = false;
+
+                                    }, function(error) {
+                                    toaster.pop({
+                                                type: 'error',
+                                                title: 'Error',
+                                                body: 'Ignore',
+                                                showCloseButton: true,
+                                                timeout: 200
+                                                });
+                                     $scope.loading = false;
+                                               });
+
+              user_info.setFirstName($scope.email);
+              //alert("classified(?): " + $scope.classified);
+              //user_info.setFirstName($scope.first_name);
+              //user_info.setClassified($scope.classified);
+              //user_info.setQueue($scope.in_queue);
+
                 $state.go('home');
             })
             .catch(function(response){ // If login is unsuccessful, display relevant error message.
@@ -116,8 +172,10 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                       "name": $scope.name,
                       "email": $scope.email,
                       "password": $scope.password,
-                      "role": "a",
-                      "active": "0"
+                      "role": "classifier",
+                      "active": "0",
+                      "classified": "0",
+                      "in_queue": "0"
                       }
                      }
                 $scope.user.$save(function() {
@@ -156,7 +214,6 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                     "type": "users",
                     "attributes": {
                       "email": $scope.email
-
                       }
                      }
                 $scope.user.$save(function() {
@@ -179,7 +236,6 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                                             });
                                  $scope.loading = false;
                                            });
-
 
 
         }

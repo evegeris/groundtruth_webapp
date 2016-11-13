@@ -25,6 +25,8 @@ class Users(db.Model, CRUD_MixIn):
     password = db.Column(db.String(250), nullable=False)
     name = db.Column(db.String(250), nullable=False)
     active = db.Column(db.Integer, nullable=False)
+    classified = db.Column(db.Integer, nullable=False)
+    in_queue = db.Column(db.Integer, nullable=False)
     creation_time = db.Column(
         db.TIMESTAMP, server_default=db.func.current_timestamp(), nullable=False)
     modification_time = db.Column(db.TIMESTAMP)
@@ -33,14 +35,14 @@ class Users(db.Model, CRUD_MixIn):
     # many users to one  role relationship
 #    role_relation = db.relationship('Roles', backref="users")
 
-    def __init__(self,  email,  password,  name,  active,  role):
+    def __init__(self,  email,  password,  name,  active,  role, classified, in_queue):
         self.email = email
         self.password = password
         self.name = name
         self.active = active
         self.role = role
-        self.classified = 0
-        self.in_queue = 0
+        self.classified = classified
+        self.in_queue = in_queue
 
 
 class UsersSchema(Schema):
