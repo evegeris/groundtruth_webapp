@@ -136,28 +136,23 @@ api.add_resource(Auth, 'login.json')
 
 class UserInfo(Resource):
 
-    def post(self):
-        raw_dict = request.get_json(force=True)
-        data = raw_dict['data']['attributes']
-        email = data['email']
+    def get(self):
+        email = request.args.get('email')
         print("email:\n"+email)
         user = Users.query.filter_by(email=email).first()
         if user is not None:
             print("user classified: "+ str(user.classified))
-            user_info = [{
-                'id': 1,
-                'title': u'Buy groceries',
-                'description': u'Milk, Cheese, Pizza, Fruit, Tylenol',
-                'done': False
-            }]
-            print("%%user_info%%")
-            print(user_info)
 
-            response = jsonify(message='return dhfsfhjsd')
-            response.status_code = 401
+            user_info = {
+                'classified': user.classified,
+                'in_queue': user.in_queue
+            }
+
+            response = jsonify(message=user_info)
+            response.status_code = 200
             return response
         else:
-            return {"error": ":("}, 404
+            return {"error": "Invalid email :("}, 404
 
 
 api.add_resource(UserInfo, 'userinfo')

@@ -13,23 +13,9 @@ angular.module('myApp.services').factory('user', function($resource) {
               query:'@query'
             },
             {
-              /*search: {
-                    method: 'GET',
-                    params: {
-                        //action: "search",
-                        //query: '@query'
-
-                    }
-                }
-                */
               },
               { stripTrailingSlashes: false }),
-/*
-    UserInfo: $resource('api/v1/userinfo', null, null,
-                                      {
-                               stripTrailingSlashes: false
-                                       }),
-*/
+
      UpdatePassword: function (token) {
                        return $resource('api/v1/forgotpassword', {}, {
                                                                 update: {
@@ -113,12 +99,16 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                      }
                     }
 
+              // { token: $scope.token }
+              //$scope.token = $stateParams.token;
+              var user_entry = user.UserInfo.get({ email: $scope.email}, function() {
+                alert(user_entry.message.classified);
+              }); // get() returns a single entry
+
+
+/*
               $scope.user.$save(function(user) {
-                /*
-                alert("hello");
-                alert(typeof user.data);
-                alert(user.data.email);
-                */
+
                                     toaster.pop({
                                                 type: 'success',
                                                 title: 'Sucess',
@@ -144,6 +134,7 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
               //user_info.setFirstName($scope.first_name);
               //user_info.setClassified($scope.classified);
               //user_info.setQueue($scope.in_queue);
+              */
 
                 $state.go('home');
             })
