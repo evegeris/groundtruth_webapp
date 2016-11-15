@@ -7,91 +7,46 @@
 </div>
 -->
 
-<!--
-<div class="row">
-    <div class="header">
-      <h1>
-        <div><react-component name="ScaleCanvasToImage" props="canvas_ctrl"/></div>
-      </h1>
-      <h1>
-        <div><canvas imagefp="canvas_ctrl.image_fp"/></div>
-      </h1>
-    </div>
-</div>
--->
-
-<!--
-<div class="row">
-    <div class="header">
-      <h1>
-        <div><react-component name="HelloWorld" props="person"/></div>
-      </h1>
-      <h1>
-        <div><hello fname="person.fname" lname="person.lname"/></div>
-      </h1>
-    </div>
-
-    <form class="pure-form">
-      <fieldset>
-        <legend>Enter Name</legend>
-        <input type="text" ng-model="person.fname" placeholder="First Name"/>
-        <input type="text" ng-model="person.lname" placeholder="Last Name"/>
-      </fieldset>
-    </form>
-</div>
--->
-
 
 <div class="row">
 	<div class="col-lg-4 col-md-6 col-xs-12">
-		<!--
+
 		<rd-widget>
 			<rd-widget-body>
 				<div class="widget-icon green pull-left">
 					<i class="fa fa-image"></i>
 				</div>
-				<div class="title">{{ 0 }}</div>
+				<div class="title">{{ classified }}</div>
 				<div class="comment">Classified</div>
 			</rd-widget-body>
 		</rd-widget>
-	-->
-
-		<div class="title">	<i class="fa fa-image"></i> {{ 0 }}</div>
-		<div class="comment">Classified</div>
 
 	</div>
 	<div class="col-lg-4 col-md-6 col-xs-12">
-<!--
+
 		<rd-widget>
 			<rd-widget-body>
 				<div class="widget-icon red pull-left">
 					<i class="fa fa-tasks"></i>
 				</div>
-				<div class="title">{{ 0 }}</div>
+				<div class="title">{{ in_queue }}</div>
 				<div class="comment">In Queue</div>
 			</rd-widget-body>
 		</rd-widget>
-	-->
-
-		<div class="title"><i class="fa fa-tasks"></i> {{ 0 }}</div>
-		<div class="comment">In Queue</div>
 
 	</div>
   <div class="col-lg-4 col-md-6 col-xs-12">
-		<!--
+
 		<rd-widget>
 			<rd-widget-body>
 				<div class="widget-icon orange pull-left">
 					<i class="fa fa-dashboard"></i>
 				</div>
-				<div class="title">0</div>
-				<div class="comment">% Complete</div>
+				<div class="title">{{ percent_complete }}%</div>
+				<div class="comment">Complete</div>
 			</rd-widget-body>
 		</rd-widget>
-	-->
 
-	<div class="title"><i class="fa fa-dashboard"></i> {{0}}</div>
-	<div class="comment">% Complete</div>
 
 	</div>
 </div>
@@ -118,7 +73,7 @@
 				<div class="table-responsive">
 					<table class="table">
 						<thead>
-							<tr><th class="text-center">ID</th><th class="text-center">% Complete</th></tr>
+							<tr><th class="text-center">Image ID</th><th class="text-center">% Complete</th></tr>
 						</thead>
 						<tbody>
 							<tr><td class="text-center">1</td><td class="text-center">0</td></tr>

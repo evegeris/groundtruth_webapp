@@ -76,13 +76,8 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                   "data": {
                     "type": "users",
                     "attributes": {
-                      //"first_name": $scope.first_name,
-                      //"last_name": $scope.last_name,
-                      //"name": $scope.name,
                       "email": $scope.email,
                       "password": $scope.password
-                      //"classified": $scope.classified,
-                      //"in_queue": $scope.in_queue
 
                       }
                      }
@@ -99,42 +94,21 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                      }
                     }
 
+
               // { token: $scope.token }
               //$scope.token = $stateParams.token;
               var user_entry = user.UserInfo.get({ email: $scope.email}, function() {
-                alert(user_entry.message.classified);
-              }); // get() returns a single entry
 
+                user_info.setFullName(user_entry.message.full_name);
+                var classified = user_entry.message.classified;
+                user_info.setClassified(classified);
+                var in_queue = user_entry.message.in_queue;
+                user_info.setInQueue(in_queue);
+                var pComplete = (classified/(classified+in_queue))*100;
+                user_info.setPercentComplete(pComplete);
 
-/*
-              $scope.user.$save(function(user) {
+              });
 
-                                    toaster.pop({
-                                                type: 'success',
-                                                title: 'Sucess',
-                                                body: "userinfo $save",
-                                                showCloseButton: true,
-                                                timeout: 200
-                                                });
-                                       $scope.loading = false;
-
-                                    }, function(error) {
-                                    toaster.pop({
-                                                type: 'error',
-                                                title: 'Error',
-                                                body: 'Ignore',
-                                                showCloseButton: true,
-                                                timeout: 200
-                                                });
-                                     $scope.loading = false;
-                                               });
-
-              user_info.setFirstName($scope.email);
-              //alert("classified(?): " + $scope.classified);
-              //user_info.setFirstName($scope.first_name);
-              //user_info.setClassified($scope.classified);
-              //user_info.setQueue($scope.in_queue);
-              */
 
                 $state.go('home');
             })

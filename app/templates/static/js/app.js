@@ -198,59 +198,6 @@ $stateProvider.state('login', {
 
   })
 
-  .service('user_info', function() {
-
-      var credentials = {
-            "data": {
-              "type": "users",
-              "attributes": {
-                "email":"me@place",
-                "password": "mypass",
-                "first": "fname",
-                "classified": "3.2"
-                }
-             }
-          };
-
-/*
-      var user_infoService = {};
-
-      user_infoService.updateEmail = function(item) {
-          //items.push(item);
-      };
-      user_infoService.getEmail = function() {
-        alert(credentials.data.attributes.email);
-          return credentials.data.attributes.email;
-      };
-
-      return user_infoService;
-*/
-
-      this.setFirstName = function(first){
-        credentials.data.attributes.first = first;
-      };
-
-      this.sayHello = function(){
-        return "Hello " + credentials.data.attributes.first;
-      };
-
-      this.setClassified = function(classified){
-        credentials.data.attributes.classified = classified;
-      };
-
-      this.getClassified = function(){
-        return credentials.data.attributes.classified;
-      };
-
-      this.setInQueue = function(in_queue){
-        credentials.data.attributes.in_queue = in_queue;
-      };
-
-      this.getInQueue = function(){
-        return "queue" + credentials.data.attributes.in_queue;
-      };
-  })
-
   .directive('stringToNumber', function() {
   return {
     require: 'ngModel',
@@ -281,19 +228,101 @@ $stateProvider.state('login', {
      // });
     }
   }
-}).controller('LogoutCtrl', function($auth, $state, $window, toaster, $scope, Idle, user_info) { // Logout the user if they are authenticated.
+})
+
+  .service('user_info', function() {
+
+      this.user_info_object = {
+            "data": {
+              "type": "users",
+              "attributes": {
+                "email":"me@place",
+                "full_name": "Joe Bloggs",
+                "classified": "0",
+                "in_queue": "0",
+                "percent_complete": "0"
+                }
+             }
+          };
+
+      this.setFullName = function(full_name){
+        this.user_info_object.data.attributes.full_name = full_name;
+      };
+      this.sayHello = function(){
+        return "Hello " + user_info_object.data.attributes.full_name;
+      };
+
+      this.setClassified = function(classified){
+        this.user_info_object.data.attributes.classified = classified;
+      };
+      this.getClassified = function(){
+        return user_info_object.data.attributes.classified;
+      };
+
+      this.setInQueue = function(in_queue){
+        this.user_info_object.data.attributes.in_queue = in_queue;
+      };
+      this.getInQueue = function(){
+        return user_info_object.data.attributes.in_queue;
+      };
+
+      this.setPercentComplete = function(pComplete){
+        this.user_info_object.data.attributes.percent_complete = pComplete;
+      };
+      this.getPercentComplete = function(){
+        return this.user_info_object.data.attributes.percent_complete;
+      };
+
+
+  })
+.controller('LogoutCtrl', function($auth, $state, $window, toaster, $scope, Idle, user_info) { // Logout the user if they are authenticated.
 
   // check if authenticated
   $scope.isAuthenticated = function() {
       return $auth.isAuthenticated();
     };
 
+// for watching shared variables
+    $scope.user_info = user_info;
+    $scope.testVar = user_info.testVar;
+    $scope.user_name = user_info.user_info_object.data.attributes.full_name;
+    $scope.classified = user_info.user_info_object.data.attributes.classified;
+    $scope.in_queue = user_info.user_info_object.data.attributes.in_queue;
+    $scope.percent_complete = user_info.user_info_object.data.attributes.percent_complete;
+
+  // watchers
+  $scope.$watch('user_info.user_info_object.data.attributes.full_name', function (newVal, oldVal, scope) {
+    if(newVal) {
+      scope.user_name = newVal;
+    }
+  });
+  $scope.$watch('user_info.user_info_object.data.attributes.classified', function (newVal, oldVal, scope) {
+    if(newVal) {
+      scope.classified = newVal;
+    }
+  });
+  $scope.$watch('user_info.user_info_object.data.attributes.in_queue', function (newVal, oldVal, scope) {
+    if(newVal) {
+      scope.in_queue = newVal;
+    }
+  });
+  $scope.$watch('user_info.user_info_object.data.attributes.percent_complete', function (newVal, oldVal, scope) {
+    if(newVal) {
+      scope.percent_complete = newVal;
+    }
+  });
+
+    //$scope.percent_complete = user_info.getPercentComplete();
+
+/*
     $scope.$on('$viewContentLoaded', function(){
-        //user_info.setFirstName("ME");
-        $scope.user_name = user_info.sayHello(); //user_info.getEmail;
+        $scope.user_name = user_info.sayHello();
         $scope.classified = user_info.getClassified();
+        $scope.in_queue = user_info.getInQueue();
+        //$scope.percent_complete = user_info.getPercentComplete();
 
       });
+*/
 
     $scope.logout = function(){
 

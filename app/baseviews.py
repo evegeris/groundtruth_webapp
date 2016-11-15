@@ -138,14 +138,15 @@ class UserInfo(Resource):
 
     def get(self):
         email = request.args.get('email')
-        print("email:\n"+email)
+        #print("email:\n"+email)
         user = Users.query.filter_by(email=email).first()
         if user is not None:
-            print("user classified: "+ str(user.classified))
+            #print("user classified: "+ str(user.classified))
 
             user_info = {
                 'classified': user.classified,
-                'in_queue': user.in_queue
+                'in_queue': user.in_queue,
+                'full_name': user.name
             }
 
             response = jsonify(message=user_info)
