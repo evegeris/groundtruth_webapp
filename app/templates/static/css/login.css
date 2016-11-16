@@ -69,3 +69,92 @@
       border-radius: 25px;
 
     }
+
+    #customContainer {
+    width:800px;
+    height:580px;
+    border:1px solid black;
+    overflow:hidden;
+    position:relative;
+    background: #151515;
+}
+
+.input-color {
+    position: relative;
+}
+.input-color input {
+    padding-left: 20px;
+}
+.input-color .color-box {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    background-color: #ccc;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+}
+
+
+hh {
+   margin-top: 0.67em;
+   margin-bottom: 0.67em;
+   margin-left: 0;
+   margin-right: 1em;
+   font-weight: bold;
+   font-size: 18px;
+   background-color: #FFE5E5;
+
+}
+
+hs{
+  margin-top: 0.1em;
+  margin-bottom: 0.67em;
+  margin-left: 0;
+  margin-right: 1em;
+  font-weight: bold;
+  font-size: 18px;
+  background-color: #E5FFE5;
+
+}
+
+hi{
+  margin-top: 0.1em;
+  margin-bottom: 0.67em;
+  margin-left: 0;
+  margin-right: 1em;
+  font-weight: bold;
+  font-size: 18px;
+  background-color: #E5E5E5;
+}
+
+hn {
+  margin-top: 0.1em;
+  margin-bottom: 1.5em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+  font-size: 18px;
+  background-color: #FFFFAD;
+}
+
+hselected {
+  margin-top: 0.1em;
+  margin-bottom: 0.1em;
+  margin-left: 0;
+  margin-right: 1em;
+  font-size: 1.5em;
+  text-decoration: underline;
+}
+
+
+
+hchosen {
+  margin-top: 0.1em;
+  margin-bottom: 0.67em;
+  margin-left: 0;
+  margin-right: 1em;
+  font-weight: bold;
+  font-size: 18px;
+  background-color: #FFE5E5;
+}

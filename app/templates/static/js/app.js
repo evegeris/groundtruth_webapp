@@ -401,7 +401,7 @@ $stateProvider.state('login', {
   $scope.colour_f = "rgba(32, 0, 0, 0.4)";
   $scope.classification = 1;
 
-  // Maybe some uneeded variables
+  // Maybe some uneeded variablesgetElement
   $scope.mouseDown = 0;
   $scope.pointer;
   $scope.points;
@@ -425,15 +425,68 @@ $stateProvider.state('login', {
 
     // Getting the mouse position
     var pos = getMousePos(canvas, e);
+    var container = $('#customContainer');
+    var contWidth = container.width();
+    var contHeight = container.height();
+
+
 
     $scope.posx_1 = (Math.round(pos.x))/($scope.scaleImgX);
     $scope.posy_1 = (Math.round(pos.y))/($scope.scaleImgY);
 
     // When the user clicks, we want to colour in those spaces
+
+    // Only enable clicking when we are within the container
+    if (($scope.containerX > 0) && ($scope.containerY > 0) && (($scope.containerX < contWidth)) && ($scope.containerY < contHeight)){
+
+    // If its a left click, we want to colour the canavs
     if ($scope.mouseDown == 1){
       $('#status').html($scope.posx_1 +', '+ $scope.posy_1);
       colourCanvas();
     }
+    // Mouse wheel click implements the dragging feature
+    else if ($scope.mouseDown == 2){
+
+      // Check to see where we are moving on the screen
+      if ($scope.containerX > ($scope.oldx)){
+
+        // Algorithm to shift the canavs within the container
+        $scope.leftShift = $scope.leftShift + 3;
+        canvas.style.left = $scope.leftShift + 'px';
+        canvasMiddle.style.left = $scope.leftShift + 'px';
+        canvasTop.style.left = $scope.leftShift + 'px';
+        $scope.oldx = $scope.containerX;
+
+      }
+      else if ($scope.containerX < ($scope.oldx)){
+        $scope.leftShift = $scope.leftShift - 3;
+        canvas.style.left = $scope.leftShift + 'px';
+        canvasMiddle.style.left = $scope.leftShift + 'px';
+        canvasTop.style.left = $scope.leftShift + 'px';
+        $scope.oldx = $scope.containerX;
+      }
+
+      if ($scope.containerY > ($scope.oldy)){
+        $scope.topShift = $scope.topShift + 3;
+        canvas.style.top = $scope.topShift + 'px';
+        canvasMiddle.style.top = $scope.topShift + 'px';
+        canvasTop.style.top = $scope.topShift + 'px';
+        $scope.oldy = $scope.containerY;
+      }
+
+      else if ($scope.containerY < ($scope.oldy)){
+        $scope.topShift = $scope.topShift - 3;
+        canvas.style.top = $scope.topShift + 'px';
+        canvasMiddle.style.top = $scope.topShift + 'px';
+        canvasTop.style.top = $scope.topShift + 'px';
+        $scope.oldy = $scope.containerY;
+      }
+    }
+  }
+  // Update the mouse location
+  $scope.oldx = $scope.containerX;
+  $scope.oldy = $scope.containerY;
+
   });
 
 
@@ -520,6 +573,7 @@ $stateProvider.state('login', {
           else if ($scope.newValue[p] == 2) {
               // Colour 'Mahogony'
               $scope.colour_f = "rgba(0, 32, 0, 0.4)";
+
           }
           // Key '3'
           else if ($scope.newValue[p] == 3) {
@@ -628,8 +682,18 @@ $stateProvider.state('login', {
     // This is a simple mouse down listener for dragging
     //***************************************************************//
     document.body.onmousedown = function(e) {
+
+    // Regular left click
+    if  (e.which == 1){
     $('#mouse_down').html(1);
     $scope.mouseDown = 1;
+    }
+
+    //drag screen feature
+    else if (e.which == 2){
+      $('#mouse_down').html(2);
+      $scope.mouseDown = 2;
+    }
     }
 
     // This will detect if the mouse is released
@@ -724,24 +788,32 @@ $stateProvider.state('login', {
         // Colour 'red' (1)
         $scope.colour_f = "rgba(32, 0, 0, 0.4)";
         $scope.classification = 1;
+        $('hchosen').css({'background-color':'#FFE5E5'})
+        $('#tissue').html('1 - Healthy');
       }
       // Key '2'
       else if (map[50] == true) {
           // Colour 'Mahogony'
           $scope.colour_f = "rgba(0, 32, 0, 0.4)";
           $scope.classification = 2;
+          $('hchosen').css({'background-color':'#E5FFE5'})
+          $('#tissue').html('2 - Scar');
       }
       // Key '3'
       else if (map[51] == true) {
         // Colour 'Dark Yellow'
         $scope.colour_f = "rgba(0, 0, 32, 0.4)";
         $scope.classification = 3;
+        $('hchosen').css({'background-color':'#E5E5E5'})
+        $('#tissue').html('3 - Inflammatory');
       }
       // Key '4'
       else if (map[52] == true) {
         // Colour 'Orange'
         $scope.colour_f = "rgba(32, 32, 0, 0.4)";
         $scope.classification = 4;
+        $('hchosen').css({'background-color':'#FFFFAD'})
+        $('#tissue').html('4 - Necrotic');
       }
       // Escape key to fix the mouse
       else if (map[27] == true){
@@ -836,12 +908,25 @@ $stateProvider.state('login', {
   // This function will get the mouse cursor relative to the canvas
   //***************************************************************//
   function  getMousePos(canvas, evt) {
+
+    var container = document.getElementById('customContainer');
+    //var contWidth = container.width();
+    //var contHeight = container.height();
     var rect = canvas.getBoundingClientRect(), // abs. size of element
     scaleX = canvas.width / rect.width,    // relationship bitmap vs. element for X
     scaleY = canvas.height / rect.height;  // relationship bitmap vs. element for Y
 
+    // Global mouse coordinates
     $scope.globalX = evt.clientX;
     $scope.globalY = evt.clientY;
+
+    // Determine the mouse position relative to the container
+    var rect2 = container.getBoundingClientRect();
+    $scope.containerX = (evt.clientX - rect2.left);
+    $scope.containerY = (evt.clientY - rect2.top);
+
+
+    $('#cont_xy').html($scope.containerX+ ", "+ $scope.containerY);
 
     return {
       x: (evt.clientX - rect.left) * scaleX,   // scale mouse coordinates after they have
@@ -855,27 +940,40 @@ $stateProvider.state('login', {
 //***************************************************************//
 var doScroll = function (e) {
 
+  var container = $('#customContainer');
+  var contWidth = container.width();
+  var contHeight = container.height();
 
-    // Only enable wheel scrolling if we are on the canvas
-    if (($scope.posx_1 > 0) && ($scope.posy_1 > 0)){
+  e = window.event || e;
+  var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
 
-      // Get the the event from the winow
-      e = window.event || e;
-      var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
 
-      // Prevent default scrolling behavoir
-      e.preventDefault();
 
-      // Scroll up
-      if (delta == 1){
-        scaleUp();
-        zoomMove(delta);
+    // Only enable wheel scrolling if we are within the container
+    if (($scope.containerX > 0) && ($scope.containerY > 0) && (($scope.containerX < contWidth)) && ($scope.containerY < contHeight)){
+
+      // Stop the coanvas from shrinking smaller than the container
+      if(((parseInt(canvas.style.width) < contWidth) && (parseInt(canvas.style.height) < contHeight)) && (delta == -1)){
+        e.preventDefault();
       }
 
-      // Scroll down
-      if (delta == -1){
-        scaleDown();
-        zoomMove(delta);
+      // Zoom in or Zoom out
+      else {
+
+        // Prevent default scrolling behavoir
+        e.preventDefault();
+
+        // Scroll up
+        if (delta == 1){
+          scaleUp();
+          zoomMove(delta);
+        }
+
+        // Scroll down
+        if (delta == -1){
+          scaleDown();
+          zoomMove(delta);
+        }
       }
     }
 
@@ -888,49 +986,72 @@ var doScroll = function (e) {
 //***************************************************************//
 // Moves the window when you scroll zoom with the mouse wheel
 //***************************************************************//
+
+$scope.topShift = 0;
+$scope.leftShift = 0;
 function zoomMove(delta) {
 
-  // Pan right
-    //var pos = getMousePos(canvas, e);
-    // "html, body" == previous setting
-    // "canvasWrapper" == zoom confined to canvas but no longer follows mouse
-    var scrollUp = $("canvasWrapper").scrollTop();
-    var scrollLeft = $("canvasWrapper").scrollLeft();
+  var container = $('#customContainer');
+  var contWidth = container.width();
+  var contHeight = container.height();
+
 
     $('#global').html($scope.globalX +', '+ $scope.globalY);
     $('#overall_dim').html(window.innerHeight +', '+ window.innerWidth);
 
-/*
-    // "html, body"
-    A = window.innerHeight/2;
-    B = window.innerHeight*0.1;
-    C = window.innerWidth/2;
-    D = window.innerWidth*0.1;
-*/
 
-    A = canvas.style.height/2;
-    B = canvas.style.height*0.1;
-    C = canvas.style.width/2;
-    D = canvas.style.width*0.1;
 
-    // Middle point of window hieght plus a 20% threshold
-  if ($scope.globalY > (A + B)){
-    $("canvasWrapper").scrollTop(scrollUp + 10);
+    // Middle point of window hieght plus a small threshold
+  if ($scope.containerY > (contHeight/2) + 100){
+
+    $scope.topShift = $scope.topShift - 15;
+    canvas.style.top = $scope.topShift + 'px';
+    canvasMiddle.style.top = $scope.topShift + 'px';
+    canvasTop.style.top = $scope.topShift + 'px';
+
 
   }
-  // Middle point of window height minus a 20% threshold
-  else if ($scope.globalY < (A - B)){
-    $("canvasWrapper").scrollTop(scrollUp - 10);
+
+  // Middle point of window height minus a small threshold
+  else if ($scope.containerY < (contHeight/2) - 100){
+
+    $scope.topShift = $scope.topShift + 10;
+    canvas.style.top = $scope.topShift + 'px';
+    canvasMiddle.style.top = $scope.topShift + 'px';
+    canvasTop.style.top = $scope.topShift + 'px';
   }
 
-  // Middle point of window width plus a 20% threshold
-if ($scope.globalX > (C + D)){
-  $("canvasWrapper").scrollLeft(scrollLeft + 10);
+  // Middle point of window width plus a small threshold
+if ($scope.containerX > (contWidth/2 + 100)){
+
+  $scope.leftShift = $scope.leftShift - 15;
+  canvas.style.left = $scope.leftShift + 'px';
+  canvasMiddle.style.left = $scope.leftShift + 'px';
+  canvasTop.style.left = $scope.leftShift + 'px';
+
 
 }
-// Middle point of window width minus a 20% threshold
-else if ($scope.globalX < (C - D)){
-  $("canvasWrapper").scrollLeft(scrollLeft - 10);
+// Middle point of window width minus a small threshold
+else if ($scope.containerX < (contWidth/2 - 100)){
+
+  $scope.leftShift = $scope.leftShift + 10;
+  canvas.style.left = $scope.leftShift + 'px';
+  canvasMiddle.style.left = $scope.leftShift + 'px';
+  canvasTop.style.left = $scope.leftShift + 'px';
+
+}
+
+// Roughly center of the screen zooming
+else {
+
+  $scope.leftShift = $scope.leftShift - 5*delta;
+  $scope.topShift = $scope.topShift - 5*delta;
+  canvas.style.left = $scope.leftShift + 'px';
+  canvasMiddle.style.left = $scope.leftShift + 'px';
+  canvasTop.style.left = $scope.leftShift + 'px';
+  canvas.style.top = $scope.topShift + 'px';
+  canvasMiddle.style.top = $scope.topShift + 'px';
+  canvasTop.style.top = $scope.topShift + 'px';
 }
 }
 
@@ -941,24 +1062,6 @@ if (window.addEventListener) {
     window.addEventListener("mousewheel", doScroll, false);
     window.addEventListener("DOMMouseScroll", doScroll, false);
 }
-
-
-//***************************************************************//
-// Listener for the middle mouse click
-//***************************************************************//
-$(document).mousedown(function(e){
-
-    var oldX = 0;
-    var oldY = 0;
-    // We middle clicked on the canvas, enabled drag feature
-    if ((e.which == 2) && ($scope.posx_1 > 0) && ($scope.posy_1 > 0)){
-
-    }
-    return true;// to allow the browser to know that we handled it.
-});
-
-
-
 
 
 
@@ -1030,29 +1133,31 @@ $scope.restartClassification = function(){
 //***************************************************************//
 // resize both top and bottom canvas
 //***************************************************************//
+
+
 function resize(value) {
+
 
   var canvasRatio = canvas.height / canvas.width;
   var windowRatio = window.innerHeight / window.innerWidth;
   var width = canvas.width;
   var height = canvas.height;
 
-  /*
-  if (windowRatio < canvasRatio) {
-      height = window.innerHeight;
-      width = height / canvasRatio;
-  } else {
-      width = window.innerWidth;
-      height = width * canvasRatio;
-  }
-  */
+  var container = $('#customContainer');
+  var contWidth = container.width();
+  var contHeight = container.height();
 
-    canvas.style.width = width - value + 'px';
-    canvas.style.height = height - value + ('px'*canvasRatio);
-    canvasMiddle.style.width = width - value + 'px';
-    canvasMiddle.style.height = height - value + ('px'*canvasRatio);
-    canvasTop.style.width = width - value + 'px';
-    canvasTop.style.height = height - value + ('px'*canvasRatio);
+
+  // cleaned up resize uses the container width and height for reference
+    canvas.style.width = contWidth - value + 'px';
+    canvas.style.height = (contHeight - value/$scope.contRatio) + 'px';
+    canvasMiddle.style.width = contWidth - value + 'px';
+    canvasMiddle.style.height = (contHeight - value/$scope.contRatio) + 'px';
+    canvasTop.style.width = contWidth - value + 'px';
+    canvasTop.style.height = (contHeight - value/$scope.contRatio) + 'px';
+
+    $('#cv').html(parseInt(canvas.style.width)+ ', '+ parseInt(canvas.style.height));
+
   };
 
 
@@ -1072,19 +1177,24 @@ myImageBack.src = "static/images/wound_2_origin.jpg";
     $scope.scaleImgY = 1;
     $scope.ResizeValue = 0;
 
+    var container = $('#customContainer');
+    $('#customContainer').css({'width':'800','height':'580'})
+    var contWidth = container.width();
+    var contHeight = container.height();
+    $scope.contRatio = contWidth/contHeight;
+    $('#ratio').html($scope.contRatio);
+
+    $('#cont').html(contWidth+ ', '+contHeight);
+
       myImageMiddle.onload = function() {
+
+        //$scope.scaleImgX = contWidth/myImageMiddle.width;
+        //$scope.scaleImgY = contHeight/myImageMiddle.height;
+
       $scope.draw_w = myImageMiddle.width * $scope.scaleImgX;
       $scope.draw_h = myImageMiddle.height * $scope.scaleImgY;
 
-      /*
-      context.canvas.width  = window.innerWidth*0.9;
-      context.canvas.height = window.innerHeight*0.9;
-      contextMiddle.canvas.width  = window.innerWidth*0.9;
-      contextMiddle.canvas.height = window.innerHeight*0.9;
-      contextTop.canvas.width  = window.innerWidth*0.9;
-      contextTop.canvas.height = window.innerHeight*0.9;
 
-      */
       context.canvas.width  = $scope.draw_w;
       context.canvas.height = $scope.draw_h;
       contextMiddle.canvas.width  = $scope.draw_w;
@@ -1094,10 +1204,8 @@ myImageBack.src = "static/images/wound_2_origin.jpg";
 
        contextMiddle.drawImage(myImageMiddle, 0, 0, $scope.draw_w, $scope.draw_h);
 
-       //onPhotoDataSuccess2();
+       resize(0);
        }
-
-
   }
       // Function call to load the image
       onPhotoDataSuccess(null);
