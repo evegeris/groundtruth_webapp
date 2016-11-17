@@ -135,6 +135,18 @@ $stateProvider.state('login', {
       }
     }
   })
+
+  /* New State Added Here called polygon */
+  .state('crop_image', {
+        url: '/cropImage',
+        title: 'Crop Image',
+        views: {
+          'inner_page': {
+          templateUrl: '/crop-image/crop-image.template.html',
+          controller: 'CropCtrl'
+        }
+      }
+    })
   .state('home', {
     url: '/',
     title: 'Home',
@@ -377,6 +389,56 @@ $stateProvider.state('login', {
 
 
 })
+
+.controller('CropCtrl', function($http, $scope) {
+
+  // Select the Image to preload!
+  var loadedImage = new Image();
+  loadedImage.src = "static/images/segmentedImg.jpg";
+
+
+  $scope.myImage='';
+  $scope.myCroppedImage='';
+  $scope.cropType="circle";
+
+  $scope.setArea=function(value){
+    $scope.cropType=value;
+  }
+
+    // Changes the image from a loaded local file!
+     var handleFileSelect=function(evt) {
+       var file=evt.currentTarget.files[0];
+       var reader = new FileReader();
+       reader.onload = function (evt) {
+         $scope.$apply(function($scope){
+           $scope.myImage=evt.target.result;
+         });
+       };
+       reader.readAsDataURL(file);
+     };
+     angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
+
+     // Saving feature once you crop the image
+     $scope.saveCrop = function(){
+
+       var answer = confirm("Save the Cropped Image!\nProceed?")
+       if (answer){
+
+              //These are the important points, the x,y position and the width/length of the new image
+              $('#pulled_position').html('Position: ' + $scope.myOriginalX +', '+$scope.myOriginalY );
+              $('#pulled_size').html('Size: ' +$scope.myCroppedOriginalW +', '+$scope.myCroppedOriginalH );
+       }
+       else{
+         // some code
+       }
+     }
+
+    // Locally load the file
+    loadedImage.onload = function() {
+        $scope.myImage='static/images/segmentedImg.jpg';
+    }
+  })
+
 .controller('CanvasCtrl', function($http, $scope) {
 
 
@@ -385,6 +447,10 @@ $stateProvider.state('login', {
   $scope.isPainted = [1000];
   $scope.newValue = [1000];
   $scope.classification;
+  $scope.healthyCount = 0;
+  $scope.scarCount = 0;
+  $scope.infCount = 0;
+  $scope.necroticCount = 0;
   var q;
 
   // Variable for the toggle feature
@@ -621,6 +687,11 @@ $stateProvider.state('login', {
     var i = 0;
     var k = 0;
     var p = 0;
+    $scope.healthyCount = 0;
+    $scope.scarCount = 0;
+    $scope.infCount = 0;
+    $scope.necroticCount = 0;
+
 
     // Check every superpixel to see if it has been assigned a colour
     for (p = 0; p < 1000; p ++){
@@ -632,21 +703,25 @@ $stateProvider.state('login', {
           // Key '1'
           if ($scope.newValue[p] == 1) {
               // Colour 'red'
+              $scope.healthyCount ++;
               $scope.colour_f = "rgba(32, 0, 0, 0.4)";
           }
           // Key '2'
           else if ($scope.newValue[p] == 2) {
               // Colour 'Mahogony'
+              $scope.scarCount ++;
               $scope.colour_f = "rgba(0, 32, 0, 0.4)";
           }
           // Key '3'
           else if ($scope.newValue[p] == 3) {
               // Colour 'Dark Yellow'
+              $scope.infCount ++;
               $scope.colour_f = "rgba(0, 0, 32, 0.4)";
           }
           // Key '4'
           else if ($scope.newValue[p] == 4) {
             // Colour 'Orange'
+            $scope.necroticCount ++;
             $scope.colour_f = "rgba(32, 32, 0, 0.4)";
           }
 
@@ -1087,15 +1162,102 @@ if (window.addEventListener) {
   $scope.clearCanvas = function(){
 
     // Initialzing the array to 0
-    for (q = 0; q < 1000; q ++){
-      $scope.isPainted[q] = 0;
-      $scope.newValue[q] = 0;
-      $scope.undoPosition = 0;
+
+    var answer = confirm("Are you sure that you would like to clear the canvas?")
+    if (answer){
+      for (q = 0; q < 1000; q ++){
+        $scope.isPainted[q] = 0;
+        $scope.newValue[q] = 0;
+        $scope.undoPosition = 0;
+      }
+      contextTop.clearRect(0, 0, canvas.width, canvas.height);
+      reColour();
     }
-    contextTop.clearRect(0, 0, canvas.width, canvas.height);
-    reColour();
+    else{
+            //some code
+    }
+
   }
 
+
+  //***************************************************************//
+  // Create a Dictionary ready to be sent to the server
+  //***************************************************************//
+  $scope.saveWork = function(){
+
+    // Need to get most recent work from the user
+    contextTop.clearRect(0, 0, canvas.width, canvas.height);
+    reColour();
+
+    var p = 0;
+    var i = 0;
+    var dictionary = new Array(5);
+
+        // First array value is reserved for specifying the chosen cropped image
+        dictionary[0] = 0;
+
+        // Creating the perfect sized arrays
+        dictionary[1] = new Array($scope.healthyCount);
+        dictionary[2] = new Array($scope.scarCount);
+        dictionary[3] = new Array($scope.infCount);
+        dictionary[4] = new Array($scope.necroticCount);
+
+
+    var healthyPosition = 0;
+    var scarPosition = 0;
+    var infPosition = 0;
+    var necroticPosition = 0;
+
+
+    // Check every superpixel to see if it has been assigned a colour
+    for (p = 0; p < 1000; p ++){
+
+        // This has been classified, need to add it to the dictionary
+        if ($scope.isPainted[p] == 1){
+
+          // Key '1' healthy
+          if ($scope.newValue[p] == 1) {
+
+              dictionary[1][healthyPosition] = p;
+              healthyPosition ++;
+
+          }
+          // Key '2' Scar
+          else if ($scope.newValue[p] == 2) {
+
+              dictionary[2][scarPosition] = p;
+              scarPosition ++;
+          }
+          // Key '3' Infalmatory
+          else if ($scope.newValue[p] == 3) {
+
+              dictionary[3][infPosition] = p;
+              infPosition ++;
+          }
+          // Key '4' Necrotic
+          else if ($scope.newValue[p] == 4) {
+
+            dictionary[4][necroticPosition] = p;
+            necroticPosition ++;
+          }
+        }
+    }
+
+    // Next we need to convert the dictionary to a JSON file
+    var data1 = JSON.stringify(dictionary);
+
+    //var data = "{name: 'Bob', occupation: 'Plumber'}";
+    //var a = document.createElement('a');
+    //a.setAttribute('href', 'data:text/plain;charset=utf-u,'+encodeURIComponent(data));
+    //a.setAttribute('download', testOutput.json);
+    //a.click()
+
+    // Website display to show what the data looks like
+    var url = 'data:text/json;charset=utf8,' + encodeURIComponent(data1);
+    window.open(url, '_blank');
+    window.focus()
+
+  }
 
 
 
@@ -1117,6 +1279,10 @@ if (window.addEventListener) {
       $scope.the_string = "Done!";
     });
   }
+
+  //***************************************************************//
+  // restart the entire process
+  //***************************************************************//
 
 $scope.restartClassification = function(){
 
@@ -1226,6 +1392,9 @@ myImageBack.src = "static/images/wound_2_origin.jpg";
 
 angular.module('myApp.services', []);
 angular.module('myApp.controllers', []);
+
+
+
 
 angular.module('myApp').run(function(Analytics) {
             Analytics.pageView();

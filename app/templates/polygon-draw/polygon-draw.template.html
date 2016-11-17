@@ -33,14 +33,18 @@
 			"></canvas>
 		</div>
 	</div>
-	<div class="col-lg-3">
+	<div class="col-lg-2">
 		<form ng-submit="clearCanvas()" >
-				<input class="btn btn-default btn-secondary" type="submit" value="Clear Canvas">
+				<input class="btn btn-warning btn-secondary" type="submit" value="Clear Canvas">
 		</form>
 	</div>
-
+	<div class="col-lg-1">
+		<form ng-submit="saveWork()" >
+				<input class="btn btn-success btn-secondary" type="submit" value="Finish!">
+		</form>
+	</div>
 	<div class="col-lg-2">
-		<button ng-click="restartClassification()" class="btn btn-default">Restart</button>
+		<button ng-click="restartClassification()" class="btn btn-danger">Restart</button>
 
 	</div>
 	<div class="col-lg-2">

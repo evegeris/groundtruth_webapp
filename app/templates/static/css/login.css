@@ -158,3 +158,15 @@ hchosen {
   font-size: 18px;
   background-color: #FFE5E5;
 }
+
+.cropArea {
+  background: #E4E4E4;
+  overflow: hidden;
+  width:800px;
+  height:580px;
+}
+
+.block-margin{
+    display:block;
+    margin-top: 10px;
+}
