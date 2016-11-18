@@ -1,0 +1,44 @@
+<body ng-app="app" ng-controller="Ctrl">
+  <div>Select an image file: <input type="file" id="fileInput" /></div>
+	<form ng-submit="saveCrop()" >
+			<input class="btn btn-success btn-secondary" type="submit" value="Save Cropped Image">
+	</form>
+	<p id="pulled_size"> 0, 0 </p>
+	<p id="pulled_position"> 0, 0 </p>
+  <div class="cropArea">
+    <img-crop image="myImage" result-image="myCroppedImage"
+            area-type="{{cropType}}"
+            result-width="myCroppedImageW"
+            result-height="myCroppedImageH"
+
+            result-x="myCroppedImageX"
+            result-y="myCroppedImageY"
+
+            original-width="myOriginalW"
+            original-height="myOriginalH"
+
+            original-crop-x="myOriginalX"
+            original-crop-y="myOriginalY"
+
+            original-crop-width="myCroppedOriginalW"
+            original-crop-height="myCroppedOriginalH"></img-crop>
+  </div>
+  <!--div>Crop Type:</div-->
+  <!--div><img ng-src="{{myCroppedImage}}" width="{{myCroppedImageW}}"  height="{{myCroppedImageH}}"  /></div-->
+      <div class="block-margin">
+          <button type="button" ng-click="setArea('circle')">Circle</button>
+          <button type="button" ng-click="setArea('rectangle')">Rectangle</button>
+      </div>
+    <!--div class="block-margin">
+        <span>Dimensions showed: {{myCroppedImageW}}X{{myCroppedImageH}}</span>
+      </div>
+      <div class="block-margin">
+      	<span>Original Dimensions: {{myOriginalW}}X{{myOriginalH}}</span>
+      </div>
+      <div class="block-margin">
+      	<span>Original Crop Position: {{myOriginalX}}X{{myOriginalY}}</span>
+      </div>
+      <div class="block-margin">
+      	<span>Original Cropped Dimensions: {{myCroppedOriginalW}}X{{myCroppedOriginalH}}</span>
+      </div-->
+</body>
