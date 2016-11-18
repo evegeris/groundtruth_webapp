@@ -159,6 +159,16 @@ hchosen {
   background-color: #FFE5E5;
 }
 
+
+himg_id {
+  margin-top: 0.1em;
+  margin-bottom: 0.67em;
+  margin-left: 0;
+  margin-right: 1em;
+  font-weight: bold;
+  font-size: 18px;
+}
+
 .cropArea {
   background: #E4E4E4;
   overflow: hidden;
