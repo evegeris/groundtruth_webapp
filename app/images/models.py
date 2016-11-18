@@ -19,6 +19,7 @@ class Images(db.Model, CRUD_MixIn):
         self.progress = 0
 
 
+
 class ImagesSchema(Schema):
 
     not_blank = validate.Length(min=1, error='Field cannot be blank')
@@ -36,4 +37,4 @@ class ImagesSchema(Schema):
         return {'self': self_link}
 
     class Meta:
-type_ = 'images'
+        type_ = 'images'

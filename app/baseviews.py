@@ -8,11 +8,14 @@ from flask import g, Blueprint, jsonify, make_response, request
 from flask_restful import Resource, Api
 import flask_restful
 from app.users.models import Users, UsersSchema
+from app.images.models import Images, ImagesSchema
+from app.userhasimage.models import UserHasImage, UserHasImageSchema
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy.exc import SQLAlchemyError
 from marshmallow import ValidationError
 from app.basemodels import db
 from flask_mail import Mail, Message
+from sqlalchemy import func, join, select
 
 import json
 
@@ -141,7 +144,13 @@ class UserInfo(Resource):
         #print("email:\n"+email)
         user = Users.query.filter_by(email=email).first()
         if user is not None:
-            #print("user classified: "+ str(user.classified))
+            #print("user imgs: "+ str(user.classified))
+            print("user id: " + str(user.id))
+
+            j = join(Users, Images,
+            Users.id == Images.id)
+            stmt = select([UserHasImage]).select_from(j)
+            print(str(stmt))
 
             user_info = {
                 'classified': user.classified,

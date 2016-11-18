@@ -101,7 +101,8 @@ $stateProvider.state('login', {
       title: 'Dashboard',
       views: {
         'inner_page': {
-        templateUrl: '/dashboard/dashboard.html'
+        templateUrl: 'dashboard.html',
+        controller: 'DashboardCtrl'
       }
     }
   })

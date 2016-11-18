@@ -7,7 +7,6 @@ angular.module('myApp').controller('LogoutCtrl', function($auth, $state, $window
 
 // for watching shared variables
     $scope.user_info = user_info;
-    $scope.testVar = user_info.testVar;
     $scope.user_name = user_info.user_info_object.data.attributes.full_name;
     $scope.classified = user_info.user_info_object.data.attributes.classified;
     $scope.in_queue = user_info.user_info_object.data.attributes.in_queue;
