@@ -4,14 +4,20 @@ angular.module('myApp').service('user_info', function() {
           "data": {
             "type": "users",
             "attributes": {
-              "email":"me@place",
-              "full_name": "Joe Bloggs",
+              "email":"sample@email",
+              "full_name": "Dr. Smith",
               "classified": "0",
               "in_queue": "0",
-              "percent_complete": "0"
+              "percent_complete": "0",
+              "image_info": {}
               }
            }
         };
+
+    this.setImageData = function(image_info){
+      this.user_info_object.data.attributes.image_info = image_info;
+      //alert(this.user_info_object.data.attributes.image_info[0].fullsize_orig_filepath);
+    };
 
     this.setFullName = function(full_name){
       this.user_info_object.data.attributes.full_name = full_name;

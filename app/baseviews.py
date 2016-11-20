@@ -11,11 +11,12 @@ from app.users.models import Users, UsersSchema
 from app.images.models import Images, ImagesSchema
 from app.userhasimage.models import UserHasImage, UserHasImageSchema
 from werkzeug.security import check_password_hash, generate_password_hash
-from sqlalchemy.exc import SQLAlchemyError
 from marshmallow import ValidationError
 from app.basemodels import db
 from flask_mail import Mail, Message
 from sqlalchemy import func, join, select
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.ext.declarative import DeclarativeMeta
 
 import json
 
@@ -137,6 +138,24 @@ class Auth(Resource):
 api.add_resource(Auth, 'login.json')
 
 
+class AlchemyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj.__class__, DeclarativeMeta):
+            # an SQLAlchemy class
+            fields = {}
+            for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata']:
+                data = obj.__getattribute__(field)
+                try:
+                    json.dumps(data) # this will fail on non-encodable values, like other classes
+                    fields[field] = data
+                except TypeError:
+                    fields[field] = None
+            # a json-encodable dict
+            return fields
+
+        return json.JSONEncoder.default(self, obj)
+
+
 class UserInfo(Resource):
 
     def get(self):
@@ -149,13 +168,29 @@ class UserInfo(Resource):
 
             j = join(Users, Images,
             Users.id == Images.id)
-            stmt = select([UserHasImage]).select_from(j)
+            stmt = select([Images.id, Images.fullsize_orig_filepath, Images.progress]).select_from(j).distinct()
             print(str(stmt))
+
+            result = db.session.execute(stmt)
+            user_images = result.fetchall();
+            #row = result.fetchone()
+            #print("id:", row['id'], "; filpeath:", "progress:", row['progress'], "; filpeath:", row['fullsize_orig_filepath'])
+
+            #for row in user_images:
+            #    for field in row:
+            #        print(field)
+
+            #imgs_json = json.dumps([(dict(row.items())) for row in user_images])
+            #print(imgs_json)
+
+            #print json.dumps(user, cls=AlchemyEncoder)
+            #print(user_images)
 
             user_info = {
                 'classified': user.classified,
                 'in_queue': user.in_queue,
-                'full_name': user.name
+                'full_name': user.name,
+                'image_info': [(dict(row.items())) for row in user_images]
             }
 
             response = jsonify(message=user_info)
