@@ -166,8 +166,8 @@ class UserInfo(Resource):
             #print("user imgs: "+ str(user.classified))
             print("user id: " + str(user.id))
 
-            j = join(Users, Images,
-            Users.id == Images.id)
+            j = join(Images, UserHasImage,
+            UserHasImage.users_id == UserHasImage.images_id)
             stmt = select([Images.id, Images.fullsize_orig_filepath, Images.progress]).select_from(j).distinct()
             print(str(stmt))
 
@@ -180,8 +180,8 @@ class UserInfo(Resource):
             #    for field in row:
             #        print(field)
 
-            #imgs_json = json.dumps([(dict(row.items())) for row in user_images])
-            #print(imgs_json)
+            imgs_json = json.dumps([(dict(row.items())) for row in user_images])
+            print(imgs_json)
 
             #print json.dumps(user, cls=AlchemyEncoder)
             #print(user_images)

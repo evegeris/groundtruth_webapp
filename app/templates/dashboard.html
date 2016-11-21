@@ -108,18 +108,9 @@
 			<rd-widget-body classes="medium no-padding">
 				<div class="table-responsive">
 					<table class="table">
-				  <tbody ng:repeat="img in image_info">
-						<tr><td>test1</td><td>test2</td></tr>
-						<tr><td>{{img.id}}</td><td>{{img.progress}}</td></tr>
-<!--	ng:repeat="img in image_info"
-			<tr><td>{{img.id}}</td><td>{{img.progress}}</td></tr>
-
-						<tr><td>{{img.name}}</td><td>{{$index}}</td></tr>
-				    <tr ng:repeat="e in img.details">
-				       <td>{{e.id}}</td>
-				       <td>{{e.progress}}</td>
-							 </tr>
-						 -->
+				  <tbody>
+						<tr><td>Image ID</td><td>Progress</td></tr>
+						<tr ng:repeat="img in image_info"><td>{{img.id}}</td><td>{{img.progress}}</td></tr>
 						 </tbody>
 				 </table>
 		 </div>
