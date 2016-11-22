@@ -125,8 +125,6 @@ class Auth(Resource):
             return response
         #print '******hash: ' + generate_password_hash(password)
         if check_password_hash(user.password, password):
-            print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-            print(user.name)
             token = create_token(user)
             return {'token': token}
         else:

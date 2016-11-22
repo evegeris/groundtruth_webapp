@@ -1,4 +1,4 @@
-# Web app for groundtruthing ML datasets 
+# Web app for groundtruthing ML datasets
 #### based on the rdash-angular example:
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/rdash/rdash-angular?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -84,6 +84,8 @@ Continue developing the dashboard further by editing the `src` directory. With t
 3. An example of how to read in a JSON file
 4. An automation method that will draw ANY polygon from a JSON file
 
+### Etc.
+* image filepaths in database assumed to be relative to the static/images folder
 
 #### Modules & Packages
 TO add additional modules/packages not included with rdash-angular, add them to `bower.json` and then update `index.html`, to include them in the minified distribution output.

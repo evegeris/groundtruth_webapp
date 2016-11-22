@@ -1,7 +1,11 @@
-angular.module('myApp').controller('CanvasCtrl', function($http, $scope) {
+angular.module('myApp').controller('CanvasCtrl', function($http, $scope, user_info) {
 
 
   // variable Initialization
+
+  $scope.user_info = user_info;
+  $scope.image_info = user_info.user_info_object.data.attributes.image_info;
+
   // Current max superpixel count is 1000. Change statically
   $scope.isPainted = [1000];
   $scope.newValue = [1000];
@@ -41,7 +45,7 @@ angular.module('myApp').controller('CanvasCtrl', function($http, $scope) {
 
   // Empty data file which lives within the
   // Note: The use of $scope is the bridge between html and javascript
-  $scope.data = [];
+  $scope.data = [];304
 
   //***************************************************************//
   // This listener enables 'click and drag' mode
@@ -842,6 +846,7 @@ if (window.addEventListener) {
     $http.get('/polygon-draw/segmentedImg.json').then(function(response) {
       // Storing the data in a multidimensional array that can be accessed
       // By both the .html file and other functions within this 'scope'
+      //alert(typeof response.data);
       $scope.mask_data = response.data;
       $scope.the_string = "Done!";
     });
@@ -852,38 +857,38 @@ if (window.addEventListener) {
     //***************************************************************//
     // Custom Function for Reading in the original img
     //***************************************************************//
-    $scope.readImage = function(index){
+    function readImage(index){
 
-      //alert($scope.image_info[0].fullsize_orig_filepath);
+      alert($scope.image_info[index].fullsize_orig_filepath);
+
+      //myImageBack.src = "static/images/wound_2_origin.jpg";
       //var filepath = $scope.image_info[index].fullsize_orig_filepath;
-      //var filepath = '/polygon-draw/segmentedImg.json';
+      var filepath = "wound_2_origin.jpg";
 
-  //var $httpDefaultCache = $cacheFactory.get('$http');
-  //$httpDefaultCache.remove('/polygon-draw/segmentedImg.json');
-  // Where key is the relative URL of your resource (eg: /api/user/current/51a9020d91799f1e9b8db12f)
-
-      $http.get('/images/any.jpg').then(function(response) {
-        //return response.data;
+      $http.get('dyn_img/' + filepath).then(function(response) {
+        //alert(typeof response.data);
+        $scope.test_img = response.data;
+        myImageBack = "data:image/png;base64," + response.data;
       });
+
 
     }
 
     //***************************************************************//
     // Custom Function for Reading in the original img
     //***************************************************************//
-    $scope.readSegmentedImage = function(index){
+    function readSegmentedImage(index){
 
-      //alert($scope.image_info[0].fullsize_orig_filepath);
+      alert($scope.image_info[index].fullsize_orig_filepath);
+
       //var filepath = $scope.image_info[index].fullsize_orig_filepath;
-      //var filepath = '/polygon-draw/segmentedImg.json';
+      var filepath = "segmentedImg.jpg";
+      //myImageMiddle.src = "static/images/segmentedImg.jpg";
 
-  //var $httpDefaultCache = $cacheFactory.get('$http');
-  //$httpDefaultCache.remove('/polygon-draw/segmentedImg.json');
-  // Where key is the relative URL of your resource (eg: /api/user/current/51a9020d91799f1e9b8db12f)
-
-      $http.get('/images/any.jpg').then(function(response) {
-        //return response.data;
+      $http.get('dyn_img/' + filepath).then(function(response) {
+        myImageMiddle = "data:image/png;base64," + response.data;
       });
+
 
     }
 
@@ -935,10 +940,13 @@ function resize(value) {
 
 
 var myImageMiddle = new Image();
-myImageMiddle.src = "static/images/segmentedImg.jpg"; //$scope.readImage(0);
-
 var myImageBack = new Image();
+
+//readSegmentedImage(0);
+//readImage(0);
+
 myImageBack.src = "static/images/wound_2_origin.jpg";
+myImageMiddle.src = "static/images/segmentedImg.jpg";
 
 
   //***************************************************************//
@@ -991,5 +999,7 @@ myImageBack.src = "static/images/wound_2_origin.jpg";
       context.beginPath();
       contextMiddle.beginPath();
       contextTop.beginPath();
+
+
 
 });
