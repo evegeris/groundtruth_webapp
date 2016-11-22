@@ -1,7 +1,7 @@
-# Web app based on rdash-angular example
+# Web app for groundtruthing ML datasets 
+#### based on the rdash-angular example:
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/rdash/rdash-angular?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-## Folder structure:
 
 ### Full Installation Instructions (Ubuntu 14.04)
 * 1. Install git
@@ -42,7 +42,7 @@
 * mysql> use groundtruth_db;
 * (example insert statements)
 * mysql> insert into images (fullsize_orig_filepath, progress) values ('file/path/1', 0);
-* insert into user_has_image (users_id, images_id) values (1, 1);
+* mysql> insert into user_has_image (users_id, images_id) values (1, 1);
 
 ### client
 * original RDash front-end
