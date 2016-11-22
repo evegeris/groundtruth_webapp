@@ -192,7 +192,7 @@ angular.module('myApp').controller('CanvasCtrl', function($http, $scope) {
           // Key '1'
           if ($scope.newValue[p] == 1) {
               // Colour 'red'
-              $scope.colour_f = "rgba(32, 0, 0, 0.4)";
+              $scope.colour_f = "rgba(32, 32, 32, 1)";
           }
           // Key '2'
           else if ($scope.newValue[p] == 2) {
@@ -263,7 +263,7 @@ angular.module('myApp').controller('CanvasCtrl', function($http, $scope) {
           if ($scope.newValue[p] == 1) {
               // Colour 'red'
               $scope.healthyCount ++;
-              $scope.colour_f = "rgba(32, 0, 0, 0.4)";
+              $scope.colour_f = "rgba(32, 32, 32, 1)";
           }
           // Key '2'
           else if ($scope.newValue[p] == 2) {
@@ -420,7 +420,7 @@ angular.module('myApp').controller('CanvasCtrl', function($http, $scope) {
       // Key '1'
       if (map[49] == true) {
         // Colour 'red' (1)
-        $scope.colour_f = "rgba(32, 0, 0, 0.4)";
+        $scope.colour_f = "rgba(32, 32, 32, 1)";
         $scope.classification = 1;
         $('hchosen').css({'background-color':'#FFE5E5'})
         $('#tissue').html('1 - Healthy');
@@ -839,7 +839,7 @@ if (window.addEventListener) {
     //******************************************************************//
     // We can only read in a file once. Then the same file is re-used
 
-    $http.get('/polygon-draw/segmentedImg.json').then(function(response) {
+    $http.get('/100seg_sigma3.67_ds4.json').then(function(response) {
       // Storing the data in a multidimensional array that can be accessed
       // By both the .html file and other functions within this 'scope'
       $scope.mask_data = response.data;
@@ -896,9 +896,9 @@ function resize(value) {
 
 
 var myImageMiddle = new Image();
-myImageMiddle.src = "static/images/segmentedImg.jpg";
+myImageMiddle.src = "100seg_sigma3.67_ds4.jpg";
 var myImageBack = new Image();
-myImageBack.src = "static/images/wound_2_origin.jpg";
+myImageBack.src = "100seg_sigma3.67_ds4orig.jpg";
 
 
   //***************************************************************//

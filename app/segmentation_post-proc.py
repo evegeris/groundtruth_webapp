@@ -23,6 +23,7 @@ class MyEncoder(json.JSONEncoder):
 class PostProc:
 
     def __init__(self, im):
+
         self.im = im
 
         #self.scale = 0.2
@@ -36,102 +37,56 @@ class PostProc:
 
     def segment(self):
 
-	for i in range (1,5):
-		self.newIm = self.im;
 
-        	numSegments = 200 + i*50
-        	# apply SLIC and extract (approximately) the supplied number of segments
-        	segments = slic(self.im, n_segments=numSegments, sigma=5)
+	self.newIm = self.im;
 
-        	b = segments.tolist() # nested lists with same data, indices
-        	file_path = "file.json" ## your path variable
+       	numSegments = 100
+        my_sigma=3.67
+       	# apply SLIC and extract (approximately) the supplied number of segments
+       	segments = slic(self.im, n_segments=numSegments, sigma=my_sigma)
 
-        	with open('segmentedImg.json', 'w') as outfile:
-            		json.dump(b, outfile, indent=2)
+       	b = segments.tolist() # nested lists with same data, indices
+       	file_path = "file.json" ## your path variable
 
-        	# show the output of SLIC
-        	fig = plt.figure("Superpixels -- %d segments" % (numSegments))
-        	ax = fig.add_subplot(1, 1, 1)
-        	self.newIm = mark_boundaries(self.im, segments, color=(0, 0, 0)) # fn normalises img bw 1 and 0 apparently
-        	#ax.imshow(self.im)
-        	plt.axis("off")
-        	#cv2.waitKey(0)
+        global out_file
+        out_file = str(numSegments)+'seg_sigma'+str(my_sigma)+'_ds'+str(ds)
 
-        	self.newIm = (self.newIm * 255.0).astype('u1')
-        	cv2.imshow("after astype", self.newIm)
-        	cv2.imwrite("/home/madison/Documents/41x/groundtruth_webapp/app/segmentedImg.jpg", self.newIm)
-        	cv2.waitKey(0)
+       	with open(out_file+'.json', 'w') as outfile:
+           		json.dump(b, outfile, indent=2)
 
+       	# show the output of SLIC
+       	fig = plt.figure("Superpixels -- %d segments" % (numSegments))
+       	ax = fig.add_subplot(1, 1, 1)
+       	self.newIm = mark_boundaries(self.im, segments, color=(0, 0, 0)) # fn normalises img bw 1 and 0 apparently
+       	#ax.imshow(self.im)
+       	plt.axis("off")
+       	#cv2.waitKey(0)
 
-
-    def getContours(self):
-
-        # convert to greyscale
-        self.im = cv2.cvtColor( self.im, cv2.COLOR_RGB2GRAY )
-
-        # binary thresh and non-zero pixels to 1 if
-        thresh = 5
-        maxValue = 255
-        th, self.im = cv2.threshold(self.im, thresh, maxValue, cv2.THRESH_BINARY)
-        self.im = (255-self.im) # temp, invert
-        #cv2.imshow("after binary thresh", self.im)
-
-        im2, contours, hierarchy = cv2.findContours(self.im, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-        hierarchy = hierarchy[0] # for some reason, contours is a nice list and hierarchy is an ndarray with more dimensions that necessary
-
-        polyArrayArray = []
-        for index in range(len(contours)):
-            area = cv2.contourArea(contours[index])
-            #print "contour area: " + str(area)
-            thresh = self.im_width*0.15 # some way of deciding which pixel areas are noise
-            #print "contour thresh: "+ str(thresh)
-            if area < thresh:
-                continue
-            if hierarchy[index][2] != -1:
-                continue
-
-            cv2.drawContours(self.im_rgb, contours, index, (random.randrange(0, 255), random.randrange(0, 255), random.randrange(0, 255)), -1)
-            #with open('data.txt', 'w') as outfile:
-            #    json.dump(contours[index], outfile)
-            #print "hierarchy["+str(index)+"]: " + str(hierarchy[index])
-
-            contours = contours[index] # get contour
-            polyArray = []
-            tmp_scale = 0.4
-            for coords in contours:
-                #coords = coords[0] # discard unnecessary array if outside of this loop
-                xy_coords = coords[0]
-                #print xy_coords[0] # x
-                #print xy_coords[1] # y
-            
-                polyDict = dict([['xPosition', int(xy_coords[0]*tmp_scale)], ['yPosition', int(xy_coords[1]*tmp_scale)]])
-                polyArray.append(polyDict)
-            
-            polyArrayArray.append(polyArray)
-
-
-        #print polyArray
-
-        with open('polygon-new3.json', 'w') as outfile:
-         json.dump(polyArrayArray, outfile, indent=2)
-
-
-
-
-        #cv2.imshow("contour img", self.im_rgb)
-        #cv2.imshow("im2", im2)
-        #cv2.waitKey(0)
+       	self.newIm = (self.newIm * 255.0).astype('u1')
+       	cv2.imshow("after astype", self.newIm)
+       	cv2.imwrite("/home/madison/Documents/angus/"+out_file+".jpg", self.newIm)
+        cv2.imwrite("/home/madison/Documents/angus/"+out_file+"orig.jpg", self.im)
+       	cv2.waitKey(0)
 
 
 def test():
-    #filepath = "/home/mmccar04/Downloads/TestImages/raptor.jpg"
-    #filepath = "/home/lainey/code/rdash_Nov2/groundtruth_webapp/app/templates/static/images/Pressure08.jpg"
-    filepath = "/home/madison/Documents/41x/groundtruth_webapp/app/templates/static/images/wound_2.jpg"
-    im = cv2.imread(filepath)
-    newIm = cv2.imread(filepath)
-    postprocessor = PostProc(im)
-    postprocessor.segment()
-    #postprocessor.getContours()
+	#filepath = "/home/mmccar04/Downloads/TestImages/raptor.jpg"
+	#filepath = "/home/lainey/code/rdash_Nov2/groundtruth_webapp/app/templates/static/images/Pressure08.jpg"
+	filepath = "/home/madison/Documents/angus/IMG_5351.JPG"
+	global ds
+	ds=4
+	x1=300
+	y1=100
+	x2=600
+	y2=400
+
+	im = cv2.imread(filepath)[::ds,::ds]
+	im = im[x1:x2,y1:y2,:]
+	newIm = cv2.imread(filepath)[::ds,::ds]
+	newIm = newIm[x1:x2,y1:y2,:]
+	postprocessor = PostProc(im)
+	postprocessor.segment()
+	#postprocessor.getContours()
 
 
 
