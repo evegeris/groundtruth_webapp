@@ -848,6 +848,45 @@ if (window.addEventListener) {
 
   }
 
+
+    //***************************************************************//
+    // Custom Function for Reading in the original img
+    //***************************************************************//
+    $scope.readImage = function(index){
+
+      //alert($scope.image_info[0].fullsize_orig_filepath);
+      //var filepath = $scope.image_info[index].fullsize_orig_filepath;
+      //var filepath = '/polygon-draw/segmentedImg.json';
+
+  //var $httpDefaultCache = $cacheFactory.get('$http');
+  //$httpDefaultCache.remove('/polygon-draw/segmentedImg.json');
+  // Where key is the relative URL of your resource (eg: /api/user/current/51a9020d91799f1e9b8db12f)
+
+      $http.get('/images/any.jpg').then(function(response) {
+        //return response.data;
+      });
+
+    }
+
+    //***************************************************************//
+    // Custom Function for Reading in the original img
+    //***************************************************************//
+    $scope.readSegmentedImage = function(index){
+
+      //alert($scope.image_info[0].fullsize_orig_filepath);
+      //var filepath = $scope.image_info[index].fullsize_orig_filepath;
+      //var filepath = '/polygon-draw/segmentedImg.json';
+
+  //var $httpDefaultCache = $cacheFactory.get('$http');
+  //$httpDefaultCache.remove('/polygon-draw/segmentedImg.json');
+  // Where key is the relative URL of your resource (eg: /api/user/current/51a9020d91799f1e9b8db12f)
+
+      $http.get('/images/any.jpg').then(function(response) {
+        //return response.data;
+      });
+
+    }
+
   //***************************************************************//
   // restart the entire process
   //***************************************************************//
@@ -896,7 +935,8 @@ function resize(value) {
 
 
 var myImageMiddle = new Image();
-myImageMiddle.src = "static/images/segmentedImg.jpg";
+myImageMiddle.src = "static/images/segmentedImg.jpg"; //$scope.readImage(0);
+
 var myImageBack = new Image();
 myImageBack.src = "static/images/wound_2_origin.jpg";
 

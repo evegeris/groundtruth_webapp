@@ -7,7 +7,9 @@ def create_app(config_filename):
     app = Flask(__name__, template_folder=template_dir, static_folder=template_dir+'/static')
     '''
 
-from flask import Flask
+from flask import Flask, render_template, stream_with_context, Response
+import urllib
+import cv2
 
 # http://flask.pocoo.org/docs/0.10/patterns/appfactories/
 
@@ -38,6 +40,32 @@ def create_app(config_filename):
     @app.route('/<path:filename>')
     def file(filename):
         return send_from_directory(os.path.join(app.root_path, 'templates'), filename)
+
+
+    @app.route("/images/<path:path>")
+    def images(path):
+        from StringIO import StringIO
+        import base64
+
+        print(path)
+        # fullpath = "./static/images/" + path
+        myimg = cv2.imread('/home/lainey/code/rdash_Nov21/groundtruth_webapp/app/templates/static/images/wound_images/wound_2.jpg')
+        encoded = cv2.imencode(".jpg", myimg)[1]
+        strImg = base64.encodestring(encoded)
+
+
+        #resp = Flask.make_response(open(fullpath).read())
+        #resp.content_type = "image/jpeg"
+        #return resp
+
+        #resp = Flask.make_response(strImg)
+        #resp.content_type = "image/jpeg"
+        #return resp
+
+        return Response(strImg, direct_passthrough=True)
+
+        #return render_template("test.html", img_data=urllib.quote(strImg.rstrip('\n')))
+
 
     @app.route('/')
 

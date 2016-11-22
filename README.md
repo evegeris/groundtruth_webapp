@@ -22,24 +22,27 @@
 * $sudo apt-get install Flask
 * 8. Get bower
 * $sudo npm install -g bower
-* 9. Get mysql-server
+* 9. Get mysql-server (password should match that in config.py)
 * $sudo apt-get update
 * $sudo apt-get install mysql-server
 * $sudo mysql_secure_installation
 * $sudo mysql_install_db
-* 10. Set up a blank db in mysql titled 'groundtruth_db'
-* $mysql -u root -p
-* $CREAT DATABASE groundtruth_db;
-* 11. Delete 'migrations' folder if present
-* 12. Install additional pip requirements
-* $sudo pip install -r requirements.txt 
-* 13. Initialize Database
-* $python db.py db init 
-* $python db.py db migrate 
-* $python db.py db upgrade 
-* 14. Run the program
+* 10. Set up the 'groundtruth_db' database
+* Install and open MySQL Workbench (eg. through the Ubuntu Software Centre)
+* Open the db schema 'Database/groundtruth_db.mwb' within MySQL Workbench
+* From the main toolbar select 'Database' -> 'Forward Engineer...'
+* Follow the prompts to create the database
+* 11. Install additional pip requirements
+* $sudo pip install -r requirements.txt
+* 12. Run the program
 * $python run.py
-
+* 13. Create a user for yourself through the login page
+* 14. (Developer) Set up some sample image data
+* $ mysql -u root -p
+* mysql> use groundtruth_db;
+* (example insert statements)
+* mysql> insert into images (fullsize_orig_filepath, progress) values ('file/path/1', 0);
+* insert into user_has_image (users_id, images_id) values (1, 1);
 
 ### client
 * original RDash front-end
@@ -78,7 +81,7 @@ Continue developing the dashboard further by editing the `src` directory. With t
 ### New Features
 1. Custom Draw Each Point on a Grid
 2. An automation example for drawing a polygon (triangle)
-3. An example of how to read in a JSON file 
+3. An example of how to read in a JSON file
 4. An automation method that will draw ANY polygon from a JSON file
 
 

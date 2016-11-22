@@ -96,7 +96,7 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
 
               // { token: $scope.token }
               //$scope.token = $stateParams.token;
-              var user_entry = user.UserInfo.get({ email: $scope.email}, function() {
+              var user_entry = user.UserInfo.get({ email: $scope.email }, function() {
 
                 user_info.setFullName(user_entry.message.full_name);
                 var classified = user_entry.message.classified;
