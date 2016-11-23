@@ -2,7 +2,8 @@ angular.module('myApp').controller('CropCtrl', function($http, $scope) {
 
   // Select the Image to preload!
   var loadedImage = new Image();
-  loadedImage.src = "static/images/segmentedImg.jpg";
+  //loadedImage.src = "static/images/segmentedImg.jpg";
+  loadedImage.src = "static/images/test_image_swift.jpg";
 
 
   $scope.myImage='';
@@ -51,6 +52,6 @@ angular.module('myApp').controller('CropCtrl', function($http, $scope) {
 
     // Locally load the file
     loadedImage.onload = function() {
-        $scope.myImage='static/images/segmentedImg.jpg';
+        $scope.myImage='static/images/test_image_swift.jpg';
     }
   });

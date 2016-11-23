@@ -1,6 +1,14 @@
 angular.module('myApp').controller('CanvasCtrl', function($http, $scope, user_info) {
 
 
+if (window.location.href.indexOf("?") > -1){
+
+}
+else {
+  window.location = window.location + '?loaded';
+  window.location.reload(true);
+}
+
   // variable Initialization
 
   $scope.user_info = user_info;
@@ -75,7 +83,8 @@ angular.module('myApp').controller('CanvasCtrl', function($http, $scope, user_in
 
     // If its a left click, we want to colour the canavs
     if ($scope.mouseDown == 1){
-      $('#status').html($scope.posx_1 +', '+ $scope.posy_1);
+      //$('#status').html($scope.posx_1 +', '+ $scope.posy_1);
+
       colourCanvas();
     }
     // Mouse wheel click implements the dragging feature
@@ -137,6 +146,9 @@ angular.module('myApp').controller('CanvasCtrl', function($http, $scope, user_in
 
     // Getting the integer mask at the clicked location
     var mask_value = $scope.mask_data[$scope.posy_1][$scope.posx_1];
+
+
+
 
     // Only run if it will result in a new colour to be painted
     if (($scope.newValue[mask_value] != $scope.classification) && (toggle == 0)){
@@ -846,7 +858,7 @@ if (window.addEventListener) {
   // Lets you scale the image smaller
 //***************************************************************//
   scaleDown = function(){
-    $scope.ResizeValue = $scope.ResizeValue + 10;
+    $scope.ResizeValue = $scope.ResizeValue + 20;
     resize($scope.ResizeValue);
   }
 
@@ -854,7 +866,7 @@ if (window.addEventListener) {
   // Lets you scale the image bigger
   //***************************************************************//
   scaleUp = function(){
-    $scope.ResizeValue = $scope.ResizeValue - 10;
+    $scope.ResizeValue = $scope.ResizeValue - 20;
     resize($scope.ResizeValue);
   }
 
@@ -992,28 +1004,38 @@ if (window.addEventListener) {
   }
 
 
-
   //***************************************************************//
   // Custom Function for Reading in a JSON file - Is called from polygon-draw.template.html
   // Navigation is from the index.html directory
   //***************************************************************//
   $scope.readJSON = function(){
+    //delete $http.defaults.headers.common['X-Requested-With'];
 
+    //httpGetAsync('/polygon-draw/segmentedImg.json', callBack);
+    //disable IE ajax request caching
+   //$httpProvider.defaults.headers.get['If-Modified-Since'] = 'Mon, 26 Jul 1997 05:00:00 GMT';
+   // extra
+   //$httpProvider.defaults.headers.get['Cache-Control'] = 'no-cache';
+   //$httpProvider.defaults.headers.get['Pragma'] = 'no-cache';
     // The .get command assumes a JSON file type.
     // The .then determines how we handle the file that has been read
     //******************************************************************//
     // We can only read in a file once. Then the same file is re-used
     try{
-    $http.get('/polygon-draw/segmentedImg.json').then(function(response) {
+
+    //  $http.get('/polygon-draw/segmentedImg.json').then(function(response) {
+    $http.get('/polygon-draw/test_image_swift_segment_n566_s14.json').then(function(response) {
       // Storing the data in a multidimensional array that can be accessed
       // By both the .html file and other functions within this 'scope'
       //alert(typeof response.data);
       $scope.mask_data = response.data;
-      $scope.the_string = "Done!";
+
     });
+
+
   }
   catch(err){
-
+    alert("error");
   }
 
   }
@@ -1022,6 +1044,7 @@ if (window.addEventListener) {
     //***************************************************************//
     // Custom Function for Reading in the original img
     //***************************************************************//
+
     function readImage(index){
 
       alert($scope.image_info[index].fullsize_orig_filepath);
@@ -1038,6 +1061,7 @@ if (window.addEventListener) {
 
 
     }
+
 
     //***************************************************************//
     // Custom Function for Reading in the original img
@@ -1110,8 +1134,11 @@ var myImageBack = new Image();
 //readSegmentedImage(0);
 //readImage(0);
 
-myImageBack.src = "static/images/wound_2_origin.jpg";
-myImageMiddle.src = "static/images/segmentedImg.jpg";
+//myImageBack.src = "static/images/wound_2_origin.jpg";
+//myImageMiddle.src = "static/images/segmentedImg.jpg";
+
+myImageBack.src = "static/images/test_image_swift.jpg";
+myImageMiddle.src = "static/images/test_image_swift_segment_n566_s14.jpg";
 
 
   //***************************************************************//
