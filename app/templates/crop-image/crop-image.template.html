@@ -28,7 +28,14 @@
       <div class="block-margin">
           <button type="button" ng-click="setArea('circle')">Circle</button>
           <button type="button" ng-click="setArea('rectangle')">Rectangle</button>
+
+          <div class="slider-width200">
+          <input id="slider" type="range" min="0" max="4" value="2" step="1" />
+          <p id="slidePosition">0</p>
+          </div>
+
       </div>
+
     <!--div class="block-margin">
         <span>Dimensions showed: {{myCroppedImageW}}X{{myCroppedImageH}}</span>
       </div>

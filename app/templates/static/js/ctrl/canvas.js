@@ -14,10 +14,15 @@ angular.module('myApp').controller('CanvasCtrl', function($http, $scope, user_in
   $scope.scarCount = 0;
   $scope.infCount = 0;
   $scope.necroticCount = 0;
+  $scope.backgroundCount = 0;
+  $scope.badDataCount = 0;
+
+  $scope.anyUnasigned = 0;
   var q;
 
   // Variable for the toggle feature
   var toggle = 0;
+  var currentColour;
 
   // Initialzing the array to 0
   for (q = 0; q < 1000; q ++){
@@ -27,7 +32,7 @@ angular.module('myApp').controller('CanvasCtrl', function($http, $scope, user_in
 
 
   // Default colour of red (1)
-  $scope.colour_f = "rgba(32, 0, 0, 0.4)";
+  $scope.colour_f = "rgba(255, 102, 0, 0.4)";
   $scope.classification = 1;
 
   // Maybe some uneeded variablesgetElement
@@ -195,24 +200,35 @@ angular.module('myApp').controller('CanvasCtrl', function($http, $scope, user_in
           // Select the colour (classification) it was previously assigned
           // Key '1'
           if ($scope.newValue[p] == 1) {
-              // Colour 'red'
-              $scope.colour_f = "rgba(32, 0, 0, 0.4)";
+              // Colour 'orange'
+              $scope.colour_f = "rgba(255, 102, 0, 0.4)";
           }
           // Key '2'
           else if ($scope.newValue[p] == 2) {
-              // Colour 'Mahogony'
-              $scope.colour_f = "rgba(0, 32, 0, 0.4)";
+              // Colour 'Green'
+              $scope.colour_f = "rgba(0, 32, 0, 0.6)";
 
           }
           // Key '3'
           else if ($scope.newValue[p] == 3) {
-              // Colour 'Dark Yellow'
-              $scope.colour_f = "rgba(0, 0, 32, 0.4)";
+              // Colour 'Pink'
+              //$scope.colour_f = "rgba(128, 128, 255, 0.4)";
+              $scope.colour_f = "rgba(255, 51, 54, 0.4)";
           }
           // Key '4'
           else if ($scope.newValue[p] == 4) {
-            // Colour 'Orange'
-            $scope.colour_f = "rgba(32, 32, 0, 0.4)";
+            // Colour 'Yellow'
+            $scope.colour_f = "rgba(255, 255, 0, 0.4)";
+          }
+          // Key '5'
+          else if ($scope.newValue[p] == 5) {
+            // Colour 'Blue'
+            $scope.colour_f = "rgba(128, 128, 255, 0.4)";
+          }
+          // Key '4'
+          else if ($scope.newValue[p] == 6) {
+            // Colour 'Grey'
+            $scope.colour_f = "rgba(46, 46, 31, 0.7)";
           }
 
           // Very similar to the standard colouring function
@@ -241,23 +257,62 @@ angular.module('myApp').controller('CanvasCtrl', function($http, $scope, user_in
     }
   }
 
+  var foo = function(){
+
+  };
+
 
   //***************************************************************//
   // This function will redraw the labeled superpixels
   //***************************************************************//
   function reColour(){
 
+    // Save the current colour value
+    currentColour = $scope.colour_f;
+
     var i = 0;
     var k = 0;
     var p = 0;
+    var pMax = 0;
+
     $scope.healthyCount = 0;
     $scope.scarCount = 0;
     $scope.infCount = 0;
     $scope.necroticCount = 0;
+    $scope.backgroundCount = 0;
+    $scope.badDataCount = 0;
+
+    // Finding maximum integer mask value
+    $scope.length_2 = $scope.mask_data.length;
+    $scope.length_1 = $scope.mask_data[0].length;
+
+    for (i = 0; i < $scope.length_2; i ++){
+        $scope.iter2 = i;
+
+      for (k = 0; k < $scope.length_1; k++){
+        $scope.iter1 = k;
+
+        // Finding the maximum integer mask value
+        if (pMax < $scope.mask_data[$scope.iter2][$scope.iter1]){
+
+          pMax = $scope.mask_data[$scope.iter2][$scope.iter1];
+
+        }
+
+        else {
+        }
+      }
+    }
+
 
 
     // Check every superpixel to see if it has been assigned a colour
-    for (p = 0; p < 1000; p ++){
+    for (p = 0; p <= pMax; p ++){
+
+      // Periodic timeout every 50 superpixels to prevent page from freezing
+      if (p % 50 == 0){
+        setTimeout(foo, 0);
+     }
 
         // This has been classified already! Recolour it
         if ($scope.isPainted[p] == 1){
@@ -265,27 +320,39 @@ angular.module('myApp').controller('CanvasCtrl', function($http, $scope, user_in
           // Select the colour (classification) it was previously assigned
           // Key '1'
           if ($scope.newValue[p] == 1) {
-              // Colour 'red'
+              // Colour 'orange'
               $scope.healthyCount ++;
-              $scope.colour_f = "rgba(32, 0, 0, 0.4)";
+              $scope.colour_f = "rgba(255, 102, 0, 0.4)";
           }
           // Key '2'
           else if ($scope.newValue[p] == 2) {
-              // Colour 'Mahogony'
+              // Colour 'Green'
               $scope.scarCount ++;
-              $scope.colour_f = "rgba(0, 32, 0, 0.4)";
+              $scope.colour_f = "rgba(0, 32, 0, 0.6)";
           }
           // Key '3'
           else if ($scope.newValue[p] == 3) {
-              // Colour 'Dark Yellow'
+              // Colour 'Pink'
               $scope.infCount ++;
-              $scope.colour_f = "rgba(0, 0, 32, 0.4)";
+              $scope.colour_f = "rgba(255, 51, 54, 0.4)";
           }
           // Key '4'
           else if ($scope.newValue[p] == 4) {
-            // Colour 'Orange'
+            // Colour 'Yellow'
             $scope.necroticCount ++;
-            $scope.colour_f = "rgba(32, 32, 0, 0.4)";
+            $scope.colour_f = "rgba(255, 255, 0, 0.4)";
+          }
+          // Key '5'
+          else if ($scope.newValue[p] == 5) {
+            // Colour 'Blue'
+            $scope.backgroundCount ++;
+            $scope.colour_f = "rgba(128, 128, 255, 0.4)";
+          }
+          // Key '4'
+          else if ($scope.newValue[p] == 6) {
+            // Colour 'Grey'
+            $scope.badDataCount ++;
+            $scope.colour_f = "rgba(46, 46, 31, 0.7)";
           }
 
           // Very similar to the standard colouring function
@@ -311,8 +378,60 @@ angular.module('myApp').controller('CanvasCtrl', function($http, $scope, user_in
             }
           }
         }
+
+        // This pixel has not been , check to see if we want to overwrite it!
+        else {
+
+          // Only fill in remaing superpixels if told from save button
+          if ($scope.anyUnasigned == 1 ){
+
+            // Colour all remaining superpixels as badData cells
+            $scope.badDataCount ++;
+            $scope.colour_f = "rgba(46, 46, 31, 0.7)";
+
+            // Very similar to the standard colouring function
+
+            var mask_value = p;
+
+            // Disallow recolouring
+            $scope.isPainted[mask_value] = 1;
+            $scope.newValue[mask_value] = 6;
+
+            // Keep track of event for undo feature
+            $scope.undoPosition ++;
+            $scope.undoQueue[$scope.undoPosition] = mask_value;
+
+            $scope.length_2 = $scope.mask_data.length;
+            $scope.length_1 = $scope.mask_data[0].length;
+
+            // Iterate through every pixel and colour it in
+            for (i = 0; i < $scope.length_2; i ++){
+                $scope.iter2 = i;
+
+              for (k = 0; k < $scope.length_1; k++){
+                $scope.iter1 = k;
+
+                // Colour in the single pixel the appropiate colour
+                if (mask_value == $scope.mask_data[$scope.iter2][$scope.iter1]){
+                  contextTop.fillStyle = $scope.colour_f;
+                  contextTop.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
+                }
+                // Do nothing
+                else {
+                }
+              }
+            }
+
+          }
+
+        }
     }
     contextMiddle.drawImage(myImageMiddle, 0, 0, $scope.draw_w, $scope.draw_h);
+
+    // Disable the autocolour funcitonality and reassign the colour
+    $scope.anyUnasigned = 0;
+    $scope.colour_f = currentColour;
+
   }
 
 
@@ -423,35 +542,49 @@ angular.module('myApp').controller('CanvasCtrl', function($http, $scope, user_in
 
       // Key '1'
       if (map[49] == true) {
-        // Colour 'red' (1)
-        $scope.colour_f = "rgba(32, 0, 0, 0.4)";
+        // Colour 'Orange' (1)
+        $scope.colour_f = "rgba(255, 102, 0, 0.4)";
         $scope.classification = 1;
-        $('hchosen').css({'background-color':'#FFE5E5'})
+        $('hchosen').css({'background-color':'#ff944d'})
         $('#tissue').html('1 - Healthy');
       }
       // Key '2'
       else if (map[50] == true) {
-          // Colour 'Mahogony'
-          $scope.colour_f = "rgba(0, 32, 0, 0.4)";
+          // Colour 'Green'
+          $scope.colour_f = "rgba(0, 32, 0, 0.6)";
           $scope.classification = 2;
           $('hchosen').css({'background-color':'#E5FFE5'})
           $('#tissue').html('2 - Scar');
       }
       // Key '3'
       else if (map[51] == true) {
-        // Colour 'Dark Yellow'
-        $scope.colour_f = "rgba(0, 0, 32, 0.4)";
+        // Colour 'Pink'
+        $scope.colour_f = "rgba(255, 51, 54, 0.4)";
         $scope.classification = 3;
-        $('hchosen').css({'background-color':'#E5E5E5'})
+        $('hchosen').css({'background-color':'#FF99B1'})
         $('#tissue').html('3 - Inflammatory');
       }
       // Key '4'
       else if (map[52] == true) {
-        // Colour 'Orange'
-        $scope.colour_f = "rgba(32, 32, 0, 0.4)";
+        // Colour 'Yellow'
+        $scope.colour_f = "rgba(255, 255, 0, 0.4)";
         $scope.classification = 4;
         $('hchosen').css({'background-color':'#FFFFAD'})
         $('#tissue').html('4 - Necrotic');
+      }
+      else if (map[53] == true) {
+        // Colour 'Blue'
+        $scope.colour_f = "rgba(128, 128, 255, 0.4)";
+        $scope.classification = 5;
+        $('hchosen').css({'background-color':'#8080ff'})
+        $('#tissue').html('5 - Background');
+      }
+      else if (map[54] == true) {
+        // Colour 'Grey'
+        $scope.colour_f = "rgba(46, 46, 31, 0.7)";
+        $scope.classification = 6;
+        $('hchosen').css({'background-color':'#a6a6a6'})
+        $('#tissue').html('6 - Bad Data');
       }
       // Escape key to fix the mouse
       else if (map[27] == true){
@@ -742,7 +875,7 @@ if (window.addEventListener) {
       contextTop.clearRect(0, 0, canvas.width, canvas.height);
       reColour();
 
-      $('#tissue').html('None');
+
     }
     else{
             //some code
@@ -756,28 +889,44 @@ if (window.addEventListener) {
   //***************************************************************//
   $scope.saveWork = function(){
 
+    // Ask if the user wants to set unclassified pixels to Bad Data
+    var answer = confirm("Set any remaing cells to 'Bad Data' classification?")
+    if (answer){
+      // Recolour any unselected to badData
+      $scope.anyUnasigned = 1;
+
+    }
+    else{
+      // Ignore unselected (save work for future progress)
+      $scope.anyUnasigned = 0;
+    }
+
     // Need to get most recent work from the user
     contextTop.clearRect(0, 0, canvas.width, canvas.height);
     reColour();
 
     var p = 0;
     var i = 0;
-    var dictionary = new Array(5);
+    var dictionary = new Array(7);
 
-        // First array value is reserved for specifying the chosen cropped image
-        dictionary[0] = 0;
+    // First array value is reserved for specifying the chosen cropped image
+    dictionary[0] = 0;
 
-        // Creating the perfect sized arrays
-        dictionary[1] = new Array($scope.healthyCount);
-        dictionary[2] = new Array($scope.scarCount);
-        dictionary[3] = new Array($scope.infCount);
-        dictionary[4] = new Array($scope.necroticCount);
+    // Creating the perfect sized arrays
+    dictionary[1] = new Array($scope.healthyCount);
+    dictionary[2] = new Array($scope.scarCount);
+    dictionary[3] = new Array($scope.infCount);
+    dictionary[4] = new Array($scope.necroticCount);
+    dictionary[5] = new Array($scope.backgroundCount);
+    dictionary[6] = new Array($scope.badDataCount);
 
 
     var healthyPosition = 0;
     var scarPosition = 0;
     var infPosition = 0;
     var necroticPosition = 0;
+    var backgroundPosition = 0;
+    var badDataPosition = 0;
 
 
     // Check every superpixel to see if it has been assigned a colour
@@ -811,6 +960,18 @@ if (window.addEventListener) {
             dictionary[4][necroticPosition] = p;
             necroticPosition ++;
           }
+          // Key '5' Background
+          else if ($scope.newValue[p] == 5) {
+
+            dictionary[5][backgroundPosition] = p;
+            backgroundPosition ++;
+          }
+          // Key '6' Bad Data
+          else if ($scope.newValue[p] == 6) {
+
+            dictionary[6][badDataPosition] = p;
+            badDataPosition ++;
+          }
         }
     }
 
@@ -842,7 +1003,7 @@ if (window.addEventListener) {
     // The .then determines how we handle the file that has been read
     //******************************************************************//
     // We can only read in a file once. Then the same file is re-used
-
+    try{
     $http.get('/polygon-draw/segmentedImg.json').then(function(response) {
       // Storing the data in a multidimensional array that can be accessed
       // By both the .html file and other functions within this 'scope'
@@ -850,6 +1011,10 @@ if (window.addEventListener) {
       $scope.mask_data = response.data;
       $scope.the_string = "Done!";
     });
+  }
+  catch(err){
+
+  }
 
   }
 
@@ -999,7 +1164,5 @@ myImageMiddle.src = "static/images/segmentedImg.jpg";
       context.beginPath();
       contextMiddle.beginPath();
       contextTop.beginPath();
-
-
 
 });

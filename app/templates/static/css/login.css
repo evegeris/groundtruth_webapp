@@ -103,7 +103,7 @@ hh {
    margin-right: 1em;
    font-weight: bold;
    font-size: 18px;
-   background-color: #FFE5E5;
+   background-color: #ff944d;
 
 }
 
@@ -125,7 +125,7 @@ hi{
   margin-right: 1em;
   font-weight: bold;
   font-size: 18px;
-  background-color: #E5E5E5;
+  background-color: #FF99B1;
 }
 
 hn {
@@ -136,6 +136,26 @@ hn {
   font-weight: bold;
   font-size: 18px;
   background-color: #FFFFAD;
+}
+
+hba {
+  margin-top: 0.1em;
+  margin-bottom: 1.5em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+  font-size: 18px;
+  background-color: #8080ff;
+}
+
+hb {
+  margin-top: 0.1em;
+  margin-bottom: 1.5em;
+  margin-left: 0;
+  margin-right: 0;
+  font-weight: bold;
+  font-size: 18px;
+  background-color: #a6a6a6;
 }
 
 hselected {
@@ -156,7 +176,7 @@ hchosen {
   margin-right: 1em;
   font-weight: bold;
   font-size: 18px;
-  background-color: #FFE5E5;
+  background-color: #ff944d;
 }
 
 
@@ -179,4 +199,11 @@ himg_id {
 .block-margin{
     display:block;
     margin-top: 10px;
+}
+.slider-width200
+{
+    position: absolute;
+    width: 200px;
+    top: 120%;
+    left: 50%;
 }

@@ -9,6 +9,14 @@ angular.module('myApp').controller('CropCtrl', function($http, $scope) {
   $scope.myCroppedImage='';
   $scope.cropType="circle";
 
+  // Listener to update the range slider when the mouse moves
+  $(document).mousemove(function(e){
+      var slider1 = document.getElementById("slider").value;
+      slider1 = slider1 - 2;
+
+      $('#slidePosition').html('Granularity: '+ slider1);
+  });
+
   $scope.setArea=function(value){
     $scope.cropType=value;
   }
