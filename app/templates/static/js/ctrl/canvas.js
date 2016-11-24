@@ -322,7 +322,7 @@ else {
     for (p = 0; p <= pMax; p ++){
 
       // Periodic timeout every 50 superpixels to prevent page from freezing
-      if (p % 50 == 0){
+      if (p % 25 == 0){
         setTimeout(foo, 0);
      }
 
@@ -628,9 +628,13 @@ else {
       // Clear canvas
       if (toggle == 0){
         toggle = 1;
-        contextTop.clearRect(0, 0, canvas.width, canvas.height);
-        contextMiddle.clearRect(0, 0, canvas.width, canvas.height);
+
         context.drawImage(myImageBack, 0, 0, $scope.draw_w, $scope.draw_h);
+
+        // Rearrange the layers
+        document.getElementById("canvasTop").style.zIndex = "1";
+        document.getElementById("canvas").style.zIndex = "3";
+
         $('#toggle_code').html("toggle on");
 
       }
@@ -638,7 +642,13 @@ else {
       else {
         toggle = 0;
         $('#toggle_code').html("toggle off");
-        reColour();
+
+        contextMiddle.drawImage(myImageMiddle, 0, 0, $scope.draw_w, $scope.draw_h);
+
+        // Rearrange the layers
+        document.getElementById("canvasTop").style.zIndex = "3";
+        document.getElementById("canvas").style.zIndex = "1";
+
       }
     }
 
