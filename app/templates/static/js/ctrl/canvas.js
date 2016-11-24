@@ -1067,16 +1067,19 @@ if (window.addEventListener) {
     //***************************************************************//
     function readMiddleImage(index){
 
-      alert($scope.image_info[index].fullsize_orig_filepath);
+      //alert($scope.image_info[index].fullsize_orig_filepath);
       var filepath = $scope.image_info[index].fullsize_orig_filepath;
+      var full_filepath = 'dyn_img/' + filepath;
+      alert(full_filepath);
 
-      $http.get('dyn_img/' + filepath).then(function(response) {
+      $http.get(full_filepath).then(function(response) {
+        alert("yeah hi");
         myImageMiddle.src = "data:image/png;base64," + response.data;
 
         //var tstimg = document.getElementById('test_img');
         //tstimg.src = "data:image/png;base64," + response.data;
       });
-
+      //alert("bye");
 
     }
 
@@ -1130,11 +1133,11 @@ function resize(value) {
 //readBackImage($scope.current_img_idx);
 //readMiddleImage($scope.current_img_idx);
 
-myImageBack.src = "static/images/wound_2_origin.jpg";
-myImageMiddle.src = "static/images/segmentedImg.jpg";
+//myImageBack.src = "static/images/wound_2_origin.jpg";
+//myImageMiddle.src = "static/images/segmentedImg.jpg";
 
-//myImageBack.src = "static/images/test_image_swift.jpg";
-//myImageMiddle.src = "static/images/test_image_swift_segment_n566_s14.jpg";
+myImageBack.src = "static/images/test_image_swift.jpg";
+myImageMiddle.src = "static/images/test_image_swift_segment_n566_s14.jpg";
 
 
   //***************************************************************//
