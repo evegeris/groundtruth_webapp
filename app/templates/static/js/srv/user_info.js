@@ -15,17 +15,18 @@ angular.module('myApp').service('user_info', function() {
            }
         };
 
-        this.getNextImageIndex = function(){
+        this.updateNextImageIndex = function(){
           var arrayLength = this.user_info_object.data.attributes.image_info.length;
           // check data types, ie str vs num
-          alert(typeof this.user_info_object.data.attributes.image_info[0].progress);
+          //alert(typeof this.user_info_object.data.attributes.image_info[0].progress);
           // loop over images for next one (start at current index)
           for (var i = this.user_info_object.data.attributes.current_img; i < arrayLength; i++) {
-            if (this.user_info_object.data.attributes.image_info[i].progress != 100){
-              alert("progress not 100");
+            if (this.user_info_object.data.attributes.image_info[i].progress < 100){
+              this.user_info_object.data.attributes.current_img = i;
+              break;
             }
           }
-          return this.user_info_object.data.attributes.current_img;
+          //return this.user_info_object.data.attributes.current_img;
         };
 
     this.setImageData = function(image_info){
