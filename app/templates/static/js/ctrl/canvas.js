@@ -11,8 +11,12 @@ else {
 
   // variable Initialization
 
+  var myImageMiddle = new Image();
+  var myImageBack = new Image();
+
   $scope.user_info = user_info;
   $scope.image_info = user_info.user_info_object.data.attributes.image_info;
+  $scope.current_img_idx = user_info.user_info_object.data.attributes.current_img;
 
   // Current max superpixel count is 1000. Change statically
   $scope.isPainted = [1000];
@@ -1055,18 +1059,13 @@ if (window.addEventListener) {
     // Custom Function for Reading in the original img
     //***************************************************************//
 
-    function readImage(index){
+    function readBackImage(index){
 
       alert($scope.image_info[index].fullsize_orig_filepath);
-
-      //myImageBack.src = "static/images/wound_2_origin.jpg";
-      //var filepath = $scope.image_info[index].fullsize_orig_filepath;
-      var filepath = "wound_2_origin.jpg";
+      var filepath = $scope.image_info[index].fullsize_orig_filepath;
 
       $http.get('dyn_img/' + filepath).then(function(response) {
-        //alert(typeof response.data);
-        $scope.test_img = response.data;
-        myImageBack = "data:image/png;base64," + response.data;
+        myImageBack.src = "data:image/png;base64," + response.data;
       });
 
 
@@ -1076,18 +1075,21 @@ if (window.addEventListener) {
     //***************************************************************//
     // Custom Function for Reading in the original img
     //***************************************************************//
-    function readSegmentedImage(index){
+    function readMiddleImage(index){
 
-      alert($scope.image_info[index].fullsize_orig_filepath);
+      //alert($scope.image_info[index].fullsize_orig_filepath);
+      var filepath = $scope.image_info[index].fullsize_orig_filepath;
+      var full_filepath = 'dyn_img/' + filepath;
+      alert(full_filepath);
 
-      //var filepath = $scope.image_info[index].fullsize_orig_filepath;
-      var filepath = "segmentedImg.jpg";
-      //myImageMiddle.src = "static/images/segmentedImg.jpg";
+      $http.get(full_filepath).then(function(response) {
+        alert("yeah hi");
+        myImageMiddle.src = "data:image/png;base64," + response.data;
 
-      $http.get('dyn_img/' + filepath).then(function(response) {
-        myImageMiddle = "data:image/png;base64," + response.data;
+        //var tstimg = document.getElementById('test_img');
+        //tstimg.src = "data:image/png;base64," + response.data;
       });
-
+      //alert("bye");
 
     }
 
@@ -1138,11 +1140,8 @@ function resize(value) {
   };
 
 
-var myImageMiddle = new Image();
-var myImageBack = new Image();
-
-//readSegmentedImage(0);
-//readImage(0);
+//readBackImage($scope.current_img_idx);
+//readMiddleImage($scope.current_img_idx);
 
 //myImageBack.src = "static/images/wound_2_origin.jpg";
 //myImageMiddle.src = "static/images/segmentedImg.jpg";

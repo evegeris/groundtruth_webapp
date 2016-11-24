@@ -1,9 +1,8 @@
 angular.module('myApp.controllers').controller('DashboardCtrl', function($auth, $state, $window, $scope, user_info) {
-//alert("hgfnfg");
+
 /*
 $scope.goSomewhere = function(){
-  alert("hi");
-  $state.go("#/cropImage");
+  $state.go("crop_image");
 }
 */
 

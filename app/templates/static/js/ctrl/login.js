@@ -110,6 +110,8 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                 //alert(user_entry.message.image_info[0].fullsize_orig_filepath);
                 user_info.setImageData(user_entry.message.image_info);
 
+                user_info.updateNextImageIndex();
+
               });
 
 

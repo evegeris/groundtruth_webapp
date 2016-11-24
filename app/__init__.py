@@ -49,12 +49,21 @@ def create_app(config_filename):
 
 
         fullpath = os.path.join(app.root_path, 'templates/static/images/') + path
-        print ("#############@@@@@@@@@@@@@@@@@@@@@@")
+        #fullpath = '/home/lainey/code/rdash_Nov23/groundtruth_webapp/app/templates/static/images/wound_images/wound_2.jpg'
+
         print (fullpath)
         myimg = cv2.imread( fullpath )
+        #cv2.imshow('myimg', myimg)
+        #cv2.waitKey(0)
+        print(myimg.size)
+        # trying to check if Empty
+        # very easy in C++... mat.empty()
+        #if (myimg.size == 0)
+        #    print("aaaaaaaaaahh img empty")
         encoded = cv2.imencode(".jpg", myimg)[1]
         strImg = base64.encodestring(encoded)
 
+        print ("#############@@@@@@@@@@@@@@@@@@@@@@")
         return Response(strImg, direct_passthrough=True)
         #return render_template("test.html", img_data=urllib.quote(strImg.rstrip('\n')))
 
