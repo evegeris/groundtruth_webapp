@@ -1,4 +1,4 @@
-angular.module('myApp').controller('LogoutCtrl', function($auth, $state, $window, toaster, $scope, Idle, user_info) { // Logout the user if they are authenticated.
+angular.module('myApp').controller('LogoutCtrl', function($auth, $state, $window, toaster, $scope, Idle, user_info, localStorageService) { // Logout the user if they are authenticated.
 
   // check if authenticated
   $scope.isAuthenticated = function() {
@@ -7,34 +7,16 @@ angular.module('myApp').controller('LogoutCtrl', function($auth, $state, $window
 
 // for watching shared variables
     $scope.user_info = user_info;
-    $scope.user_name = user_info.user_info_object.data.attributes.full_name;
-    $scope.classified = user_info.user_info_object.data.attributes.classified;
-    $scope.in_queue = user_info.user_info_object.data.attributes.in_queue;
-    $scope.percent_complete = user_info.user_info_object.data.attributes.percent_complete;
+    $scope.user_name = localStorageService.get('full_name');
 
   // watchers
   $scope.$watch('user_info.user_info_object.data.attributes.full_name', function (newVal, oldVal, scope) {
     if(newVal) {
-      scope.user_name = newVal;
-    }
-  });
-  $scope.$watch('user_info.user_info_object.data.attributes.classified', function (newVal, oldVal, scope) {
-    if(newVal) {
-      scope.classified = newVal;
-    }
-  });
-  $scope.$watch('user_info.user_info_object.data.attributes.in_queue', function (newVal, oldVal, scope) {
-    if(newVal) {
-      scope.in_queue = newVal;
-    }
-  });
-  $scope.$watch('user_info.user_info_object.data.attributes.percent_complete', function (newVal, oldVal, scope) {
-    if(newVal) {
-      scope.percent_complete = newVal;
+      scope.user_name = localStorageService.get('full_name');;
     }
   });
 
-    //$scope.percent_complete = user_info.getPercentComplete();
+
 
 /*
     $scope.$on('$viewContentLoaded', function(){

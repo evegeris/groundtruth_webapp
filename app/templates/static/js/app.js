@@ -1,4 +1,4 @@
-angular.module('myApp', ['ui.router', 'ngResource',  "angularGrid" , 'myApp.controllers', 'myApp.services', 'satellizer','toaster', 'ngAnimate', 'angular-google-analytics', 'ngIdle', 'ngImgCrop']);
+angular.module('myApp', ['ui.router', 'ngResource',  "angularGrid" , 'myApp.controllers', 'myApp.services', 'satellizer','toaster', 'ngAnimate', 'angular-google-analytics', 'ngIdle', 'ngImgCrop', 'LocalStorageModule']);
 
 angular.module('myApp')
   .run( function($rootScope, $state){

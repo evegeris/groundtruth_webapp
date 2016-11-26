@@ -1,4 +1,4 @@
-angular.module('myApp').service('user_info', function() {
+angular.module('myApp').service('user_info', function(localStorageService) {
 
     this.user_info_object = {
           "data": {
@@ -30,36 +30,40 @@ angular.module('myApp').service('user_info', function() {
         };
 
     this.setImageData = function(image_info){
-      this.user_info_object.data.attributes.image_info = image_info;
+
+      var arrayLength = image_info.length;
+      //alert("array len "+arrayLength.toString() );
+      for (var i = 0; i < arrayLength; i++) {
+        //alert('image_info'+i.toString());
+        localStorageService.set('image_info'+i.toString(), image_info[i]);
+      }
+
+      this.user_info_object.data.attributes.image_info = image_info; // set srv var to whatever to trigger watcher
       //alert(this.user_info_object.data.attributes.image_info[0].fullsize_orig_filepath);
     };
 
     this.setFullName = function(full_name){
-      this.user_info_object.data.attributes.full_name = full_name;
+      localStorageService.set('full_name', full_name);
+      this.user_info_object.data.attributes.user_info = full_name;
     };
+
     this.sayHello = function(){
       return "Hello " + user_info_object.data.attributes.full_name;
     };
 
     this.setClassified = function(classified){
+      localStorageService.set('classified', classified);
       this.user_info_object.data.attributes.classified = classified;
-    };
-    this.getClassified = function(){
-      return user_info_object.data.attributes.classified;
     };
 
     this.setInQueue = function(in_queue){
+      localStorageService.set('in_queue', in_queue);
       this.user_info_object.data.attributes.in_queue = in_queue;
-    };
-    this.getInQueue = function(){
-      return user_info_object.data.attributes.in_queue;
     };
 
     this.setPercentComplete = function(pComplete){
+      localStorageService.set('percent_complete', pComplete);
       this.user_info_object.data.attributes.percent_complete = pComplete;
-    };
-    this.getPercentComplete = function(){
-      return this.user_info_object.data.attributes.percent_complete;
     };
 
 
