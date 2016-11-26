@@ -32,15 +32,23 @@ angular.module('myApp').service('user_info', function(localStorageService) {
     this.setImageData = function(image_info){
 
       var arrayLength = image_info.length;
+      localStorageService.set('image_arrayLen', arrayLength);
       //alert("array len "+arrayLength.toString() );
       for (var i = 0; i < arrayLength; i++) {
         //alert('image_info'+i.toString());
-        localStorageService.set('image_info'+i.toString(), image_info[i]);
+        //alert(JSON.stringify(image_info[i]));
+        localStorageService.set('image_info'+i.toString(), JSON.stringify(image_info[i]) );
       }
 
       this.user_info_object.data.attributes.image_info = image_info; // set srv var to whatever to trigger watcher
-      //alert(this.user_info_object.data.attributes.image_info[0].fullsize_orig_filepath);
+      //alert('user_info: '+this.user_info_object.data.attributes.image_info[0].fullsize_orig_filepath);
     };
+
+    this.getImageData = function(){
+      alert("fgfdh??");
+      alert('user_info: '+this.user_info_object.data.attributes.image_info[0].fullsize_orig_filepath);
+        return this.user_info_object.data.attributes.image_info;
+    }
 
     this.setFullName = function(full_name){
       localStorageService.set('full_name', full_name);

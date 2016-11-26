@@ -6,32 +6,50 @@ $scope.goSomewhere = function(){
 }
 */
 
-$scope.user_info = user_info;
-$scope.image_info = user_info.user_info_object.data.attributes.image_info;
+//$scope.image_info = user_info.getImageData();
+//alert($scope.image_info[0].fullsize_orig_filepath);
+//$scope.user_info = user_info;
+//$scope.image_info = user_info.getImageData();
+//$scope.image_info = user_info.user_info_object.data.attributes.image_info;
+//alert($scope.image_info[0].fullsize_orig_filepath);
+//alert('dash: '+$scope.image_info[0].fullsize_orig_filepath);
 
-$scope.classified = localStorageService.get('classified');
-$scope.in_queue = localStorageService.get('in_queue');
+  // reset local vars
+  $scope.refresh = function(){
+
+    $scope.image_info = [];
+    $scope.classified = localStorageService.get('classified');
+    $scope.in_queue = localStorageService.get('in_queue');
+
+    var arrayLength = localStorageService.get('image_arrayLen');
+    arrayLength = parseInt(arrayLength);
+    for (var i = 0; i < arrayLength; i++) {
+      $scope.image_info.push(JSON.parse(localStorageService.get('image_info'+i.toString())));
+      //alert( $scope.image_info[i].fullsize_orig_filepath );
+    }
+
+  }
+
+
+$scope.refresh();
+
 
 // watchers
 
-// IN PROGRESS
 $scope.$watch('user_info.user_info_object.data.attributes.image_info', function (newVal, oldVal, scope) {
 
-/*
   if(newVal) {
-    var image_array = [];
-    var arrayLength = user_info.user_info_object.data.attributes.image_info.length;
+    $scope.image_info = [];
+    var arrayLength = localStorageService.get('image_arrayLen');
+    arrayLength = parseInt(arrayLength);
     for (var i = 0; i < arrayLength; i++) {
-      //alert(JSON.parse(localStorage.getItem('image_info'+toString(i))));
-      image_array.push( JSON.parse(localStorage.getItem('image_info'+i.toString())) );
+      $scope.image_info.push(JSON.parse(localStorageService.get('image_info'+i.toString())));
+      //alert( $scope.image_info[i].fullsize_orig_filepath );
     }
-
-    scope.image_info = user_info.user_info_object.data.attributes.image_info;
-    //scope.image_info = image_array;
-
   }
-*/
+
 });
+
 $scope.$watch('user_info.user_info_object.data.attributes.classified', function (newVal, oldVal, scope) {
   if(newVal) {
     scope.classified = localStorageService.get('classified');

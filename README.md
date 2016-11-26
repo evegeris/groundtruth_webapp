@@ -41,8 +41,10 @@
 * $ mysql -u root -p
 * mysql> use groundtruth_db;
 * (example insert statements)
-* mysql> insert into images (fullsize_orig_filepath, progress) values ('file/path/1', 0);
-* mysql> insert into user_has_image (users_id, images_id) values (1, 1);
+* mysql> insert into images (fullsize_orig_filepath) values ('wound_images/wound_2.jpg');
+* mysql> insert into images (fullsize_orig_filepath) values ('wound_images/Pressure08.jpg');
+* mysql> insert into user_has_image (users_id, images_id, progress) values (1, 1, 0);
+* mysql> insert into user_has_image (users_id, images_id, progress) values (1, 1, 0);
 
 ### client
 * original RDash front-end

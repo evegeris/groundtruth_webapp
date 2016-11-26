@@ -171,8 +171,8 @@ class UserInfo(Resource):
 
             result = db.session.execute(stmt)
             user_images = result.fetchall();
-            row = result.fetchone()
-            print("id:", row['id'], "; filpeath:", "progress:", row['progress'], "; filpeath:", row['fullsize_orig_filepath'])
+            #row = result.fetchone()
+            #print("id:", row['id'], "; filpeath:", "progress:", row['progress'], "; filpeath:", row['fullsize_orig_filepath'])
 
             #for row in user_images:
             #    for field in row:
