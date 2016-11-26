@@ -166,13 +166,13 @@ class UserInfo(Resource):
 
             j = join(Images, UserHasImage,
             UserHasImage.users_id == UserHasImage.images_id)
-            stmt = select([Images.id, Images.fullsize_orig_filepath, Images.progress]).select_from(j).distinct()
+            stmt = select([Images.id, Images.fullsize_orig_filepath, UserHasImage.progress]).select_from(j).distinct()
             print(str(stmt))
 
             result = db.session.execute(stmt)
             user_images = result.fetchall();
-            #row = result.fetchone()
-            #print("id:", row['id'], "; filpeath:", "progress:", row['progress'], "; filpeath:", row['fullsize_orig_filepath'])
+            row = result.fetchone()
+            print("id:", row['id'], "; filpeath:", "progress:", row['progress'], "; filpeath:", row['fullsize_orig_filepath'])
 
             #for row in user_images:
             #    for field in row:

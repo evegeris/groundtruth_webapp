@@ -6,10 +6,16 @@ class UserHasImage(db.Model, CRUD_MixIn):
     id = db.Column(db.Integer, primary_key=True)
     users_id = db.Column(db.Integer, nullable=False, primary_key=False)
     images_id = db.Column(db.Integer, nullable=False, primary_key=False)
+    crop_orig_filepath = db.Column(db.String(250), nullable=True, unique=True)
+    crop_overlay_filepath = db.Column(db.String(250), nullable=True, unique=True)
+    crop_segm_filepath = db.Column(db.String(250), nullable=True, unique=True)
+    classified_segments = db.Column(db.String(250), nullable=True, unique=True)
+    progress = db.Column(db.Integer, nullable=True)
+    n_segments = db.Column(db.Integer, nullable=True)
 
 
     def __init__(self,  fullsize_orig_filepath):
-        print("")
+        self.progress = 0
 
 
 class UserHasImageSchema(Schema):
