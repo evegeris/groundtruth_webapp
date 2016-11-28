@@ -93,11 +93,17 @@ def create_app(config_filename):
         #print(x.type)
         imDict = segmentation.getSegmentedImage(filepath, app.root_path, int(x), int(y), int(w), int(h))
         #print(imDict.get('out_file0'))
-        im = imDict.get('img0')
+        len = imDict.get('arrayLength')
+        #print(len)
+        im = imDict.get('img'+str(len-1))
         #plt.imshow(im)
         #plt.show()
         #cv2.imshow("im", im)
         #cv2.waitKey(0)
+        fullpath = os.path.join(app.root_path, 'templates/static/json/') + filepath
+        print(fullpath)
+        #with open('/home/madison/Documents/41x/IMG_SET6/' + self.out_files[i] +'.json', 'w') as outfile:
+        #	    json.dump(b, outfile, indent=2)
 
         encoded = cv2.imencode(".jpg", im)[1]
         segmentedImgStr = base64.encodestring(encoded)

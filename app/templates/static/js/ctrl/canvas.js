@@ -1063,7 +1063,7 @@ if (window.addEventListener) {
 
     function readBackImage(){
       //alert("readBackimg");
-      alert(localStorageService.get('cropped_img'));
+      //alert(localStorageService.get('cropped_img'));
       myImageBack.src = localStorageService.get('cropped_img');
 
     }

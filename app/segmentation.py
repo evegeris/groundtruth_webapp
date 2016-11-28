@@ -27,6 +27,9 @@ class PostProc:
 
     def __init__(self, im):
         self.im = im
+
+        self.imArray = []
+        self.segm_lists = []
         self.out_files = []
 
         #self.scale = 0.2
@@ -77,8 +80,7 @@ class PostProc:
 
 
         self.imArray = []
-        for i in range(0,2):
-
+        for i in range(0,3): # runs 3 times
             #numSegments = 566
             #mySigma = 6
             self.out_files.append( str(n[i])+'seg_sigma'+str(s[i]) )
@@ -95,6 +97,9 @@ class PostProc:
             #with open('/home/madison/Documents/41x/IMG_SET6/' + self.out_files[i] +'.json', 'w') as outfile:
             #	    json.dump(b, outfile, indent=2)
 
+            #self.segm_lists.append(json.dumps(b, indent=2))
+            self.segm_lists.append(b)
+
             # show the output of SLICs
             fig = plt.figure("Superpixels -- %d segments" % (n[i]))
             ax = fig.add_subplot(1, 1, 1)
@@ -109,7 +114,6 @@ class PostProc:
             #cv2.imwrite("/home/madison/Documents/41x/IMG_SET6/" + out_file +".jpg", self.newIm)
             #cv2.waitKey(0)
 
-        return self.imArray
 
 
 
@@ -169,16 +173,18 @@ def getSegmentedImage(filepath, rootpath, cropStartX, cropStartY, cropWidth, cro
     newIm = newIm[y1:y2,x1:x2,:]
 
     postprocessor = PostProc(im)
-    imArray = postprocessor.segment()
+    postprocessor.segment()
 
     #writepath = rootpath + "/templates/static/images/wound_images/segmented/" + postprocessor.out_files[0] +".jpg"
     #print("WRITE FULLPATH --- "+ writepath)
     #cv2.imwrite(writepath, imArray[0])
 
     imDict = dict()
-    for idx, val in enumerate(imArray):
+    imDict['arrayLength'] = len(postprocessor.imArray)
+    for idx, val in enumerate(postprocessor.imArray):
         #print(idx)
-        imDict['img'+str(idx)] = imArray[idx]
+        imDict['img'+str(idx)] = postprocessor.imArray[idx]
+        imDict['json'+str(idx)] = postprocessor.segm_lists[idx]
         imDict['out_file'+str(idx)] = postprocessor.out_files[idx]
 
     return imDict
