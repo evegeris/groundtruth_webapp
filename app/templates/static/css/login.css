@@ -192,8 +192,8 @@ himg_id {
 .cropArea {
   background: #E4E4E4;
   overflow: hidden;
-  width:800px;
-  height:580px;
+  width:900px;
+  height:530px;
 }
 
 .block-margin{
@@ -202,8 +202,8 @@ himg_id {
 }
 .slider-width200
 {
-    position: absolute;
     width: 200px;
+    /*position: absolute;
     top: 120%;
-    left: 50%;
+    left: 50%;*/
 }

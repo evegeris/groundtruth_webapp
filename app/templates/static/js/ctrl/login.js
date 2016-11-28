@@ -94,11 +94,11 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                      }
                     }
 
-              // { token: $scope.token }
-              //$scope.token = $stateParams.token;
+
               var user_entry = user.UserInfo.get({ email: $scope.email }, function() {
 
                 user_info.setFullName(user_entry.message.full_name);
+                user_info.setEmail($scope.email);
                 var classified = user_entry.message.classified;
                 user_info.setClassified(classified);
                 var in_queue = user_entry.message.in_queue;
@@ -110,7 +110,7 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
                 //alert(user_entry.message.image_info[0].fullsize_orig_filepath);
                 user_info.setImageData(user_entry.message.image_info);
 
-                user_info.updateNextImageIndex();
+                //user_info.updateNextImageIndex();
 
               });
 

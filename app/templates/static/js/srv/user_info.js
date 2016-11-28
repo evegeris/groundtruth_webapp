@@ -4,13 +4,14 @@ angular.module('myApp').service('user_info', function(localStorageService) {
           "data": {
             "type": "users",
             "attributes": {
-              "email":"sample@email",
-              "full_name": "Dr. Smith",
+              "email":"",
+              "full_name": "",
               "classified": "0",
               "in_queue": "0",
               "percent_complete": "0",
               "image_info": {},
-              "current_img": 0
+              "current_img": 0,
+              "token": ""
               }
            }
         };
@@ -19,13 +20,16 @@ angular.module('myApp').service('user_info', function(localStorageService) {
           var arrayLength = this.user_info_object.data.attributes.image_info.length;
           // check data types, ie str vs num
           //alert(typeof this.user_info_object.data.attributes.image_info[0].progress);
-          // loop over images for next one (start at current index)
-          for (var i = this.user_info_object.data.attributes.current_img; i < arrayLength; i++) {
+          // loop over images for next one
+          // TODO: (start at current index or 0, assuming user jumping around?)
+          // this.user_info_object.data.attributes.current_img
+          for (var i = 0; i < arrayLength; i++) {
             if (this.user_info_object.data.attributes.image_info[i].progress < 100){
               this.user_info_object.data.attributes.current_img = i;
               break;
             }
           }
+          localStorageService.set('current_img', this.user_info_object.data.attributes.current_img);
           //return this.user_info_object.data.attributes.current_img;
         };
 
@@ -44,19 +48,26 @@ angular.module('myApp').service('user_info', function(localStorageService) {
       //alert('user_info: '+this.user_info_object.data.attributes.image_info[0].fullsize_orig_filepath);
     };
 
+/*
     this.getImageData = function(){
       alert("fgfdh??");
       alert('user_info: '+this.user_info_object.data.attributes.image_info[0].fullsize_orig_filepath);
         return this.user_info_object.data.attributes.image_info;
     }
+*/
 
     this.setFullName = function(full_name){
       localStorageService.set('full_name', full_name);
-      this.user_info_object.data.attributes.user_info = full_name;
+      this.user_info_object.data.attributes.full_name = full_name;
+    };
+
+    this.setEmail = function(email){
+      localStorageService.set('email', email);
+      this.user_info_object.data.attributes.email = email;
     };
 
     this.sayHello = function(){
-      return "Hello " + user_info_object.data.attributes.full_name;
+      return "Hello " + localStorageService.get('full_name');
     };
 
     this.setClassified = function(classified){

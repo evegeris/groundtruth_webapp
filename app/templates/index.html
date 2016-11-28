@@ -3,7 +3,7 @@
   <head lang="en">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title ng-bind="$state.current.title + ' | Tissue Type ID App'"> </title>
+    <title ng-bind="$state.current.title + ' | Guelph Groundtruthing Assistant'"> </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
      <!-- <link rel="shortcut icon" href="static/images/" /> -->
     <base href="/"/>
@@ -42,6 +42,7 @@
     <script type="text/javascript" src="static/js/ctrl/canvas.js"></script>
     <script type="text/javascript" src="static/js/ctrl/crop.js"></script>
     <script type="text/javascript" src="static/js/ctrl/dashboard.js"></script>
+    <script type="text/javascript" src="static/js/ctrl/limbo.js"></script>
     <script type="text/javascript" src="static/js/srv/user_info.js"></script>
 
     <script type="text/javascript" src="static/js/directives/widget.js"></script>
@@ -102,10 +103,10 @@
           <li ng-if="isAuthenticated()" class="sidebar-list">
             <a href="#/dashboard">Dashboard<span class="menu-icon fa fa-tachometer"></span></a>
           </li>
-          <
-          <li class="sidebar-list">
+
+          <!--li class="sidebar-list">
             <a href="#/cropImage">Crop Images<span class="menu-icon fa fa-table"></span></a>
-          </li>
+          </li-->
 
         <!--li class="sidebar-list">
           <a ui-sref="users.list">Users<span class="menu-icon fa fa-users"></span></a></br>
@@ -113,7 +114,7 @@
         -->
 
           <li class="sidebar-list">
-            <a href="#/polygonDraw">Continue<span class="menu-icon fa fa-table"></span></a>
+            <a href="#/limbo">Continue<span class="menu-icon fa fa-table"></span></a>
           </li>
         </ul>
         <div class="sidebar-footer">

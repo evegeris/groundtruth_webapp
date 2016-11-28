@@ -106,24 +106,15 @@ $stateProvider.state('login', {
       }
     }
   })
-  .state('display', {
-      url: '/display',
+  .state('limbo', {
+      url: '/limbo',
+      title: 'Limbo',
       views: {
         'inner_page': {
-        templateUrl: '/display/display.html',
-        controller: 'CanvasCtrl'
+        templateUrl: 'limbo.html',
+        controller: 'LimboCtrl'
       }
     }
-  })
-  .state('hello', {
-      url: '/hello',
-      views: {
-        'inner_page': {
-        templateUrl: '/hello-example/helloExample.html'
-
-      }
-      }
-
   })
 /* New State Added Here called polygon */
 .state('polygon', {
@@ -136,8 +127,7 @@ $stateProvider.state('login', {
       }
     }
   })
-
-  /* New State Added Here called polygon */
+  /* New State Added Here called crop_image */
   .state('crop_image', {
         url: '/cropImage',
         title: 'Crop Image',

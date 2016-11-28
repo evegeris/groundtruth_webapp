@@ -1,4 +1,4 @@
-angular.module('myApp.controllers').controller('DashboardCtrl', function($auth, $state, $window, $scope, user_info, localStorageService) {
+angular.module('myApp.controllers').controller('DashboardCtrl', function($auth, $state, $scope, user_info, localStorageService) {
 
 /*
 $scope.goSomewhere = function(){
@@ -20,6 +20,7 @@ $scope.goSomewhere = function(){
     $scope.image_info = [];
     $scope.classified = localStorageService.get('classified');
     $scope.in_queue = localStorageService.get('in_queue');
+    $scope.percent_complete = localStorageService.get('percent_complete');
 
     var arrayLength = localStorageService.get('image_arrayLen');
     arrayLength = parseInt(arrayLength);

@@ -7,9 +7,13 @@ def create_app(config_filename):
     app = Flask(__name__, template_folder=template_dir, static_folder=template_dir+'/static')
     '''
 
-from flask import Flask, render_template, stream_with_context, Response
+from flask import Flask, render_template, stream_with_context, Response, request
+import jwt
+from jwt import DecodeError, ExpiredSignature
+from config import SECRET_KEY, PASSWORD_RESET_EMAIL
 import urllib
 import cv2
+import segmentation
 
 # http://flask.pocoo.org/docs/0.10/patterns/appfactories/
 
@@ -42,11 +46,69 @@ def create_app(config_filename):
         return send_from_directory(os.path.join(app.root_path, 'templates'), filename)
 
 
+    def parse_token(req):
+        token = req.headers.get('Authorization').split()[1]
+        return jwt.decode(token, SECRET_KEY, algorithms='HS256')
+
+
+    @app.route("/get_crop/")
+    def crop():
+        from StringIO import StringIO
+        import base64
+
+        import cv2
+        from matplotlib import pyplot as plt
+
+        if not request.headers.get('Authorization'):
+            response = jsonify(message='Missing accept header')
+            response.status_code = 401
+            return response
+        try:
+            print(request.headers.get('Authorization'))
+            payload = parse_token(request)
+            #print(payload)
+        except DecodeError:
+            response = jsonify(message='Token is invalid')
+            response.status_code = 401
+            return response
+        except ExpiredSignature:
+            response = jsonify(message='Token has expired')
+            response.status_code = 401
+            return response
+
+        x = request.args.get('x')
+        #print(x)
+        y = request.args.get('y')
+        #print(y)
+        w = request.args.get('w')
+        #print(w)
+        h = request.args.get('h')
+        #print(h)
+        #email = request.args.get('email')
+        #print(email)
+        filepath = request.args.get('filepath')
+        #print(filepath)
+
+        #print("***************")
+        #print(x.type)
+        imDict = segmentation.getSegmentedImage(filepath, app.root_path, int(x), int(y), int(w), int(h))
+        #print(imDict.get('out_file0'))
+        im = imDict.get('img0')
+        #plt.imshow(im)
+        #plt.show()
+        #cv2.imshow("im", im)
+        #cv2.waitKey(0)
+
+        encoded = cv2.imencode(".jpg", im)[1]
+        segmentedImgStr = base64.encodestring(encoded)
+
+        return Response(segmentedImgStr, direct_passthrough=True)
+
+
     @app.route("/dyn_img/<path:path>")
     def images(path):
         from StringIO import StringIO
         import base64
-
 
         fullpath = os.path.join(app.root_path, 'templates/static/images/') + path
         #fullpath = '/home/lainey/code/rdash_Nov23/groundtruth_webapp/app/templates/static/images/wound_images/wound_2.jpg'
@@ -63,7 +125,6 @@ def create_app(config_filename):
         encoded = cv2.imencode(".jpg", myimg)[1]
         strImg = base64.encodestring(encoded)
 
-        print ("#############@@@@@@@@@@@@@@@@@@@@@@")
         return Response(strImg, direct_passthrough=True)
         #return render_template("test.html", img_data=urllib.quote(strImg.rstrip('\n')))
 
