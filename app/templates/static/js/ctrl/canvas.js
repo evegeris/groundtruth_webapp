@@ -1,13 +1,15 @@
-angular.module('myApp').controller('CanvasCtrl', function($http, $scope, user_info) {
+angular.module('myApp').controller('CanvasCtrl', function($http, $scope, user_info, localStorageService) {
 
-
+/*
 if (window.location.href.indexOf("?") > -1){
 
 }
 else {
+  alert(window.location);
   window.location = window.location + '?loaded';
   window.location.reload(true);
 }
+/**/
 
   // variable Initialization
 
@@ -1059,15 +1061,10 @@ if (window.addEventListener) {
     // Custom Function for Reading in the original img
     //***************************************************************//
 
-    function readBackImage(index){
-
-      alert($scope.image_info[index].fullsize_orig_filepath);
-      var filepath = $scope.image_info[index].fullsize_orig_filepath;
-
-      $http.get('dyn_img/' + filepath).then(function(response) {
-        myImageBack.src = "data:image/png;base64," + response.data;
-      });
-
+    function readBackImage(){
+      //alert("readBackimg");
+      alert(localStorageService.get('cropped_img'));
+      myImageBack.src = localStorageService.get('cropped_img');
 
     }
 
@@ -1075,23 +1072,19 @@ if (window.addEventListener) {
     //***************************************************************//
     // Custom Function for Reading in the original img
     //***************************************************************//
-    function readMiddleImage(index){
+    function readMiddleImage(){
+      //alert("readMiddleimg");
+      myImageMiddle.src = localStorageService.get('segmented_img');
 
-      //alert($scope.image_info[index].fullsize_orig_filepath);
-      var filepath = $scope.image_info[index].fullsize_orig_filepath;
-      var full_filepath = 'dyn_img/' + filepath;
-      alert(full_filepath);
-
-      $http.get(full_filepath).then(function(response) {
-        alert("yeah hi");
-        myImageMiddle.src = "data:image/png;base64," + response.data;
-
-        //var tstimg = document.getElementById('test_img');
-        //tstimg.src = "data:image/png;base64," + response.data;
-      });
-      //alert("bye");
+      //var tstimg = document.getElementById('test_img');
+      //tstimg.src = localStorageService.get('segmented_img');
 
     }
+
+    readBackImage();
+    readMiddleImage();
+    //myImageBack.src = "static/images/test_image_swift.jpg";
+    //myImageMiddle.src = "static/images/test_image_swift_segment_n566_s14.jpg";
 
   //***************************************************************//
   // restart the entire process
@@ -1139,15 +1132,6 @@ function resize(value) {
 
   };
 
-
-//readBackImage($scope.current_img_idx);
-//readMiddleImage($scope.current_img_idx);
-
-//myImageBack.src = "static/images/wound_2_origin.jpg";
-//myImageMiddle.src = "static/images/segmentedImg.jpg";
-
-myImageBack.src = "static/images/test_image_swift.jpg";
-myImageMiddle.src = "static/images/test_image_swift_segment_n566_s14.jpg";
 
 
   //***************************************************************//

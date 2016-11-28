@@ -7,7 +7,7 @@ angular.module('myApp').controller('LogoutCtrl', function($auth, $state, $window
 
 // for watching shared variables
     $scope.user_info = user_info;
-    $scope.user_name = "";
+    $scope.user_name = localStorageService.get('full_name');
     //alert("logoutctrl "+localStorageService.get('full_name'));
 
   // watchers
