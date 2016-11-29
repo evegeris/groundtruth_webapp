@@ -1,16 +1,25 @@
 angular.module('myApp').controller('CropCtrl', function($http, $state,  $scope, user_info, localStorageService) {
 
   $scope.myImage='';
+  $scope.segm_img = new Image();
   $scope.myCroppedImage='';
   $scope.cropType="rectangle";
+  $scope.showLoadingWidget = false;
+  $scope.croppingStage = true;
+  $scope.segmentingStage = false;
+  $scope.segmentedArray = [];
+  $scope.jsonArray = [];
+  $scope.selectedIndex = 0;
+
 
   // Listener to update the range slider when the mouse moves
   $(document).mousemove(function(e){
       var slider1 = document.getElementById("slider").value;
-      slider1 = slider1 - 2;
+      //slider1 = slider1 - 2;
 
       $('#slidePosition').html('Granularity: '+ slider1);
   });
+
 
   $scope.setArea=function(value){
     $scope.cropType=value;
@@ -31,7 +40,7 @@ angular.module('myApp').controller('CropCtrl', function($http, $state,  $scope, 
      angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
 /**/
 
-function getImageDataURL(success, error) {
+function setCroppedImageDataURL(success, error) {
     var data, canvas, ctx;
     var img = new Image();
     img.onload = function(){
@@ -76,15 +85,15 @@ var onSuccess = function(e){
        if (answer){
 
              // save original cropped image
-             getImageDataURL(onSuccess, onError);
+             setCroppedImageDataURL(onSuccess, onError);
 
               //These are the important points, the x,y position and the width/length of the new image
               $('#pulled_position').html('Position: ' + $scope.myOriginalX +', '+$scope.myOriginalY );
               $('#pulled_size').html('Size: ' +$scope.myCroppedOriginalW +', '+$scope.myCroppedOriginalH );
 
-              var email = localStorageService.get('email');
               var filepath = $scope.img_info_at.fullsize_orig_filepath;
 
+              $scope.showLoadingWidget = true;
               $http.get('get_crop/', {
                       params:  {filepath: filepath, x: $scope.myOriginalX, y: $scope.myOriginalY, w: $scope.myCroppedOriginalW, h: $scope.myCroppedOriginalH},
                       headers: {'Authorization': 'token'}
@@ -92,15 +101,88 @@ var onSuccess = function(e){
               )
               .then(function(response) {
 
+                  // parse received data
+                  var obj = JSON.parse(response.data.message);
+                  var len = obj.arrayLength;
+                  //alert(len);
+
+                  for(i = 0; i < len; i++){
+                    var img_idx = 'obj.img'+i.toString();
+                    var json_idx = 'obj.json'+i.toString();
+                    //alert(eval(json_idx));
+                    $scope.segmentedArray.push(eval(img_idx));
+                    $scope.jsonArray.push(eval(json_idx));
+                  }
+                  // for now, assume last index desired
+                  // TODO: extend to using slider
+                  $scope.selectedIndex = len - 1;
+                  //alert($scope.selectedIndex);
+
+                  // set segmented image as src
+                  var filepath = $scope.segmentedArray[$scope.selectedIndex];
+                  //alert($scope.segmentedArray[$scope.selectedIndex]);
+                  $http.get('dyn_img/' + filepath).then(function(response) {
+
+                    $scope.croppingStage = false;
+                    $scope.segmentingStage= true;
+
+                    $scope.segm_img.src = "data:image/png;base64," + response.data;
+                    localStorageService.set('segmented_img', "data:image/png;base64," + response.data);
+                    var canvas = document.getElementById('segmenting_canvas');
+                    var container = $('#segmContainer');
+                    var contWidth = container.width();
+                    var contHeight = container.height();
+                    canvas.width = contWidth;
+                    canvas.height = contHeight;
+                    //alert($scope.segm_img.width);
+                    //alert($scope.segm_img.height);
+                    var imgAspectRatio = $scope.segm_img.width/$scope.segm_img.height;
+                    var context = canvas.getContext('2d');
+                    context.drawImage($scope.segm_img, 0, 0, canvas.height*imgAspectRatio, canvas.height);
+
+                    //$scope.myImage = "data:image/png;base64," + response.data;
+
+                  });
+
+                  $scope.showLoadingWidget = false;
+
+              }, function(x) {
+                  // Request error
+              });
+
+       }
+       else{
+         alert("Cancelled!");
+       }
+     }
+
+     $scope.saveSegmentation = function(){
+
+       var answer = confirm("Confirm the segmentation?\nProceed?")
+       if (answer){
+
+              var segmented_filepath = $scope.segmentedArray[$scope.selectedIndex];
+              var json_filepath = $scope.jsonArray[$scope.selectedIndex];
+              var email = localStorageService.get('email');
+
+              $scope.showLoadingWidget = true;
+              $http.get('save_json/', {
+                      params:  {segmented_filepath: segmented_filepath, json_filepath: json_filepath, email: email},
+                      headers: {'Authorization': 'token'}
+                  }
+              )
+              .then(function(response) {
+                alert("returned from save_json!");
+                  $scope.showLoadingWidget = false;
+
+                  // retrieve JSON
 
                   // save segmented img
-                  localStorageService.set('segmented_img', "data:image/png;base64," + response.data);
-
-                  //alert("fin");
-                  //$scope.myImage = "data:image/png;base64," + response.data;
+                  //localStorageService.set('segmented_img', "data:image/png;base64," + response.data);
 
                   // hmm. fails on first attempt w ?loaded bit in polygonDraw
                   $state.go("polygon");
+
               }, function(x) {
                   // Request error
               });

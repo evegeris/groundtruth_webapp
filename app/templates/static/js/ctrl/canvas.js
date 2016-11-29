@@ -16,6 +16,8 @@ else {
   var myImageMiddle = new Image();
   var myImageBack = new Image();
 
+  $scope.current_img = localStorageService.get('current_img');
+
   $scope.user_info = user_info;
   $scope.image_info = user_info.user_info_object.data.attributes.image_info;
   $scope.current_img_idx = user_info.user_info_object.data.attributes.current_img;

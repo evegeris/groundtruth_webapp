@@ -11,6 +11,8 @@ import json
 import sys
 import array
 import os
+import time
+import datetime
 
 class MyEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -83,11 +85,14 @@ class PostProc:
         for i in range(0,3): # runs 3 times
             #numSegments = 566
             #mySigma = 6
-            self.out_files.append( str(n[i])+'seg_sigma'+str(s[i]) )
+
+            ts = time.time()
+            st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H-%M-%S')
+            #self.out_files.append( str(n[i])+'seg_sigma'+str(s[i])+"_datetime"+st )
+            self.out_files.append( str(n[i])+"_datetime"+st )
 
             newIm = self.im;
             #cv2.imwrite("/home/madison/Documents/41x/IMG_SET6/" + self.out_files[i] +"_origin_elaine.jpg", newIm)
-
 
             # apply SLIC and extract (approximately) the supplied number of segments
             segments = slic(self.im, n_segments=n[i], sigma=s[i])
@@ -183,8 +188,24 @@ def getSegmentedImage(filepath, rootpath, cropStartX, cropStartY, cropWidth, cro
     imDict['arrayLength'] = len(postprocessor.imArray)
     for idx, val in enumerate(postprocessor.imArray):
         #print(idx)
-        imDict['img'+str(idx)] = postprocessor.imArray[idx]
-        imDict['json'+str(idx)] = postprocessor.segm_lists[idx]
-        imDict['out_file'+str(idx)] = postprocessor.out_files[idx]
+        #imDict['img'+str(idx)] = postprocessor.imArray[idx]
+        #imDict['json'+str(idx)] = postprocessor.segm_lists[idx]
+        #imDict['out_file'+str(idx)] = postprocessor.out_files[idx]
+
+        fullpath_json = os.path.join(rootpath, 'templates/static/images/json/') + postprocessor.out_files[idx] +'.json'
+        relative_json = 'json/' + postprocessor.out_files[idx] +'.json'
+
+        with open(fullpath_json, 'a+') as outfile:
+            json.dump(postprocessor.segm_lists[idx], outfile, indent=2)
+
+        imDict['json'+str(idx)] = relative_json
+
+        fullpath_segmented = os.path.join(rootpath, 'templates/static/images/segmented/') + postprocessor.out_files[idx] + "_segmented.jpg"
+        relative_segmented = 'segmented/' + postprocessor.out_files[idx] + "_segmented.jpg"
+
+        cv2.imwrite(fullpath_segmented, postprocessor.imArray[idx])
+
+        imDict['img'+str(idx)] = relative_segmented
+
 
     return imDict

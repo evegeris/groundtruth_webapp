@@ -7,13 +7,14 @@ def create_app(config_filename):
     app = Flask(__name__, template_folder=template_dir, static_folder=template_dir+'/static')
     '''
 
-from flask import Flask, render_template, stream_with_context, Response, request
+from flask import Flask, render_template, stream_with_context, Response, request, jsonify
 import jwt
 from jwt import DecodeError, ExpiredSignature
 from config import SECRET_KEY, PASSWORD_RESET_EMAIL
 import urllib
 import cv2
 import segmentation
+import json
 
 # http://flask.pocoo.org/docs/0.10/patterns/appfactories/
 
@@ -50,6 +51,38 @@ def create_app(config_filename):
         token = req.headers.get('Authorization').split()[1]
         return jwt.decode(token, SECRET_KEY, algorithms='HS256')
 
+    @app.route("/save_json/")
+    def savejson():
+        from StringIO import StringIO
+        import base64
+
+        if not request.headers.get('Authorization'):
+            response = jsonify(message='Missing accept header')
+            response.status_code = 401
+            return response
+        try:
+            print(request.headers.get('Authorization'))
+            payload = parse_token(request)
+            #print(payload)
+        except DecodeError:
+            response = jsonify(message='Token is invalid')
+            response.status_code = 401
+            return response
+        except ExpiredSignature:
+            response = jsonify(message='Token has expired')
+            response.status_code = 401
+            return response
+
+        segmented_filepath = request.args.get('segmented_filepath')
+        json_filepath = request.args.get('json_filepath')
+        email = request.args.get('email')
+        print(email)
+
+        response = {"arrayLength": 7}
+        print(response)
+        #response.status_code = 200
+        return jsonify(message=response)
+
 
     @app.route("/get_crop/")
     def crop():
@@ -77,38 +110,22 @@ def create_app(config_filename):
             return response
 
         x = request.args.get('x')
-        #print(x)
         y = request.args.get('y')
-        #print(y)
         w = request.args.get('w')
-        #print(w)
         h = request.args.get('h')
-        #print(h)
-        #email = request.args.get('email')
-        #print(email)
         filepath = request.args.get('filepath')
         #print(filepath)
 
-        #print("***************")
-        #print(x.type)
         imDict = segmentation.getSegmentedImage(filepath, app.root_path, int(x), int(y), int(w), int(h))
-        #print(imDict.get('out_file0'))
-        len = imDict.get('arrayLength')
-        #print(len)
-        im = imDict.get('img'+str(len-1))
-        #plt.imshow(im)
-        #plt.show()
-        #cv2.imshow("im", im)
-        #cv2.waitKey(0)
-        fullpath = os.path.join(app.root_path, 'templates/static/json/') + filepath
-        print(fullpath)
-        #with open('/home/madison/Documents/41x/IMG_SET6/' + self.out_files[i] +'.json', 'w') as outfile:
-        #	    json.dump(b, outfile, indent=2)
 
-        encoded = cv2.imencode(".jpg", im)[1]
-        segmentedImgStr = base64.encodestring(encoded)
-
-        return Response(segmentedImgStr, direct_passthrough=True)
+        dataJSON = json.dumps(imDict)
+        print(dataJSON)
+        # jsonify imDict and send
+        response = jsonify(message=dataJSON)
+        print(response)
+        response.status_code = 200
+        return response
+        #return Response(segmentedImgStr, direct_passthrough=True)
 
 
     @app.route("/dyn_img/<path:path>")
