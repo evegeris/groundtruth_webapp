@@ -79,8 +79,6 @@ else {
     var contWidth = container.width();
     var contHeight = container.height();
 
-
-
     $scope.posx_1 = (Math.round(pos.x))/($scope.scaleImgX);
     $scope.posy_1 = (Math.round(pos.y))/($scope.scaleImgY);
 
@@ -92,7 +90,6 @@ else {
     // If its a left click, we want to colour the canavs
     if ($scope.mouseDown == 1){
       //$('#status').html($scope.posx_1 +', '+ $scope.posy_1);
-
       colourCanvas();
     }
     // Mouse wheel click implements the dragging feature
@@ -154,9 +151,6 @@ else {
 
     // Getting the integer mask at the clicked location
     var mask_value = $scope.mask_data[$scope.posy_1][$scope.posx_1];
-
-
-
 
     // Only run if it will result in a new colour to be painted
     if (($scope.newValue[mask_value] != $scope.classification) && (toggle == 0)){
@@ -571,7 +565,7 @@ else {
       // Key '2'
       else if (map[50] == true) {
           // Colour 'Green'
-          $scope.colour_f = "rgba(0, 32, 0, 0.6)";
+          $scope.colour_f = "rgba(128, 128, 255, 0.4)";
           $scope.classification = 2;
           $('hchosen').css({'background-color':'#E5FFE5'})
           $('#tissue').html('2 - Scar');
@@ -594,7 +588,7 @@ else {
       }
       else if (map[53] == true) {
         // Colour 'Blue'
-        $scope.colour_f = "rgba(128, 128, 255, 0.4)";
+        $scope.colour_f = "rgba(0, 32, 100, 0.6)";
         $scope.classification = 5;
         $('hchosen').css({'background-color':'#8080ff'})
         $('#tissue').html('5 - Background');
