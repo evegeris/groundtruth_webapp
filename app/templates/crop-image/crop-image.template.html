@@ -6,8 +6,8 @@
 
   <div class="row" ng-show="croppingStage">
   	<div class="col-lg-12">
-      <div class="cropArea" ng-hide="showLoadingWidget">
-        <img-crop image="myImage" result-image="myCroppedImage"
+      <div class="cropArea">
+        <img-crop image="myImage" result-image="myCroppedImage" ng-hide="showLoadingWidget"
                 area-type="{{cropType}}"
                 result-width="myCroppedImageW"
                 result-height="myCroppedImageH"
@@ -23,19 +23,26 @@
 
                 original-crop-width="myCroppedOriginalW"
                 original-crop-height="myCroppedOriginalH"></img-crop>
+
+          <div ng-show="showLoadingWidget" class="spinner">
+              <div class="double-bounce1"></div>
+              <div class="double-bounce2"></div>
+          </div>
+
       </div>
 
-      <div ng-show="showLoadingWidget" class="spinner">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-      </div>
   </div>
 </div>
 
 <div class="row" ng-show="segmentingStage">
   <div class="col-lg-12">
     <div class="cropArea" id="segmContainer">
-    <canvas id="segmenting_canvas"></canvas>
+    <canvas id="segmenting_canvas" ng-hide="showLoadingWidget"></canvas>
+
+    <div ng-show="showLoadingWidget" class="spinner">
+      <div class="double-bounce1"></div>
+      <div class="double-bounce2"></div>
+    </div>
   </div>
   </div>
 </div>

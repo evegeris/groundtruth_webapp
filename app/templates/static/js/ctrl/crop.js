@@ -92,10 +92,11 @@ var onSuccess = function(e){
               $('#pulled_size').html('Size: ' +$scope.myCroppedOriginalW +', '+$scope.myCroppedOriginalH );
 
               var filepath = $scope.img_info_at.fullsize_orig_filepath;
+              var email = localStorageService.get('email');
 
               $scope.showLoadingWidget = true;
               $http.get('get_crop/', {
-                      params:  {filepath: filepath, x: $scope.myOriginalX, y: $scope.myOriginalY, w: $scope.myCroppedOriginalW, h: $scope.myCroppedOriginalH},
+                      params:  {filepath: filepath, x: $scope.myOriginalX, y: $scope.myOriginalY, w: $scope.myCroppedOriginalW, h: $scope.myCroppedOriginalH, email: email},
                       headers: {'Authorization': 'token'}
                   }
               )
@@ -120,27 +121,35 @@ var onSuccess = function(e){
 
                   // set segmented image as src
                   var filepath = $scope.segmentedArray[$scope.selectedIndex];
-                  //alert($scope.segmentedArray[$scope.selectedIndex]);
+                  $scope.showLoadingWidget = true;
+                  $scope.croppingStage = false;
+                  $scope.segmentingStage = true;
                   $http.get('dyn_img/' + filepath).then(function(response) {
 
-                    $scope.croppingStage = false;
-                    $scope.segmentingStage= true;
+                    var canvas, container, context;
+                    $scope.segm_img.onload = function(){
+                        // Create the canvas element.
+                        canvas = document.getElementById('segmenting_canvas');
+                        container = $('#segmContainer');
+                        var contWidth = container.width();
+                        var contHeight = container.height();
+                        canvas.width = contWidth;
+                        canvas.height = contHeight;
+                        //alert($scope.segm_img.width);
+                        //alert($scope.segm_img.height);
+                        var imgAspectRatio = $scope.segm_img.width/$scope.segm_img.height;
+                        context = canvas.getContext('2d');
+                        context.drawImage($scope.segm_img, 0, 0, canvas.height*imgAspectRatio, canvas.height);
 
-                    $scope.segm_img.src = "data:image/png;base64," + response.data;
-                    localStorageService.set('segmented_img', "data:image/png;base64," + response.data);
-                    var canvas = document.getElementById('segmenting_canvas');
-                    var container = $('#segmContainer');
-                    var contWidth = container.width();
-                    var contHeight = container.height();
-                    canvas.width = contWidth;
-                    canvas.height = contHeight;
-                    //alert($scope.segm_img.width);
-                    //alert($scope.segm_img.height);
-                    var imgAspectRatio = $scope.segm_img.width/$scope.segm_img.height;
-                    var context = canvas.getContext('2d');
-                    context.drawImage($scope.segm_img, 0, 0, canvas.height*imgAspectRatio, canvas.height);
-
-                    //$scope.myImage = "data:image/png;base64," + response.data;
+                    }
+                    // Load image URL.
+                    try{
+                      $scope.segm_img.src = "data:image/png;base64," + response.data;
+                      localStorageService.set('segmented_img', "data:image/png;base64," + response.data);
+                      $scope.showLoadingWidget = false;
+                    }catch(e){
+                        error(e);
+                    }
 
                   });
 
@@ -164,23 +173,23 @@ var onSuccess = function(e){
               var segmented_filepath = $scope.segmentedArray[$scope.selectedIndex];
               var json_filepath = $scope.jsonArray[$scope.selectedIndex];
               var email = localStorageService.get('email');
+              //$scope.segmentedArray
+              //$scope.jsonArray
 
               $scope.showLoadingWidget = true;
-              $http.get('save_json/', {
+              $http.get('get_json/', {
                       params:  {segmented_filepath: segmented_filepath, json_filepath: json_filepath, email: email},
                       headers: {'Authorization': 'token'}
                   }
               )
               .then(function(response) {
-                alert("returned from save_json!");
+
                   $scope.showLoadingWidget = false;
 
                   // retrieve JSON
+                  localStorageService.set('json_str', response.data.message.json_data);
 
-                  // save segmented img
-                  //localStorageService.set('segmented_img', "data:image/png;base64," + response.data);
-
-                  // hmm. fails on first attempt w ?loaded bit in polygonDraw
+                  // hmm. fails on first attempt when ?loaded bit in polygonDraw
                   $state.go("polygon");
 
               }, function(x) {

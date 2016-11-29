@@ -66,7 +66,7 @@ else {
 
   // Empty data file which lives within the
   // Note: The use of $scope is the bridge between html and javascript
-  $scope.data = [];304
+  $scope.data = [];//304
 
   //***************************************************************//
   // This listener enables 'click and drag' mode
@@ -1041,7 +1041,10 @@ if (window.addEventListener) {
     // We can only read in a file once. Then the same file is re-used
     try{
 
-    //  $http.get('/polygon-draw/segmentedImg.json').then(function(response) {
+      var json_str = localStorageService.get('json_str');
+      $scope.mask_data = json_str;
+
+/*
     $http.get('/polygon-draw/test_image_swift_segment_n566_s14.json').then(function(response) {
       // Storing the data in a multidimensional array that can be accessed
       // By both the .html file and other functions within this 'scope'
@@ -1049,7 +1052,7 @@ if (window.addEventListener) {
       $scope.mask_data = response.data;
 
     });
-
+*/
 
   }
   catch(err){

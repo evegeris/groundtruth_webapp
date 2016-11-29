@@ -51,8 +51,8 @@ def create_app(config_filename):
         token = req.headers.get('Authorization').split()[1]
         return jwt.decode(token, SECRET_KEY, algorithms='HS256')
 
-    @app.route("/save_json/")
-    def savejson():
+    @app.route("/get_json/")
+    def getjson():
         from StringIO import StringIO
         import base64
 
@@ -75,11 +75,17 @@ def create_app(config_filename):
 
         segmented_filepath = request.args.get('segmented_filepath')
         json_filepath = request.args.get('json_filepath')
+        full_json_filepath = os.path.join(app.root_path, 'templates/static/images/') + json_filepath
+        print(full_json_filepath)
+
         email = request.args.get('email')
         print(email)
 
-        response = {"arrayLength": 7}
-        print(response)
+        with open(full_json_filepath) as json_file:
+            json_data = json.load(json_file)
+
+        response = {"json_data": json_data}
+        #print(response)
         #response.status_code = 200
         return jsonify(message=response)
 
@@ -113,8 +119,13 @@ def create_app(config_filename):
         y = request.args.get('y')
         w = request.args.get('w')
         h = request.args.get('h')
-        filepath = request.args.get('filepath')
+        email = request.args.get('email')
+        filepath = request.args.get('filepath') # original filepath
         #print(filepath)
+
+        # update user_has_image entry with crop info
+        # get user id from email, get image id from filepath
+        # --> get user_has_image entry
 
         imDict = segmentation.getSegmentedImage(filepath, app.root_path, int(x), int(y), int(w), int(h))
 
