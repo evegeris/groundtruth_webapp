@@ -9,7 +9,7 @@ else {
   window.location = window.location + '?loaded';
   window.location.reload(true);
 }
-/**/
+*/
 
   // variable Initialization
 
@@ -552,6 +552,7 @@ else {
       // Create a map to allow for multi key press options
       map[e.keyCode] = e.type == 'keydown';
 
+
       $('#key_code').html(e.keyCode);
 
       // Key '1'
@@ -561,6 +562,7 @@ else {
         $scope.classification = 1;
         $('hchosen').css({'background-color':'#ff944d'})
         $('#tissue').html('1 - Healthy');
+
       }
       // Key '2'
       else if (map[50] == true) {
@@ -1021,6 +1023,15 @@ if (window.addEventListener) {
   // Navigation is from the index.html directory
   //***************************************************************//
   $scope.readJSON = function(){
+
+    if (window.location.href.indexOf("?") > -1){
+
+    }
+    else {
+
+      window.location = window.location + '?loaded';
+      window.location.reload(true);
+    }
     //delete $http.defaults.headers.common['X-Requested-With'];
 
     //httpGetAsync('/polygon-draw/segmentedImg.json', callBack);
@@ -1037,6 +1048,9 @@ if (window.addEventListener) {
 
       var json_str = localStorageService.get('json_str');
       $scope.mask_data = json_str;
+
+
+
 
 /*
     $http.get('/polygon-draw/test_image_swift_segment_n566_s14.json').then(function(response) {
@@ -1139,6 +1153,7 @@ function resize(value) {
   function onPhotoDataSuccess(imageData){
 
 
+
     $scope.scaleImgX = 1;
     $scope.scaleImgY = 1;
     $scope.ResizeValue = 0;
@@ -1171,6 +1186,7 @@ function resize(value) {
        contextMiddle.drawImage(myImageMiddle, 0, 0, $scope.draw_w, $scope.draw_h);
        $scope.readJSON();
 
+
        resize(0);
        }
   }
@@ -1183,5 +1199,7 @@ function resize(value) {
       context.beginPath();
       contextMiddle.beginPath();
       contextTop.beginPath();
+
+
 
 });
