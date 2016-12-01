@@ -12,8 +12,11 @@ angular.module('myApp').controller('CropCtrl', function($http, $state,  $scope, 
   $scope.selectedIndex = 0;
 
 
+
   // Listener to update the range slider when the mouse moves
   $(document).mousemove(function(e){
+
+
       var slider1 = document.getElementById("slider").value;
       //slider1 = slider1 - 2;
 
@@ -41,6 +44,9 @@ angular.module('myApp').controller('CropCtrl', function($http, $state,  $scope, 
 /**/
 
 function setCroppedImageDataURL(success, error) {
+
+  
+
     var data, canvas, ctx;
     var img = new Image();
     img.onload = function(){
@@ -81,6 +87,8 @@ var onSuccess = function(e){
      // Saving feature once you crop the image
      $scope.saveCrop = function(){
 
+
+
        var answer = confirm("Save the Cropped Image!\nProceed?")
        if (answer){
 
@@ -101,6 +109,9 @@ var onSuccess = function(e){
                   }
               )
               .then(function(response) {
+
+                //$('hchosen').css({'background-color':'#FFFFAD'})
+                //alert("in here");
 
                   // parse received data
                   var obj = JSON.parse(response.data.message);
@@ -140,7 +151,7 @@ var onSuccess = function(e){
                         var imgAspectRatio = $scope.segm_img.width/$scope.segm_img.height;
                         context = canvas.getContext('2d');
                         context.drawImage($scope.segm_img, 0, 0, canvas.height*imgAspectRatio, canvas.height);
-
+                         $('#slidePosition').html('Granularity: '+ slider1);
                     }
                     // Load image URL.
                     try{
@@ -204,6 +215,8 @@ var onSuccess = function(e){
 
      // request image from server
      function requestImage(index){
+
+
 
        $scope.img_info_at = JSON.parse(localStorageService.get('image_info'+index.toString()));
        var filepath = $scope.img_info_at.fullsize_orig_filepath;

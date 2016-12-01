@@ -58,8 +58,8 @@
       </div>
       <div class="col-lg-3">
         <div class="slider-width200" ng-show="segmentingStage">
-        <input id="slider" type="range" min="0" max="4" value="2" step="1" />
-        <p id="slidePosition">0</p>
+        <input id="slider" type="range" min="0" max="4" value="2" step="1" onload="updateSliderValue(this.value)" onchange="updateSliderValue(this.value)"/>
+        <p id="slidePosition">Granularity, 2</p>
         </div>
       </div>
       <div class="col-lg-3">
