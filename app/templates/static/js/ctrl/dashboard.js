@@ -1,10 +1,6 @@
 angular.module('myApp.controllers').controller('DashboardCtrl', function($auth, $state, $scope, user_info, localStorageService) {
 
-/*
-$scope.goSomewhere = function(){
-  $state.go("crop_image");
-}
-*/
+$scope.selected = {value: -1};
 
 //$scope.image_info = user_info.getImageData();
 //alert($scope.image_info[0].fullsize_orig_filepath);
@@ -67,5 +63,40 @@ $scope.$watch('user_info.user_info_object.data.attributes.percent_complete', fun
   }
 });
 
+// state-change functions
+$scope.goCrop = function(){
+  $state.go("crop_image");
+}
+$scope.goPolygonDraw = function(){
+  $state.go("polygon");
+}
+
+$scope.setSelectedImg = function() {
+        $scope.selected = this.$index;
+
+        var answer = confirm("Classify this image?")
+        if (answer){
+          var idx = $scope.selected;
+          localStorageService.set('current_img', idx);
+          // get image info JSON
+          alert(idx);
+          var img_info_at = JSON.parse(localStorageService.get('image_info'+idx.toString()));
+          // get progress
+          var progress = img_info_at.progress;
+          alert(img_info_at.fullsize_orig_filepath);
+          // assume if progress = 0, this image needs cropping
+          if (progress == 0){
+            $scope.goCrop();
+          }
+          else{
+            $scope.goPolygonDraw();
+          }
+        }
+        else{
+          alert("Cancelled!");
+        }
+
+
+    };
 
 });

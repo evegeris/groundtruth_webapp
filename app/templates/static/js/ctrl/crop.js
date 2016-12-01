@@ -45,8 +45,6 @@ angular.module('myApp').controller('CropCtrl', function($http, $state,  $scope, 
 
 function setCroppedImageDataURL(success, error) {
 
-  
-
     var data, canvas, ctx;
     var img = new Image();
     img.onload = function(){
@@ -75,7 +73,6 @@ function setCroppedImageDataURL(success, error) {
 
 var onSuccess = function(e){
   //document.body.appendChild(e.image);
-  //alert(e.data);
   localStorageService.set('cropped_img', e.data );
  };
 
@@ -87,11 +84,8 @@ var onSuccess = function(e){
      // Saving feature once you crop the image
      $scope.saveCrop = function(){
 
-
-
        var answer = confirm("Save the Cropped Image!\nProceed?")
        if (answer){
-
              // save original cropped image
              setCroppedImageDataURL(onSuccess, onError);
 
@@ -111,12 +105,10 @@ var onSuccess = function(e){
               .then(function(response) {
 
                 //$('hchosen').css({'background-color':'#FFFFAD'})
-                //alert("in here");
 
                   // parse received data
                   var obj = JSON.parse(response.data.message);
                   var len = obj.arrayLength;
-                  //alert(len);
 
                   for(i = 0; i < len; i++){
                     var img_idx = 'obj.img'+i.toString();
@@ -215,8 +207,6 @@ var onSuccess = function(e){
 
      // request image from server
      function requestImage(index){
-
-
 
        $scope.img_info_at = JSON.parse(localStorageService.get('image_info'+index.toString()));
        var filepath = $scope.img_info_at.fullsize_orig_filepath;

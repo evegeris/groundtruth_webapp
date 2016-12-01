@@ -7,13 +7,6 @@
 </div>
 -->
 
-<!--
-<div class="row">
-  <div class="col-xs-12">
-<button ng-click="goSomewhere()" class="btn btn-danger">Test</button>
-	</div>
-</div>
--->
 
 <div class="row">
 	<div class="col-lg-4 col-md-6 col-xs-12">
@@ -54,49 +47,9 @@
 			</rd-widget-body>
 		</rd-widget>
 
-
 	</div>
 </div>
 
-<!--
-<div class="row">
-  <div class="col-md-4">
-  </div>
-  <div class="col-md-4">
-    <button class="btn btn-lg btn-info">Continue</button>
-  </div>
-	<div class="col-md-4">
-	</div>
-</div>
--->
-
-<!--
-<div class="dashboard-spacing">
-<div class="row">
-	<div class="col-lg-12">
-		<rd-widget>
-			<rd-widget-header icon="fa-image" title="Images">
-				<input type="text" placeholder="Search" class="form-control input-sm" />
-			</rd-widget-header>
-			<rd-widget-body classes="medium no-padding">
-				<div class="table-responsive">
-					<table class="table">
-						<thead>
-							<tr><th class="text-center">Image ID</th><th class="text-center">% Complete</th></tr>
-						</thead>
-						<tbody>
-							<tr><td class="text-center">1</td><td class="text-center">0</td></tr>
-							<tr><td class="text-center">2</td><td class="text-center">0</td></tr>
-							<tr><td class="text-center">3</td><td class="text-center">0</td></tr>
-						</tbody>
-					</table>
-        		</div>
-			</rd-widget-body>
-		<rd-widget>
-	</div>
-</div>
-</div>
--->
 
 <div class="dashboard-spacing">
 <div class="row">
@@ -109,8 +62,8 @@
 				<div class="table-responsive">
 					<table class="table">
 				  <tbody>
-						<tr><td>Image ID</td><td>Progress</td></tr>
-						<tr ng:repeat="img in image_info"><td>{{img.id}}</td><td>{{img.progress}}</td></tr>
+						<tr><td>Index</td><td>Image ID</td><td>Progress</td></tr>
+						<tr ng:repeat="img in image_info" ng-click="setSelectedImg();"><td>{{$index}}</td><td>{{img.id}}</td><td>{{img.progress}}</td></tr>
 						 </tbody>
 				 </table>
 		 </div>
