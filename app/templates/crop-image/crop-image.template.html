@@ -5,7 +5,10 @@
 	<p id="pulled_position"> 0, 0 </p-->
 
   <div class="row" ng-show="croppingStage">
-  	<div class="col-lg-12">
+    <div class="col-lg-3">
+    </div>
+
+  	<div class="col-lg-6">
       <div class="cropArea">
         <img-crop image="myImage" result-image="myCroppedImage" ng-hide="showLoadingWidget"
                 area-type="{{cropType}}"
@@ -31,11 +34,17 @@
 
       </div>
 
+      <div class="col-lg-3">
+      </div>
+
   </div>
 </div>
 
 <div class="row" ng-show="segmentingStage">
-  <div class="col-lg-12">
+  <div class="col-lg-3">
+  </div>
+
+  <div class="col-lg-6">
     <div class="cropArea" id="segmContainer">
     <canvas id="segmenting_canvas" ng-hide="showLoadingWidget"></canvas>
 
@@ -45,30 +54,71 @@
     </div>
   </div>
   </div>
+
+  <div class="col-lg-3">
+  </div>
 </div>
 
   <!--div>Crop Type:</div-->
   <!--div><img ng-src="{{myCroppedImage}}" width="{{myCroppedImageW}}"  height="{{myCroppedImageH}}"  /></div-->
-  <div class="row">
-      <div class="col-lg-3">
-          <button type="button" ng-click="setArea('circle')" ng-show="croppingStage">Circle</button>
+
+  <div class="row" ng-show="croppingStage">
+    <div class="col-lg-4">
+    </div>
+
+      <div class="col-lg-3" >
+          <button type="button" class="btn btn-warning btn-secondary" ng-click="setArea('rectangle')">Rectangle</button>
       </div>
-      <div class="col-lg-3">
-          <button type="button" ng-click="setArea('rectangle')" ng-show="croppingStage">Rectangle</button>
+      <div class="col-lg-3" ng-show="croppingStage">
+            <button type="button" class="btn btn-warning btn-secondary" ng-click="setArea('circle')" >Circle</button>
       </div>
-      <div class="col-lg-3">
-        <div class="slider-width200" ng-show="segmentingStage">
-        <input id="slider" type="range" min="0" max="4" value="2" step="1" onload="updateSliderValue(this.value)" onchange="updateSliderValue(this.value)"/>
-        <p id="slidePosition">Granularity, 2</p>
-        </div>
+
+    <div class="col-lg-2">
+    </div>
+
+  </div>
+
+  <div class="row" ng-show="segmentingStage">
+    <div class="col-lg-4">
+    </div>
+
+    <div class="col-lg-4" >
+      <div class="slider-width200" >
+      <input id="slider" type="range" min="0" max="4" value="2" step="1" onload="updateSliderValue(this.value)" onchange="updateSliderValue(this.value)"/>
+      <p id="slidePosition">Granularity, 2</p>
       </div>
-      <div class="col-lg-3">
-        <form ng-submit="saveCrop()" ng-show="croppingStage">
+    </div>
+
+    <div class="col-lg-4">
+    </div>
+
+  </div>
+
+  <div class="row" ng-show="croppingStage">
+    <div class="col-lg-4">
+    </div>
+
+      <div class="col-lg-4">
+        <form ng-submit="saveCrop()">
             <input class="btn btn-success btn-secondary" type="submit" value="Proceed with Cropped Image">
         </form>
-        <form ng-submit="saveSegmentation()" ng-show="segmentingStage">
+      </div>
+
+      <div class="col-lg-4">
+      </div>
+  </div>
+
+  <div class="row" ng-show="segmentingStage">
+    <div class="col-lg-4">
+    </div>
+
+      <div class="col-lg-4" >
+        <form ng-submit="saveSegmentation()" >
             <input class="btn btn-success btn-secondary" type="submit" value="Proceed with Segmented Image">
         </form>
+      </div>
+
+      <div class="col-lg-4">
       </div>
   </div>
 

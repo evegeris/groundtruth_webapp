@@ -1,5 +1,7 @@
 angular.module('myApp').controller('CanvasCtrl', function($http, $scope, user_info, localStorageService) {
 
+$scope.showLoadingWidget = true;
+
 /*
 if (window.location.href.indexOf("?") > -1){
 
@@ -1025,13 +1027,16 @@ if (window.addEventListener) {
   $scope.readJSON = function(){
 
     if (window.location.href.indexOf("?") > -1){
-
+        $scope.showLoadingWidget = false;
     }
     else {
 
       window.location = window.location + '?loaded';
       window.location.reload(true);
+      $scope.showLoadingWidget = true;
     }
+
+
     //delete $http.defaults.headers.common['X-Requested-With'];
 
     //httpGetAsync('/polygon-draw/segmentedImg.json', callBack);

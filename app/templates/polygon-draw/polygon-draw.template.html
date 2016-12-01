@@ -5,46 +5,17 @@
 </div>
 
 
-<div class="row">
-	<div class="col-lg-12">
-		<img id="test_img" src=""/>
-	</div>
-</div>
-
-
 <div class="row" >
-	<div class="col-lg-5">
+	<div class="col-lg-1">
 		<!--
 		<form ng-submit="readJSON()" >
 				<input class="btn btn-default btn-secondary" type="submit" value="Read JSON">
 		</form>
 	-->
-
 		<h3>Image <himg_id id="img_id">#{{current_img}}</himg_id></h3>
-
-		<div id="customContainer">
-			<canvas id="canvas" style="z-index: 1;
-				position:absolute;
-				left:0px;
-				top:10px;
-
-			"></canvas>
-			<canvas id="canvasMiddle" style="z-index: 2;
-				position:absolute;
-				left:0px;
-				top:10px;
-
-			"></canvas>
-				<canvas id="canvasTop" style="z-index: 3;
-				position:absolute;
-				left:0px;
-				top:10px;
-
-			"></canvas>
-
-		</div>
 	</div>
-	<div class="col-lg-2">
+
+	<div class="col-lg-1">
 		<form ng-submit="clearCanvas()" >
 				<input class="btn btn-warning btn-secondary" type="submit" value="Clear Canvas">
 		</form>
@@ -54,12 +25,47 @@
 				<input class="btn btn-success btn-secondary" type="submit" value="Finish!">
 		</form>
 	</div>
-	<div class="col-lg-2">
+	<div class="col-lg-1">
 		<button ng-click="restartClassification()" class="btn btn-danger">Restart</button>
+	</div>
+	<div class="col-lg-8">
 
 	</div>
+
+</div>
+
+	<div class="row" >
+		<div class="col-lg-10">
+			<div id="customContainer">
+				<div ng-hide="showLoadingWidget">
+				<canvas id="canvas" style="z-index: 1;
+					position:absolute;
+					left:0px;
+					top:10px;
+
+				"></canvas>
+				<canvas id="canvasMiddle" style="z-index: 2;
+					position:absolute;
+					left:0px;
+					top:10px;
+
+				"></canvas>
+					<canvas id="canvasTop" style="z-index: 3;
+					position:absolute;
+					left:0px;
+					top:10px;
+
+				"></canvas>
+			</div>
+
+				<div ng-show="showLoadingWidget" class="spinner">
+						<div class="double-bounce1"></div>
+						<div class="double-bounce2"></div>
+				</div>
+			</div>
+			</div>
+
 	<div class="col-lg-2">
-		<div class="row" >
 
 		<h3> Legend: </h3>
 		<hh> 1 - Healthy </hh>
@@ -72,8 +78,6 @@
 		<hchosen id="tissue">1 - Healthy </hchosen>
 
 	</div>
-
-</div>
 
 </div>
 
@@ -93,11 +97,10 @@
 			<p id="cv"> 0,0 </p>
 	</div>
 </div-->
+<!--
 <p id="pageload"> 00</p>
 <p id="status"> 0
 	, 0 </p></br>
-	<div class="col-lg-12">
+-->
 
 	<!-- ng-submit="addData()" calls the $scope.addData = function() .js code upon a submit -->
-
-</div>

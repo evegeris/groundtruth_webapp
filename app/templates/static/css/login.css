@@ -100,7 +100,7 @@ hh {
    margin-top: 0.67em;
    margin-bottom: 0.67em;
    margin-left: 0;
-   margin-right: 1em;
+   margin-right: 12em;
    font-weight: bold;
    font-size: 18px;
    background-color: #ff944d;
@@ -111,7 +111,7 @@ hs{
   margin-top: 0.1em;
   margin-bottom: 0.67em;
   margin-left: 0;
-  margin-right: 1em;
+  margin-right: 12em;
   font-weight: bold;
   font-size: 18px;
   background-color: #E5FFE5;
@@ -122,7 +122,7 @@ hi{
   margin-top: 0.1em;
   margin-bottom: 0.67em;
   margin-left: 0;
-  margin-right: 1em;
+  margin-right: 8em;
   font-weight: bold;
   font-size: 18px;
   background-color: #FF99B1;
@@ -132,7 +132,7 @@ hn {
   margin-top: 0.1em;
   margin-bottom: 1.5em;
   margin-left: 0;
-  margin-right: 0;
+  margin-right: 8em;
   font-weight: bold;
   font-size: 18px;
   background-color: #FFFFAD;
@@ -142,7 +142,7 @@ hba {
   margin-top: 0.1em;
   margin-bottom: 1.5em;
   margin-left: 0;
-  margin-right: 0;
+  margin-right: 8em;
   font-weight: bold;
   font-size: 18px;
   background-color: #8080ff;
@@ -152,7 +152,7 @@ hb {
   margin-top: 0.1em;
   margin-bottom: 1.5em;
   margin-left: 0;
-  margin-right: 0;
+  margin-right: 8em;
   font-weight: bold;
   font-size: 18px;
   background-color: #a6a6a6;
@@ -162,7 +162,7 @@ hselected {
   margin-top: 0.1em;
   margin-bottom: 0.1em;
   margin-left: 0;
-  margin-right: 1em;
+  margin-right: 8em;
   font-size: 1.5em;
   text-decoration: underline;
 }
@@ -173,7 +173,7 @@ hchosen {
   margin-top: 0.1em;
   margin-bottom: 0.67em;
   margin-left: 0;
-  margin-right: 1em;
+  margin-right: 8em;
   font-weight: bold;
   font-size: 18px;
   background-color: #ff944d;
