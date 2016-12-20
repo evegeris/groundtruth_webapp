@@ -67,6 +67,60 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
 
    }
 
+   // partner login
+   $scope.authenticate = function(provider) {
+
+         $scope.loading = true;
+
+         $auth.authenticate(provider)
+         .then(function() {
+            alert('Google authenticated!');
+
+            $scope.user = new user.UserInfo();
+            $scope.user.data = {
+                 "type": "users",
+                 "attributes": {
+                   "email": $scope.email
+                   }
+                  }
+
+
+            var user_entry = user.UserInfo.get({ email: $scope.email }, function() {
+
+              user_info.setFullName(user_entry.message.full_name);
+              user_info.setEmail($scope.email);
+              var classified = user_entry.message.classified;
+              user_info.setClassified(classified);
+              var in_queue = user_entry.message.in_queue;
+              user_info.setInQueue(in_queue);
+              var pComplete = (classified/(classified+in_queue))*100;
+              user_info.setPercentComplete(pComplete);
+
+              // get images assigned to user to display as table
+              //alert(user_entry.message.image_info[0].fullsize_orig_filepath);
+              user_info.setImageData(user_entry.message.image_info);
+
+              //user_info.updateNextImageIndex();
+
+            });
+
+
+              $state.go('home');
+         })
+         .catch(function(response) {
+
+           toaster.pop({
+            type: 'error',
+            title: 'Login Error',
+            body: response,
+            showCloseButton: true,
+            timeout: 200
+            });
+            $scope.loading = false;
+         });
+
+
+       };
 
    $scope.signIn = function() {
 

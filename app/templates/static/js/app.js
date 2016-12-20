@@ -49,6 +49,43 @@ angular.module('myApp').config(function( $stateProvider , $urlRouterProvider, $a
       return deferred.promise;
     }
 
+    // partner login
+    $authProvider.google({
+      clientId: '907560283159-1eskorjg2jegq44k89bida5uemgs4vm5.apps.googleusercontent.com'
+      // clientSecret: 'hGr9mgEYxlrtolo01uTCspPr'
+    });
+
+    $authProvider.github({
+      clientId: 'GitHub Client ID'
+    });
+
+    // Google
+    $authProvider.google({
+      url: '/auth/google',
+      authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
+      redirectUri: window.location.origin,//'http://devbox.example.com', // window.location.origin
+      requiredUrlParams: ['scope'],
+      optionalUrlParams: ['display'],
+      scope: ['profile', 'email'],
+      scopePrefix: 'openid',
+      scopeDelimiter: ' ',
+      display: 'popup',
+      oauthType: '2.0',
+      popupOptions: { width: 452, height: 633 }
+    });
+
+    // GitHub
+    $authProvider.github({
+      url: '/auth/github',
+      authorizationEndpoint: 'https://github.com/login/oauth/authorize',
+      redirectUri: window.location.origin,
+      optionalUrlParams: ['scope'],
+      scope: ['user:email'],
+      scopeDelimiter: ' ',
+      oauthType: '2.0',
+      popupOptions: { width: 1020, height: 618 }
+    });
+
 $stateProvider.state('login', {
 	 url: '/login',
     title: 'Sign In',
