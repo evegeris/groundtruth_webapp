@@ -32,6 +32,8 @@
 * Open the db schema 'Database/groundtruth_db.mwb' within MySQL Workbench
 * From the main toolbar select 'Database' -> 'Forward Engineer...'
 * Follow the prompts to create the database
+* 10.1. Prepare the database of images to be classified
+* $python populate_database.py root/filepath/to/images
 * 11. Install additional pip requirements
 * $sudo pip install -r requirements.txt
 * 12. Run the program

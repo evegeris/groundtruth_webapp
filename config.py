@@ -1,3 +1,6 @@
+# location of dataset relative to root folder containing groundtruth_webapp
+dataset_root = 'dataset'
+
 # DATABASE SETTINGS
 
 # POSTGRESQL

@@ -17,7 +17,6 @@ from flask_mail import Mail, Message
 from sqlalchemy import func, join, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.declarative import DeclarativeMeta
-
 import json
 
 login1 = Blueprint('login', __name__)

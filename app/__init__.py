@@ -144,8 +144,8 @@ def create_app(config_filename):
         from StringIO import StringIO
         import base64
 
+        #fullpath = os.path.join(app.root_path, 'templates/static/images/') + path
         fullpath = os.path.join(app.root_path, 'templates/static/images/') + path
-        #fullpath = '/home/lainey/code/rdash_Nov23/groundtruth_webapp/app/templates/static/images/wound_images/wound_2.jpg'
 
         print (fullpath)
         myimg = cv2.imread( fullpath )
