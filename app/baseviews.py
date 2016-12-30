@@ -162,13 +162,19 @@ class UserInfo(Resource):
             #print("user imgs: "+ str(user.classified))
             print("user id: " + str(user.id))
 
-            j = join(Images, UserHasImage,
-            UserHasImage.users_id == UserHasImage.images_id)
-            stmt = select([Images.id, Images.fullsize_orig_filepath, UserHasImage.progress]).select_from(j).distinct()
-            print(str(stmt))
-
+            # spent ages trying to figure out the proper high-level sqlalchemy syntax
+            # forget that
+            #j = join(Images, UserHasImage, UserHasImage.users_id == UserHasImage.images_id)
+            #stmt = select([Images.id, Images.fullsize_orig_filepath, UserHasImage.progress]).select_from(j).distinct()
+            #stmt = db.session.query(UserHasImage.images_id, UserHasImage.users_id).join(Users).join(Images)
+            #stmt = db.session.query(UserHasImage, Images.fullsize_orig_filepath).join(Users.id).join(Images.images_id)
+            stmt = 'SELECT images.fullsize_orig_filepath, user_has_image.users_id, user_has_image.images_id, user_has_image.progress, users.classified, users.in_queue FROM user_has_image JOIN images ON images.id = user_has_image.images_id JOIN users ON users.id = user_has_image.users_id where users_id = ' + str(user.id)
             result = db.session.execute(stmt)
             user_images = result.fetchall();
+            print user_images
+
+            #session.query(UserHasImage).join((Users, User.id)).join((Images, Images.images_id))
+
             #row = result.fetchone()
             #print("id:", row['id'], "; filpeath:", "progress:", row['progress'], "; filpeath:", row['fullsize_orig_filepath'])
 

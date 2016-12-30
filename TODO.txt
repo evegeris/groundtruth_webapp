@@ -28,3 +28,7 @@ Graham Taylor
 I'm going to need to log off in a minute, so just typing up a couple of points:
 1. Try to move forward on the features/bug fixes we discussed today, knock off as many of these as possible
 2. Work with Justin to get the labeler into the hands of a "professional" labeler, and try to label, e.g. 20-100 images to get their feedback
+
+
+- on timeout, delete localstorage?
+- update user info eg. in_queue

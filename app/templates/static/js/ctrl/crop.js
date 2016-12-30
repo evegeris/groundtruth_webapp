@@ -211,7 +211,7 @@ var onSuccess = function(e){
        $scope.img_info_at = JSON.parse(localStorageService.get('image_info'+index.toString()));
        var filepath = $scope.img_info_at.fullsize_orig_filepath;
 
-       $http.get('dyn_img/' + filepath).then(function(response) {
+       $http.get('dyn_img/fp' + filepath).then(function(response) {
          $scope.myImage = "data:image/png;base64," + response.data;
        });
 

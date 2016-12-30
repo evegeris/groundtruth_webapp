@@ -35,17 +35,24 @@ rootfp = dataset_root
 import os
 fp = os.getcwd()
 fp = fp.rsplit('/',1)[0] # go back one dir
-fp = fp + '/' + rootfp + '/Artificial'
+fp = fp + '/' + rootfp
 print fp
 
+# walk down all subdirs, collect all image filepaths
+all_filepaths = []
+for all_info in os.walk(fp):
+    filenames = all_info[2]
+    fileroot = all_info[0]
+    for filename in filenames:
+        if not filename.startswith('.') and (filename.endswith('.jpg') or filename.endswith('.png')):
+            filepath = fileroot + '/' + filename
+            all_filepaths.append(filepath)
+#print all_filepaths
 
-# get filenames
-onlyfiles = [f for f in listdir(fp)
-if not f.startswith('.') and (f.endswith('.jpg') or f.endswith('.png')) and isfile(join(fp, f))]
-print onlyfiles
-
+###
 # create DB entries for every filepath
-'''
+###
+
 # connect to db
 engine = create_engine('mysql://'+mysql_db_username+':'+mysql_db_password+'@'+mysql_db_hostname, echo=True)
 engine.execute("USE "+mysql_db_name) # select new db
@@ -55,14 +62,10 @@ db_session = Session(bind=connection)
 #stmt = sqlalchemy.sql.expression.insert(Images, values=['test'])
 #engine.execute(stmt).fetchall()
 
-for everyfile in onlyfiles:
+for everyfile in all_filepaths:
     img = Images(everyfile)
     db_session.add(img)
 
-# my_timestamp_id = my_timestamp.get_id() You don't need to do this
-#for r in datarecords:
-#    db_session.add(dr)
 db_session.commit()
 
 connection.close()
-'''

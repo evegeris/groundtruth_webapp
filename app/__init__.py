@@ -139,16 +139,29 @@ def create_app(config_filename):
         #return Response(segmentedImgStr, direct_passthrough=True)
 
 
-    @app.route("/dyn_img/<path:path>")
+    @app.route("/dyn_img/fp/<path:path>")
     def images(path):
         from StringIO import StringIO
         import base64
 
         #fullpath = os.path.join(app.root_path, 'templates/static/images/') + path
-        fullpath = os.path.join(app.root_path, 'templates/static/images/') + path
-
+        # update: full path in DB:
+        fullpath = '/'+path
         print (fullpath)
         myimg = cv2.imread( fullpath )
+
+        # how do you cehck if an arbitrary variable in python is null
+        # supposed to be able to do 'if not nameofimg' for numpy array
+        # so why the compilation err
+        '''
+        try:
+            myimg = float(myimg)
+        except ValueError:
+            print ('nope')
+            return Response('nope', direct_passthrough=True)
+            '''
+
+
         #cv2.imshow('myimg', myimg)
         #cv2.waitKey(0)
         print(myimg.size)

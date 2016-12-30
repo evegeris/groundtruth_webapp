@@ -43,6 +43,19 @@ angular.module('myApp.controllers').controller('LoginController', function($scop
    $scope.fp = false;
    $scope.loading = false;
 
+/*
+$http.post(url).success(function (data, status) {
+  console.log(data);
+  this.data = data;
+  this.status = status;
+  console.log(this.data);
+}).error(function (data, status) {
+  console.log('failed');
+  this.response = 'failed call';
+  this.status = status;
+});
+*/
+
    $scope.signUpClick = function () {
 
      $scope.login = false;
