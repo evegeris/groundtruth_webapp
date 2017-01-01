@@ -11,18 +11,34 @@ angular.module('myApp').controller('CropCtrl', function($http, $state,  $scope, 
   $scope.jsonArray = [];
   $scope.selectedIndex = 0;
 
+/*
+  $scope.testBtn= function(){
+    alert('seems alright.');
+  }
+*/
 
-
+/*
   // Listener to update the range slider when the mouse moves
   $(document).mousemove(function(e){
-
-
       var slider1 = document.getElementById("slider").value;
       //slider1 = slider1 - 2;
 
       $('#slidePosition').html('Granularity: '+ slider1);
   });
 
+  $scope.updateSliderValue = function(value){
+    console.log('slider: ');
+    console.log(value);
+  }
+*/
+
+  var slider1 = document.getElementById("granularity");
+
+  slider1.addEventListener("input", function() {
+    console.log('slider: ');
+    console.log(slider1.value);
+    $('#slidePosition').html('Granularity: '+ slider1.value);
+  }, false);
 
   $scope.setArea=function(value){
     $scope.cropType=value;
@@ -81,6 +97,10 @@ var onSuccess = function(e){
  };
 
 
+/********/
+/* CROP */
+/********/
+
      // Saving feature once you crop the image
      $scope.saveCrop = function(){
 
@@ -127,7 +147,7 @@ var onSuccess = function(e){
                   $scope.showLoadingWidget = true;
                   $scope.croppingStage = false;
                   $scope.segmentingStage = true;
-                  $http.get('dyn_img/' + filepath).then(function(response) {
+                  $http.get('dyn_img/fp=' + filepath).then(function(response) {
 
                     var canvas, container, context;
                     $scope.segm_img.onload = function(){
@@ -143,7 +163,8 @@ var onSuccess = function(e){
                         var imgAspectRatio = $scope.segm_img.width/$scope.segm_img.height;
                         context = canvas.getContext('2d');
                         context.drawImage($scope.segm_img, 0, 0, canvas.height*imgAspectRatio, canvas.height);
-                         $('#slidePosition').html('Granularity: '+ slider1);
+                         //$('#slidePosition').html('Granularity: '+ slider1);
+                         $('#slidePosition').html('Granularity: '+ slider1.value);
                     }
                     // Load image URL.
                     try{
@@ -167,6 +188,10 @@ var onSuccess = function(e){
          alert("Cancelled!");
        }
      }
+
+/***********************/
+/* ACCEPT SEGMENTATION */
+/***********************/
 
      $scope.saveSegmentation = function(){
 
@@ -211,7 +236,7 @@ var onSuccess = function(e){
        $scope.img_info_at = JSON.parse(localStorageService.get('image_info'+index.toString()));
        var filepath = $scope.img_info_at.fullsize_orig_filepath;
 
-       $http.get('dyn_img/fp' + filepath).then(function(response) {
+       $http.get('dyn_img/fp=' + filepath).then(function(response) {
          $scope.myImage = "data:image/png;base64," + response.data;
        });
 

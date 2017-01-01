@@ -2,7 +2,8 @@
 // from final 41X design meeting
 // additional development for groundtruthing app
 
-- 256x256 imgs
+- 256x256 imgs:
+- take user crop, generate 256x256 imgs
 
 - crop option: no crop
 
@@ -32,3 +33,4 @@ I'm going to need to log off in a minute, so just typing up a couple of points:
 
 - on timeout, delete localstorage?
 - update user info eg. in_queue
+- assume full filepaths stored in db?

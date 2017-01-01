@@ -2,6 +2,7 @@
 #### based on the rdash-angular example:
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/rdash/rdash-angular?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+We are not proper web developers so much of this app is cobbled together from various sources. Feel free to use and tweak it! 
 
 ### Full Installation Instructions (Ubuntu 14.04)
 * 1. Install git

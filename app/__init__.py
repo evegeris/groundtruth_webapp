@@ -121,7 +121,7 @@ def create_app(config_filename):
         h = request.args.get('h')
         email = request.args.get('email')
         filepath = request.args.get('filepath') # original filepath
-        #print(filepath)
+        print(filepath)
 
         # update user_has_image entry with crop info
         # get user id from email, get image id from filepath
@@ -139,7 +139,7 @@ def create_app(config_filename):
         #return Response(segmentedImgStr, direct_passthrough=True)
 
 
-    @app.route("/dyn_img/fp/<path:path>")
+    @app.route("/dyn_img/fp=/<path:path>")
     def images(path):
         from StringIO import StringIO
         import base64

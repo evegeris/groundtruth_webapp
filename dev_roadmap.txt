@@ -1,0 +1,12 @@
+/**** DEVELOPER ROADMAP ****/
+/*** for the uninitiated ***/
+
+// FILE TYPES
+
+// *.html
+- files that structure how things are rendered in the browser
+
+// *.js
+- javascript files with code that runs client-side (in the browser)
+
+// FOLDER STRUCTURE

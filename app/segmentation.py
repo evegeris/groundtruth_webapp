@@ -170,8 +170,25 @@ def getSegmentedImage(filepath, rootpath, cropStartX, cropStartY, cropWidth, cro
     s3 = 2.275 + 0.0000009166667*pixels + 0.0000000000001083333*pow(pixels,2)
     print s3
 
-    fullpath = os.path.join(rootpath, 'templates/static/images/') + filepath
+    # received relative filepath
+    #fullpath = os.path.join(rootpath, 'templates/static/images/') + filepath
+    # received full filepath
+    fullpath = filepath
+    print(fullpath)
     im = cv2.imread(fullpath)
+
+    # fit blocks of 256x256 to crop
+
+    '''
+    remW = cropWidth % 256
+    remH = cropHeight % 256
+    print cropWidth
+    print cropHeight
+    print '..........................'
+    print remW
+    print remH
+    '''
+
     im = im[y1:y2,x1:x2,:] # NOTE: its img[y: y + h, x: x + w]
 
     newIm = cv2.imread(fullpath)
@@ -192,20 +209,31 @@ def getSegmentedImage(filepath, rootpath, cropStartX, cropStartY, cropWidth, cro
         #imDict['json'+str(idx)] = postprocessor.segm_lists[idx]
         #imDict['out_file'+str(idx)] = postprocessor.out_files[idx]
 
+        '''
         fullpath_json = os.path.join(rootpath, 'templates/static/images/json/') + postprocessor.out_files[idx] +'.json'
+        relative_json = 'json/' + postprocessor.out_files[idx] +'.json'
+        '''
+
+        fp = os.getcwd()
+        fp = fp.rsplit('/',1)[0] # go back one dir
+        print fp
+
+        fullpath_json = fp + '/json/' + postprocessor.out_files[idx] +'.json'
         relative_json = 'json/' + postprocessor.out_files[idx] +'.json'
 
         with open(fullpath_json, 'a+') as outfile:
             json.dump(postprocessor.segm_lists[idx], outfile, indent=2)
 
-        imDict['json'+str(idx)] = relative_json
+        #imDict['json'+str(idx)] = relative_json
+        imDict['json'+str(idx)] = fullpath_json
 
-        fullpath_segmented = os.path.join(rootpath, 'templates/static/images/segmented/') + postprocessor.out_files[idx] + "_segmented.jpg"
+        fullpath_segmented = fp + '/segmented/' + postprocessor.out_files[idx] + "_segmented.jpg"
         relative_segmented = 'segmented/' + postprocessor.out_files[idx] + "_segmented.jpg"
 
         cv2.imwrite(fullpath_segmented, postprocessor.imArray[idx])
 
-        imDict['img'+str(idx)] = relative_segmented
+        #imDict['img'+str(idx)] = relative_segmented
+        imDict['img'+str(idx)] = fullpath_segmented
 
 
     return imDict
