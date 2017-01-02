@@ -17,32 +17,61 @@ angular.module('myApp').controller('CropCtrl', function($http, $state,  $scope, 
   }
 */
 
-/*
-  // Listener to update the range slider when the mouse moves
-  $(document).mousemove(function(e){
-      var slider1 = document.getElementById("slider").value;
-      //slider1 = slider1 - 2;
-
-      $('#slidePosition').html('Granularity: '+ slider1);
-  });
-
-  $scope.updateSliderValue = function(value){
-    console.log('slider: ');
-    console.log(value);
-  }
-*/
-
   var slider1 = document.getElementById("granularity");
 
   slider1.addEventListener("input", function() {
     console.log('slider: ');
     console.log(slider1.value);
+    console.log($scope.segmentedArray[slider1.value]);
+    setImage($scope.segmentedArray[slider1.value]);
+
     $('#slidePosition').html('Granularity: '+ slider1.value);
+
   }, false);
 
   $scope.setArea=function(value){
     $scope.cropType=value;
   }
+
+function setImage(filepath){
+
+  // set segmented image as src
+  $scope.showLoadingWidget = true;
+  $scope.croppingStage = false;
+  $scope.segmentingStage = true;
+  $http.get('dyn_img/fp=' + filepath).then(function(response) {
+
+    var canvas, container, context;
+    $scope.segm_img.onload = function(){
+        // Create the canvas element.
+        canvas = document.getElementById('segmenting_canvas');
+        container = $('#segmContainer');
+        var contWidth = container.width();
+        var contHeight = container.height();
+        canvas.width = contWidth;
+        canvas.height = contHeight;
+        //alert($scope.segm_img.width);
+        //alert($scope.segm_img.height);
+        var imgAspectRatio = $scope.segm_img.width/$scope.segm_img.height;
+        context = canvas.getContext('2d');
+        context.drawImage($scope.segm_img, 0, 0, canvas.height*imgAspectRatio, canvas.height);
+         //$('#slidePosition').html('Granularity: '+ slider1);
+         $('#slidePosition').html('Granularity: '+ slider1.value);
+    }
+    // Load image URL.
+    try{
+      $scope.segm_img.src = "data:image/png;base64," + response.data;
+      localStorageService.set('segmented_img', "data:image/png;base64," + response.data);
+      $scope.showLoadingWidget = false;
+    }catch(e){
+        error(e);
+    }
+
+  });
+
+  $scope.showLoadingWidget = false;
+
+}
 
 /*
     // Changes the image from a loaded local file!
@@ -144,40 +173,7 @@ var onSuccess = function(e){
 
                   // set segmented image as src
                   var filepath = $scope.segmentedArray[$scope.selectedIndex];
-                  $scope.showLoadingWidget = true;
-                  $scope.croppingStage = false;
-                  $scope.segmentingStage = true;
-                  $http.get('dyn_img/fp=' + filepath).then(function(response) {
-
-                    var canvas, container, context;
-                    $scope.segm_img.onload = function(){
-                        // Create the canvas element.
-                        canvas = document.getElementById('segmenting_canvas');
-                        container = $('#segmContainer');
-                        var contWidth = container.width();
-                        var contHeight = container.height();
-                        canvas.width = contWidth;
-                        canvas.height = contHeight;
-                        //alert($scope.segm_img.width);
-                        //alert($scope.segm_img.height);
-                        var imgAspectRatio = $scope.segm_img.width/$scope.segm_img.height;
-                        context = canvas.getContext('2d');
-                        context.drawImage($scope.segm_img, 0, 0, canvas.height*imgAspectRatio, canvas.height);
-                         //$('#slidePosition').html('Granularity: '+ slider1);
-                         $('#slidePosition').html('Granularity: '+ slider1.value);
-                    }
-                    // Load image URL.
-                    try{
-                      $scope.segm_img.src = "data:image/png;base64," + response.data;
-                      localStorageService.set('segmented_img', "data:image/png;base64," + response.data);
-                      $scope.showLoadingWidget = false;
-                    }catch(e){
-                        error(e);
-                    }
-
-                  });
-
-                  $scope.showLoadingWidget = false;
+                  setImage(filepath);
 
               }, function(x) {
                   // Request error

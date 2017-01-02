@@ -82,7 +82,7 @@ class PostProc:
 
 
         self.imArray = []
-        for i in range(0,3): # runs 3 times
+        for i in range(0,5): # runs 3 times
             #numSegments = 566
             #mySigma = 6
 
