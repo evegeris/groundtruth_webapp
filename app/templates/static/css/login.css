@@ -207,3 +207,12 @@ himg_id {
     top: 120%;
     left: 50%;*/
 }
+
+input[type=”range”] {
+    -webkit-appearance: none;
+    background-color: #D64928;
+    height: 15px;
+    width: 170px;
+    border-radius: 5px;
+    box-shadow: inset 1px 1px 3px rgba(0,0,0,0.6);
+} 

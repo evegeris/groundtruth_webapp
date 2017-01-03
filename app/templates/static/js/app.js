@@ -52,11 +52,11 @@ angular.module('myApp').config(function( $stateProvider , $urlRouterProvider, $a
     // partner login
     $authProvider.google({
       clientId: '907560283159-1eskorjg2jegq44k89bida5uemgs4vm5.apps.googleusercontent.com'
-      // clientSecret: 'hGr9mgEYxlrtolo01uTCspPr'
+      // client secret: 'hGr9mgEYxlrtolo01uTCspPr' // not to be hard-coded, but for now...
     });
 
     $authProvider.github({
-      clientId: 'GitHub Client ID'
+      clientId: 'b0a782556de7c3ecdd54'
     });
 
     // Google
@@ -71,6 +71,7 @@ angular.module('myApp').config(function( $stateProvider , $urlRouterProvider, $a
       scopeDelimiter: ' ',
       display: 'popup',
       oauthType: '2.0',
+      //headers:{'X-Requested-With': null},
       popupOptions: { width: 452, height: 633 }
     });
 
@@ -125,6 +126,8 @@ $stateProvider.state('login', {
       }
 
   })
+
+  // not currently used
   .state('tables', {
       url: '/tables',
       views: {
@@ -133,9 +136,13 @@ $stateProvider.state('login', {
       }
     }
   })
+
   .state('dashboard', {
       url: '/dashboard',
       title: 'Dashboard',
+      resolve: {
+            loginRequired: loginRequired
+          },
       views: {
         'inner_page': {
         templateUrl: 'dashboard.html',
@@ -146,6 +153,9 @@ $stateProvider.state('login', {
   .state('limbo', {
       url: '/limbo',
       title: 'Limbo',
+      resolve: {
+            loginRequired: loginRequired
+          },
       views: {
         'inner_page': {
         templateUrl: 'limbo.html',
@@ -157,6 +167,9 @@ $stateProvider.state('login', {
 .state('polygon', {
       url: '/polygonDraw',
       title: 'Continue identification',
+      resolve: {
+            loginRequired: loginRequired
+          },
       views: {
         'inner_page': {
         templateUrl: '/polygon-draw/polygon-draw.template.html',
@@ -168,6 +181,9 @@ $stateProvider.state('login', {
   .state('crop_image', {
         url: '/cropImage',
         title: 'Crop Image',
+        resolve: {
+              loginRequired: loginRequired
+            },
         views: {
           'inner_page': {
           templateUrl: '/crop-image/crop-image.template.html',
@@ -294,3 +310,11 @@ var app = angular.module( 'MyApp.scripts', ['ngRoute'] );
                             .match(/.*\/node_modules\/[^/]+\//)[0];
  app.use('/scripts', express.static(bootstrap_dir + 'dist/'));
 */
+
+app.use(function (req, res, next){
+res.header('Access-Control-Allow-Origin', '*');
+res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+next();
+});

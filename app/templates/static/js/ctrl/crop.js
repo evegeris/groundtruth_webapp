@@ -1,5 +1,15 @@
 angular.module('myApp').controller('CropCtrl', function($http, $state,  $scope, user_info, localStorageService) {
 
+/*
+// investigating whether this is needed
+  if (!$auth.isAuthenticated()) {
+    //alert('not auth');
+    $state.go('login');
+  }else {
+    //alert('yes auth');
+  }
+*/
+
   $scope.myImage='';
   $scope.segm_img = new Image();
   $scope.myCroppedImage='';
@@ -10,19 +20,18 @@ angular.module('myApp').controller('CropCtrl', function($http, $state,  $scope, 
   $scope.segmentedArray = [];
   $scope.jsonArray = [];
   $scope.selectedIndex = 0;
-
-/*
-  $scope.testBtn= function(){
-    alert('seems alright.');
-  }
-*/
-
   var slider1 = document.getElementById("granularity");
 
+  /*
+    $scope.testBtn= function(){
+      alert('seems alright.');
+    }
+  */
+
   slider1.addEventListener("input", function() {
-    console.log('slider: ');
-    console.log(slider1.value);
-    console.log($scope.segmentedArray[slider1.value]);
+    //console.log('slider: ');
+    //console.log(slider1.value);
+    //console.log($scope.segmentedArray[slider1.value]);
     setImage($scope.segmentedArray[slider1.value]);
 
     $('#slidePosition').html('Granularity: '+ slider1.value);
@@ -166,10 +175,9 @@ var onSuccess = function(e){
                     $scope.segmentedArray.push(eval(img_idx));
                     $scope.jsonArray.push(eval(json_idx));
                   }
-                  // for now, assume last index desired
-                  // TODO: extend to using slider
+
+                  // default img to display:
                   $scope.selectedIndex = len - 1;
-                  //alert($scope.selectedIndex);
 
                   // set segmented image as src
                   var filepath = $scope.segmentedArray[$scope.selectedIndex];
@@ -194,6 +202,7 @@ var onSuccess = function(e){
        var answer = confirm("Confirm the segmentation?\nProceed?")
        if (answer){
 
+              $scope.selectedIndex = slider1.value; // update index
               var segmented_filepath = $scope.segmentedArray[$scope.selectedIndex];
               var json_filepath = $scope.jsonArray[$scope.selectedIndex];
               var email = localStorageService.get('email');

@@ -74,8 +74,8 @@ def create_app(config_filename):
             return response
 
         segmented_filepath = request.args.get('segmented_filepath')
-        json_filepath = request.args.get('json_filepath')
-        full_json_filepath = os.path.join(app.root_path, 'templates/static/images/') + json_filepath
+        full_json_filepath = request.args.get('json_filepath')
+        #full_json_filepath = os.path.join(app.root_path, 'templates/static/images/') + json_filepath
         print(full_json_filepath)
 
         email = request.args.get('email')
