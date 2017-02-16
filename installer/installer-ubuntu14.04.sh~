@@ -1,0 +1,156 @@
+#!/bin/sh
+
+apt-get update
+
+apt-get install git -y 
+
+apt-get install python-setuptools -y
+
+apt-get install python-dev build-essential -y
+
+apt-get install python-pip -y
+
+apt-get install nodejs -y
+
+apt-get install npm -y
+
+apt-get install libpq-dev python-dev -y
+
+apt-get install python-tk -y
+
+npm install -g bower
+
+export DEBIAN_FRONTEND="noninteractive"
+
+echo "mysql-server mysql-server/root_password password gt_db_pass" | debconf-set-selections
+
+echo "mysql-server mysql-server/root_password_again password gt_db_pass" | debconf-set-selections
+
+apt-get -y install mysql-server
+
+set timeout -1
+spawn mysql_secure_installation
+match_max 100000
+expect -exact "\r
+\r
+\r
+\r
+NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MySQL\r
+      SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!\r
+\r
+\r
+In order to log into MySQL to secure it, we'll need the current\r
+password for the root user.  If you've just installed MySQL, and\r
+you haven't set the root password yet, the password will be blank,\r
+so you should just press enter here.\r
+\r
+Enter current password for root (enter for none): "
+send -- "1234\r"
+expect -exact "\r
+OK, successfully used password, moving on...\r
+\r
+Setting the root password ensures that nobody can log into the MySQL\r
+root user without the proper authorisation.\r
+\r
+You already have a root password set, so you can safely answer 'n'.\r
+\r
+Change the root password? \[Y/n\] "
+send -- "n\r"
+expect -exact "n\r
+ ... skipping.\r
+\r
+By default, a MySQL installation has an anonymous user, allowing anyone\r
+to log into MySQL without having to have a user account created for\r
+them.  This is intended only for testing, and to make the installation\r
+go a bit smoother.  You should remove them before moving into a\r
+production environment.\r
+\r
+Remove anonymous users? \[Y/n\] "
+send -- "y\r"
+expect -exact "y\r
+ ... Success!\r
+\r
+Normally, root should only be allowed to connect from 'localhost'.  This\r
+ensures that someone cannot guess at the root password from the network.\r
+\r
+Disallow root login remotely? \[Y/n\] "
+send -- "y\r"
+expect -exact "y\r
+ ... Success!\r
+\r
+By default, MySQL comes with a database named 'test' that anyone can\r
+access.  This is also intended only for testing, and should be removed\r
+before moving into a production environment.\r
+\r
+Remove test database and access to it? \[Y/n\] "
+send -- "y\r"
+expect -exact "y\r
+ - Dropping test database...\r
+ERROR 1008 (HY000) at line 1: Can't drop database 'test'; database doesn't exist\r
+ ... Failed!  Not critical, keep moving...\r
+ - Removing privileges on test database...\r
+ ... Success!\r
+\r
+Reloading the privilege tables will ensure that all changes made so far\r
+will take effect immediately.\r
+\r
+Reload privilege tables now? \[Y/n\] "
+send -- "y\r"
+expect eof
+
+apt-get install mysql-workbench -y
+
+pip install Flask==0.10.1
+
+pip install Flask-Mail==0.9.1
+
+pip install Flask-Migrate==1.4.0
+
+pip install Flask-RESTful==0.3.4
+
+pip install Flask-SQLAlchemy==2.0
+
+pip install Flask-Script==2.0.5
+
+pip install PyJWT==1.4.0
+
+pip install PyMySQL==0.6.6
+
+pip install PyYAML==3.11
+
+pip install autopep8==1.2.1
+
+pip install inflect==0.2.5
+
+pip install marshmallow==2.3.0
+
+pip install marshmallow-jsonapi==0.3.0
+
+pip install psycopg2==2.6
+
+pip install pycrypto==2.6.1
+
+pip install uWSGI==2.0.11.2
+
+pip install scikit-image
+
+mysql -u root -pgt_db_pass < cmds.txt
+
+mkdir wound_images
+
+mkdir json
+
+mkdir segmented
+
+chmod -R 777 groundtruth_webapp/
+
+chmod -R 777 wound_images/
+
+chmod -R 777 json/
+
+chmod -R 777 segmented/
+
+cd groundtruth_webapp
+
+
+

@@ -2,12 +2,6 @@
 #### based on the rdash-angular example:
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/rdash/rdash-angular?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-### New Features
-1. Full Client-Server Interactions
-2. Easy Installer for Ubuntu 14.04
-
-### Introduction
-
 We are not web-developers but rather want to help provide this research tool to the academic community. Please feel free to add suggestions and contribute!
 
 The objective of the webapp is to enable the rapid labeling of a database that will be eventually used by a machine learning algorithm. As we are still in the developmental phase, the web-application current runs as a local host and is geared towards labelling medical tissue data. We have plans to generalize the labelling tool such that you can specify within the application how you would like to label your data. The objective is to one day run the polished application on an external server to allow academics free access to a labelling tool, as well as open source access to the project if they wish to host their own flavour of a labelling tool!
@@ -30,6 +24,7 @@ Below are a few screenshots of the application.
 We are doing our best to convert this research project into something more user friendly, such that it can be used out of the box with very little programming. Currently our application is only supported on Ubuntu 14.04 and will soon be extended to 16.04. For installation there are two methods.
 
 
+
 ### Method 1: Easy-Installation (Ubuntu 14.04)
 A bash script ('installer/installer-ubuntu1404.sh') has been developed which runs through most of the instructions provided below. There are many python dependancies, needs for an SQL server, some angularJS dependancies, and the Flask Framework. We highly recommend that you read through the installer script carefully as there may be conflicting dependancies with your current system. 
 
@@ -45,25 +40,26 @@ With that out of the way, the following steps to install the webapp are as follo
 * 2. Read carefully through the 'installer-ubuntu1404.sh' script so you don't ruin your machines environment.
 * 3. Give the installer bash script execution privilages.
 * 4. Run the scipt as as super user: $sudo ./installer-ubuntu1404.sh
-* 5. Find any failed dependancies by re-running script and fix problems, or examine the Step by Step Dependancy Installation below
+* 5. Hope that every dependancies installs without an issue.
 
-This script is reliant upon the 'cmds.txt' file which sets up the mysql database accordingly. If everything installed correctly, you should now be in the groundtruth_webapp directory. If so, you need to now run the application and create a user account.
+This script is reliant upon the 'cmds.txt' file which sets up the mysql database accordingly. If everyone installed, you should now be in the groundtruth_webapp directory. If so, you need to now run the application and create a user account.
 
-* 6. Host the local server: $python run.py
+* 6. $python run.py
 * 7. Go to http://0.0.0.0:8888/ in Firefox
 * 8. Select 'Sign Up' and create generic credentials
 * 9. Sign in with the credentials and then logout by selection selection the drop menu in the top right corner of the Dashboard.
 
-If everything was successful, your credentials will now be in the mysql database as a user. The final steps are to now add some images that you would like to label! Find the full filepath on your machine to the 'wound_images' folder that should be in the same root directory as the application repository. Place your images that you wish to segment in this folder as we will be linking the file paths to your user account.
+If everyone was successful, your credentials will now be in the mysql database as a user. The final steps are to now add some images that you would like to label! Find the full filepath on your machine to the 'wound_images' folder that should be in the same root directory as the application repository. Place your images that you wish to segment in this folder as we will be linking the file paths to your user account.
 
 * 10. login to mysql server: $mysql -u root -pgt_db_pass
 * 11. Select the Database: mysql>USE groundtruth_db;
 * 12. Insert the filepath: mysql>INSERT INTO images (fullsize_orig_filepath) VALUES ('/full/file/path/to/wound_images/myimage.jpg');
 * 13. Associate the image with your user account: mysql>INSERT INTO user_has_image (users_id, images_id, progress) VALUES (1, 1, 0);
 
-When you run the local server and login in, you will be able to see your image within the application on the 'Continue' screen. As the application runs, server-client interactions will begin to populate the 'json' and 'segmented' directories. 
+If everyone worked, then the application is good to run! Now when you run the local server and login in, you will be able to see your image within the application on the 'Continue' screen. As you go through the steps to crop the image and label the data, server-client interactions will begin to populate the 'json' and 'segmented' directories. 
 
 If something went wrong during this process, refer to the Step by Step Dependancy Installation.
+
 
 ### Step by Step Dependancy Installation (Ubuntu 14.04)
 
@@ -111,13 +107,48 @@ If something went wrong during this process, refer to the Step by Step Dependanc
 * mysql>INSERT INTO user_has_image (users_id, images_id, progress) VALUES (1, 1, 0);
 * mysql>INSERT INTO user_has_image (users_id, images_id, progress) VALUES (1, 1, 0);
 
+### client
+* original RDash front-end
+* build and run development server by entering this directory and doing
+* $ gulp build && gulp
+* [Live example](http://rdash.github.io/) of the original RDash dashboard.
+
+### app
+* Python Flask used to serve static content (html, css, etc.)
+* Front-end + back-end
+* from the root directory, do
+* $ pip install -r requirements.txt
+* $ python db.py db init
+* $ python db.py db migrate
+* $ python db.py db upgrade
+* $ python run.py
+* More details [here](https://github.com/Leo-G/Flask-Scaffold) (this example also uses Protractor)
+
+
+## Usage
+### Requirements
+* [NodeJS](http://nodejs.org/) (with [NPM](https://www.npmjs.org/))
+* [Bower](http://bower.io)
+* [Gulp](http://gulpjs.com)?
+
+### Installation
+1. Clone the repository: `git clone https://github.com/evegeris/groundtruth_webapp.git`
+2. Install the NodeJS dependencies: `npm install`.
+3. Install the Bower dependencies: `bower install`.
+4. Run the gulp build task: `gulp build`.
+5. Run the gulp default task: `gulp`. This will build any changes made automatically, and also run a live reload server on [http://localhost:8888](http://localhost:8888).
+
 ### Development
-Want to contribute?
+Continue developing the dashboard further by editing the `src` directory. With the `gulp` command, any file changes made will automatically be compiled into the specific location within the `dist` directory.
 
-All of the easy to modify code is in the 'app/' directory. 
-HTML Files: app/templates/
-Javascript Files: app/templates/static/js/ctrl/
+### New Features
+1. Custom Draw Each Point on a Grid
+2. An automation example for drawing a polygon (triangle)
+3. An example of how to read in a JSON file
+4. An automation method that will draw ANY polygon from a JSON file
 
+### Etc.
+* image filepaths in database assumed to be relative to the static/images folder
 
 #### Modules & Packages
 TO add additional modules/packages not included with rdash-angular, add them to `bower.json` and then update `index.html`, to include them in the minified distribution output.
