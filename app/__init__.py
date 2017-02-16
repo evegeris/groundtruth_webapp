@@ -123,11 +123,13 @@ def create_app(config_filename):
         filepath = request.args.get('filepath') # original filepath
         print(filepath)
 
-        # update user_has_image entry with crop info
-        # get user id from email, get image id from filepath
-        # --> get user_has_image entry
-
-        imDict = segmentation.getSegmentedImage(filepath, app.root_path, int(x), int(y), int(w), int(h))
+        try:
+            imDict = segmentation.getSegmentedImage(filepath, app.root_path, int(x), int(y), int(w), int(h))
+        except TypeError:
+            print("Image not found!")
+            response = jsonify(message="Image not found!")
+            response.status_code = 401
+            return response
 
         dataJSON = json.dumps(imDict)
         print(dataJSON)
@@ -161,19 +163,21 @@ def create_app(config_filename):
             return Response('nope', direct_passthrough=True)
             '''
 
+        try:
+            #cv2.imshow('myimg', myimg)
+            #cv2.waitKey(0)
+            print(myimg.size)
+            # trying to check if Empty
+            # very easy in C++... mat.empty()
+            #if (myimg.size == 0)
+            #    print("aaaaaaaaaahh img empty")
+            encoded = cv2.imencode(".jpg", myimg)[1]
+            strImg = base64.encodestring(encoded)
 
-        #cv2.imshow('myimg', myimg)
-        #cv2.waitKey(0)
-        print(myimg.size)
-        # trying to check if Empty
-        # very easy in C++... mat.empty()
-        #if (myimg.size == 0)
-        #    print("aaaaaaaaaahh img empty")
-        encoded = cv2.imencode(".jpg", myimg)[1]
-        strImg = base64.encodestring(encoded)
-
-        return Response(strImg, direct_passthrough=True)
-        #return render_template("test.html", img_data=urllib.quote(strImg.rstrip('\n')))
+            return Response(strImg, direct_passthrough=True)
+            #return render_template("test.html", img_data=urllib.quote(strImg.rstrip('\n')))
+        except ValueError:
+            return Response("Image not found!", direct_passthrough=True)
 
 
     @app.route('/')

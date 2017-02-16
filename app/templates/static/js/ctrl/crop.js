@@ -1,4 +1,4 @@
-angular.module('myApp').controller('CropCtrl', function($http, $state,  $scope, user_info, localStorageService) {
+angular.module('myApp').controller('CropCtrl', function($http, $state,  $scope, user_info, localStorageService, toaster) {
 
 /*
 // investigating whether this is needed
@@ -142,6 +142,8 @@ var onSuccess = function(e){
      // Saving feature once you crop the image
      $scope.saveCrop = function(){
 
+       // check if image exists
+
        var answer = confirm("Save the Cropped Image!\nProceed?")
        if (answer){
              // save original cropped image
@@ -243,6 +245,16 @@ var onSuccess = function(e){
 
        $http.get('dyn_img/fp=' + filepath).then(function(response) {
          $scope.myImage = "data:image/png;base64," + response.data;
+       }).catch(function(response) {
+
+         toaster.pop({
+          type: 'error',
+          title: 'Error loading image!',
+          body: 'Filepath: '+filepath,
+          showCloseButton: true,
+          timeout: 200
+          });
+          $scope.loading = false;
        });
 
      }
