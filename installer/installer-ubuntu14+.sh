@@ -18,6 +18,8 @@ apt-get install libpq-dev python-dev -y
 
 apt-get install python-tk -y
 
+apt-get install python-opencv -y
+
 npm install -g bower
 
 export DEBIAN_FRONTEND="noninteractive"
