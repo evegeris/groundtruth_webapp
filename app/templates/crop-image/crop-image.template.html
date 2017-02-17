@@ -1,8 +1,8 @@
 <body ng-app="app" ng-controller="CropCtrl">
-  <!--div>Select an image file: <input type="file" id="fileInput" /></div-->
+  <div>Select an image file: <input type="file" id="fileInput" /></div>
 
-	<!--p id="pulled_size"> 0, 0 </p>
-	<p id="pulled_position"> 0, 0 </p-->
+	<p id="path">fp</p>
+	<!--p id="pulled_position"> 0, 0 </p-->
 
   <div class="row" ng-show="croppingStage">
     <div class="col-lg-3">
@@ -94,7 +94,7 @@
       <input id="granularity" type="range" min="0" max="4" value="2" step="1" />
       <p id="slidePosition">Granularity, 2</p>
       </div>
-      
+
     </div>
 
     <div class="col-lg-4">

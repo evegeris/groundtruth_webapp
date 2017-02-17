@@ -4,7 +4,7 @@
 
 ### New Features
 1. Full Client-Server Interactions
-2. Easy Installer for Ubuntu 14.04
+2. Easy Installer for Ubuntu 14.04+ 
 
 ### Introduction
 
@@ -30,8 +30,8 @@ Below are a few screenshots of the application.
 We are doing our best to convert this research project into something more user friendly, such that it can be used out of the box with very little programming. Currently our application is only supported on Ubuntu 14.04 and will soon be extended to 16.04. For installation there are two methods.
 
 
-### Method 1: Easy-Installation (Ubuntu 14.04)
-A bash script ('installer/installer-ubuntu1404.sh') has been developed which runs through most of the instructions provided below. There are many python dependancies, needs for an SQL server, some angularJS dependancies, and the Flask Framework. We highly recommend that you read through the installer script carefully as there may be conflicting dependancies with your current system. 
+### Method 1: Easy-Installation (Ubuntu 14.04+)
+A bash script ('installer/installer-ubuntu14+.sh') has been developed which runs through most of the instructions provided below. There are many python dependancies, needs for an SQL server, some angularJS dependancies, and the Flask Framework. We highly recommend that you read through the installer script carefully as there may be conflicting dependancies with your current system. 
 
 As well, we use the assumption that you do not currently have mysql in your machine. If this is not the case, please remove the commands from line 23 - line 99. You may then manually enter the mysql database commands located in the 'installer/cmds.txt' file and remove line 147, or alternatively you can switch your password into the mysql login command on line 147 of the installer. 
 
@@ -65,7 +65,7 @@ When you run the local server and login in, you will be able to see your image w
 
 If something went wrong during this process, refer to the Step by Step Dependancy Installation.
 
-### Step by Step Dependancy Installation (Ubuntu 14.04)
+### Step by Step Dependancy Installation (Ubuntu 14.04+)
 
 * 1. Install git
 * $sudo apt-get update
