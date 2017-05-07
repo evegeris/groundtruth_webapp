@@ -5,6 +5,10 @@
 ### New Features
 1. Full Client-Server Interactions
 2. Easy Installer for Ubuntu 14.04+ 
+3. File Uploaded (upload an image for a quick demo)
+4. SQL Database Reset Helper
+5. Major Bug Fixes (caching overlay issue, segmentation error)
+6. Updated labelling interface
 
 ### Introduction
 
@@ -65,7 +69,7 @@ When you run the local server and login in, you will be able to see your image w
 
 If something went wrong during this process, refer to the Step by Step Dependancy Installation.
 
-### Step by Step Dependancy Installation (Ubuntu 14.04+)
+### Method 2: Step by Step Dependancy Installation (Ubuntu 14.04+)
 
 * 1. Install git
 * $sudo apt-get update
@@ -110,6 +114,12 @@ If something went wrong during this process, refer to the Step by Step Dependanc
 * mysql>INSERT INTO images (fullsize_orig_filepath) VALUES ('/full/file/path/to/wound_images/otherimage.jpg');
 * mysql>INSERT INTO user_has_image (users_id, images_id, progress) VALUES (1, 1, 0);
 * mysql>INSERT INTO user_has_image (users_id, images_id, progress) VALUES (1, 1, 0);
+
+### New Feature -- File Upload
+
+1. You can now upload files and test out the application without playing with the SQL database every time. The SQL database needs to be initialized at the start however. These files are stored locally on the server after being uploaded.
+
+2. Keep messing up the SQL databse and want to reset it? Run the database_cleaner.sh script to wipe the SQL database for a fresh start! (You will need to create a new account on the server and insert some images first into the database however to use the application)
 
 ### Development
 Want to contribute?

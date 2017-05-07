@@ -42,6 +42,7 @@
     <script type="text/javascript" src="static/js/ctrl/toggle.js"></script>
     <script type="text/javascript" src="static/js/ctrl/login.js"></script>
     <script type="text/javascript" src="static/js/ctrl/logout.js"></script>
+    <script type="text/javascript" src="static/js/ctrl/refreshPage.js"></script>
     <script type="text/javascript" src="static/js/ctrl/canvas.js"></script>
     <script type="text/javascript" src="static/js/ctrl/crop.js"></script>
     <script type="text/javascript" src="static/js/ctrl/dashboard.js"></script>
@@ -91,6 +92,8 @@
    <!-- Nav and Main Content Start -->
    <div ng-controller="ToggleCtrl">
 
+
+
     <div id="page-wrapper" ng-class="{'open': toggle}">
 
       <!-- Sidebar -->
@@ -138,12 +141,13 @@
           </div>
         </div>
       </div>
+
       <!-- End Sidebar -->
 
 
 
       <div id="content-wrapper">
-        <div class="page-content">
+        <div class="page-content"  ng-controller="refreshPage">
 
           <!-- Header Bar -->
           <div class="row header" ng-if="isAuthenticated()" ng-cloak>
@@ -157,6 +161,11 @@
                     <li class="link">
                       <a href="#">
                         Profile
+                      </a>
+                    </li>
+                    <li class="link">
+                      <a href ng-click="refreshP()">
+                        Refresh Page
                       </a>
                     </li>
                     <li class="divider"></li>

@@ -106,6 +106,7 @@ $http.post(url).success(function (data, status) {
               user_info.setClassified(classified);
               var in_queue = user_entry.message.in_queue;
               user_info.setInQueue(in_queue);
+              alert("" + in_queue);
               var pComplete = (classified/(classified+in_queue))*100;
               user_info.setPercentComplete(pComplete);
 

@@ -148,6 +148,8 @@ mkdir json
 
 mkdir segmented
 
+mkdir cropped
+
 chmod -R 777 groundtruth_webapp/
 
 chmod -R 777 wound_images/
@@ -155,6 +157,8 @@ chmod -R 777 wound_images/
 chmod -R 777 json/
 
 chmod -R 777 segmented/
+
+chmod -R 777 cropped/
 
 cd groundtruth_webapp
 

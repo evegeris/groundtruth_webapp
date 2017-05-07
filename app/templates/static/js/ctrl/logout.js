@@ -34,6 +34,7 @@ angular.module('myApp').controller('LogoutCtrl', function($auth, $state, $window
      if (!$auth.isAuthenticated()) { return; }
      $auth.logout()
       .then(function() {
+        localStorageService.clearAll();
 
         $state.go('login');
 

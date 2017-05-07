@@ -51,7 +51,7 @@ class PostProc:
         #n.append(466)
         #n.append(500)
         n.append(100)
-        n.append(600)
+        n.append(400)
         n.append(566)
         n.append(600)
         n.append(666)
@@ -86,23 +86,18 @@ class PostProc:
             #numSegments = 566
             #mySigma = 6
 
-            ts = time.time()
-            st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H-%M-%S')
+            #ts = time.time()
+            #st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H-%M-%S')
             #self.out_files.append( str(n[i])+'seg_sigma'+str(s[i])+"_datetime"+st )
             self.out_files.append( str(n[i])+"_datetime"+st )
 
             newIm = self.im;
-            #cv2.imwrite("/home/madison/Documents/41x/IMG_SET6/" + self.out_files[i] +"_origin_elaine.jpg", newIm)
 
             # apply SLIC and extract (approximately) the supplied number of segments
             segments = slic(self.im, n_segments=n[i], sigma=s[i])
 
             b = segments.tolist() # nested lists with same data, indices
 
-            #with open('/home/madison/Documents/41x/IMG_SET6/' + self.out_files[i] +'.json', 'w') as outfile:
-            #	    json.dump(b, outfile, indent=2)
-
-            #self.segm_lists.append(json.dumps(b, indent=2))
             self.segm_lists.append(b)
 
             # show the output of SLICs
@@ -115,9 +110,6 @@ class PostProc:
 
             newIm = (newIm * 255.0).astype('u1')
             self.imArray.append(newIm)
-            #cv2.imshow("after astype", self.newIm)
-            #cv2.imwrite("/home/madison/Documents/41x/IMG_SET6/" + out_file +".jpg", self.newIm)
-            #cv2.waitKey(0)
 
 
 
@@ -128,6 +120,7 @@ def test():
     print 'Argument List:', str(sys.argv)
 
     global pixels
+    global st
 
     cropStartX = int(sys.argv[1])
     cropStartY = int(sys.argv[2])
@@ -158,6 +151,7 @@ def test():
 
 def getSegmentedImage(filepath, rootpath, cropStartX, cropStartY, cropWidth, cropHeight):
     global pixels
+    global st
 
     x1 = cropStartX
     x2 = cropStartX + cropWidth
@@ -191,15 +185,20 @@ def getSegmentedImage(filepath, rootpath, cropStartX, cropStartY, cropWidth, cro
 
     im = im[y1:y2,x1:x2,:] # NOTE: its img[y: y + h, x: x + w]
 
+
+    ts = time.time()
+    st = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H-%M-%S')
+    fp = os.getcwd()
+    fp = fp.rsplit('/',1)[0] # go back one dir
+    fullpath_cropped = fp + '/cropped/' + "datetime"+st + "_cropped.jpg"
+    cv2.imwrite(fullpath_cropped, im)
+
     newIm = cv2.imread(fullpath)
     newIm = newIm[y1:y2,x1:x2,:]
 
     postprocessor = PostProc(im)
     postprocessor.segment()
 
-    #writepath = rootpath + "/templates/static/images/wound_images/segmented/" + postprocessor.out_files[0] +".jpg"
-    #print("WRITE FULLPATH --- "+ writepath)
-    #cv2.imwrite(writepath, imArray[0])
 
     imDict = dict()
     imDict['arrayLength'] = len(postprocessor.imArray)

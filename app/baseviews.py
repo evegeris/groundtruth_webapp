@@ -172,6 +172,7 @@ class UserInfo(Resource):
             result = db.session.execute(stmt)
             user_images = result.fetchall();
             print user_images
+            print("pause")
 
             #session.query(UserHasImage).join((Users, User.id)).join((Images, Images.images_id))
 

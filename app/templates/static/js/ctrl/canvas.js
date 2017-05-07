@@ -2,6 +2,10 @@ angular.module('myApp').controller('CanvasCtrl', function($http, $scope, user_in
 
 $scope.showLoadingWidget = true;
 
+$.ajaxSetup({
+  cache:false
+});
+
 /*
 if (window.location.href.indexOf("?") > -1){
 
@@ -1026,6 +1030,8 @@ if (window.addEventListener) {
   //***************************************************************//
   $scope.readJSON = function(){
 
+
+
     if (window.location.href.indexOf("?") > -1){
         $scope.showLoadingWidget = false;
     }
@@ -1035,7 +1041,7 @@ if (window.addEventListener) {
       window.location.reload(true);
       $scope.showLoadingWidget = true;
     }
-
+  
 
     //delete $http.defaults.headers.common['X-Requested-With'];
 
@@ -1157,29 +1163,34 @@ function resize(value) {
   //***************************************************************//
   function onPhotoDataSuccess(imageData){
 
-
-
-    $scope.scaleImgX = 1;
-    $scope.scaleImgY = 1;
-    $scope.ResizeValue = 0;
-
-    var container = $('#customContainer');
-    $('#customContainer').css({'width':'800','height':'580'})
-    var contWidth = container.width();
-    var contHeight = container.height();
-    $scope.contRatio = contWidth/contHeight;
-    $('#ratio').html($scope.contRatio);
-
-    $('#cont').html(contWidth+ ', '+contHeight);
-
       myImageMiddle.onload = function() {
+
+        $scope.scaleImgX = 1;
+        $scope.scaleImgY = 1;
+        $scope.ResizeValue = 0;
+
+        var im_width = myImageMiddle.width;
+        var im_height = myImageMiddle.height;
+        var ratio = im_width/800;
+        var contWidth = 800;
+        var contHeight = im_height/ratio;
+
+        var container = $('#customContainer');
+        $('#customContainer').css({'width':contWidth,'height':contHeight}) // Originally 800 X 535
+        //var contWidth = 800;
+        //var contHeight = 800*ratio;
+        $scope.contRatio = contWidth/contHeight;
+        $('#ratio').html($scope.contRatio);
+
+        $('#cont').html(contWidth+ ', '+contHeight);
 
         //$scope.scaleImgX = contWidth/myImageMiddle.width;
         //$scope.scaleImgY = contHeight/myImageMiddle.height;
 
       $scope.draw_w = myImageMiddle.width * $scope.scaleImgX;
       $scope.draw_h = myImageMiddle.height * $scope.scaleImgY;
-
+      //alert(""+$scope.draw_w)
+      //alert(""+$scope.draw_h)
 
       context.canvas.width  = $scope.draw_w;
       context.canvas.height = $scope.draw_h;

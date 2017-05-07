@@ -1,7 +1,5 @@
 <body ng-app="app" ng-controller="CropCtrl">
-  <div>Select an image file: <input type="file" id="fileInput" /></div>
-
-	<p id="path">fp</p>
+  <div ng-show="browseImage">Select an image file (only .jpg at this time): <input type="file" id="fileInput" ng-show="browseImage" /></div>
 	<!--p id="pulled_position"> 0, 0 </p-->
 
   <div class="row" ng-show="croppingStage">

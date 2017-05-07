@@ -1,0 +1,53 @@
+DROP DATABASE groundtruth_db ;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+CREATE SCHEMA IF NOT EXISTS groundtruth_db ;
+USE groundtruth_db ;
+DROP TABLE IF EXISTS groundtruth_db.`users` ;
+CREATE TABLE IF NOT EXISTS `groundtruth_db`.`users` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(250) NULL,
+  `email` VARCHAR(250) NULL,
+  `password` VARCHAR(250) NULL,
+  `creation_time` TIMESTAMP NULL,
+  `modification_time` TIMESTAMP NULL,
+  `role` VARCHAR(250) NULL,
+  `classified` INT NULL COMMENT 'Number of images fully classified.',
+  `in_queue` INT NULL COMMENT 'Number of images in this person\'s queue (to-be-completed).',
+  `active` INT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+DROP TABLE IF EXISTS `groundtruth_db`.`images` ;
+CREATE TABLE IF NOT EXISTS `groundtruth_db`.`images` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `fullsize_orig_filepath` VARCHAR(250) NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+DROP TABLE IF EXISTS `groundtruth_db`.`user_has_image` ;
+CREATE TABLE IF NOT EXISTS `groundtruth_db`.`user_has_image` (
+  `users_id` INT NOT NULL,
+  `images_id` INT NOT NULL,
+  `progress` INT NULL,
+  `n_segments` INT NULL,
+  `crop_overlay_filepath` VARCHAR(250) NULL,
+  `crop_segm_filepath` VARCHAR(250) NULL,
+  `crop_orig_filepath` VARCHAR(250) NULL,
+  PRIMARY KEY (`users_id`, `images_id`),
+  INDEX `fk_users_has_images_images1_idx` (`images_id` ASC),
+  INDEX `fk_users_has_images_users_idx` (`users_id` ASC),
+  CONSTRAINT `fk_users_has_images_users`
+    FOREIGN KEY (`users_id`)
+    REFERENCES `groundtruth_db`.`users` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_users_has_images_images1`
+    FOREIGN KEY (`images_id`)
+    REFERENCES `groundtruth_db`.`images` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+quit

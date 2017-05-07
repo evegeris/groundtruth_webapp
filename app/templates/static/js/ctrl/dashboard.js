@@ -79,11 +79,11 @@ $scope.setSelectedImg = function() {
           var idx = $scope.selected;
           localStorageService.set('current_img', idx);
           // get image info JSON
-          alert(idx);
+          //alert(idx);
           var img_info_at = JSON.parse(localStorageService.get('image_info'+idx.toString()));
           // get progress
           var progress = img_info_at.progress;
-          alert(img_info_at.fullsize_orig_filepath);
+          //alert(img_info_at.fullsize_orig_filepath);
           // assume if progress = 0, this image needs cropping
           if (progress == 0){
             $scope.goCrop();
@@ -93,7 +93,7 @@ $scope.setSelectedImg = function() {
           }
         }
         else{
-          alert("Cancelled!");
+
         }
 
 

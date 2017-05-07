@@ -71,8 +71,8 @@
     }
 
     #customContainer {
-    width:800px;
-    height:580px;
+    width:2000px;
+    height:2000px;
     border:1px solid black;
     overflow:hidden;
     position:relative;
@@ -215,4 +215,4 @@ input[type=”range”] {
     width: 170px;
     border-radius: 5px;
     box-shadow: inset 1px 1px 3px rgba(0,0,0,0.6);
-} 
+}

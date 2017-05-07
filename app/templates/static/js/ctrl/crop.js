@@ -10,17 +10,25 @@ angular.module('myApp').controller('CropCtrl', function($http, $state,  $scope, 
   }
 */
 
+//window.location.reload(true);
+
   $scope.myImage='';
   $scope.segm_img = new Image();
   $scope.myCroppedImage='';
   $scope.cropType="rectangle";
   $scope.showLoadingWidget = false;
+  $scope.browseImage = true;
   $scope.croppingStage = true;
   $scope.segmentingStage = false;
   $scope.segmentedArray = [];
   $scope.jsonArray = [];
+  $scope.userImage = 0;
   $scope.selectedIndex = 0;
   var slider1 = document.getElementById("granularity");
+  var _validFileExtensions = [".jpg"];
+  //localStorage.clear();
+
+
 
   /*
     $scope.testBtn= function(){
@@ -82,20 +90,56 @@ function setImage(filepath){
 
 }
 
-/*
+
     // Changes the image from a loaded local file!
      var handleFileSelect=function(evt) {
        var file=evt.currentTarget.files[0];
+       var fullPath = document.getElementById('fileInput').value;
+
+       var re = /(\.jpg|\.jpeg)$/i;
+        if(!re.exec(fullPath))
+        {
+            alert("File extension not supported!");
+        }
+        else {
+
        var reader = new FileReader();
        reader.onload = function (evt) {
          $scope.$apply(function($scope){
            $scope.myImage=evt.target.result;
+
+           var email = localStorageService.get('email');
+           myImg = evt.target.result;
+           $http.get('get_localsave/', {
+                   params:  {image: myImg, email: email},
+                   headers: {'Authorization': 'token'}
+               }
+           )
+           .then(function(response) {
+             r_code = response.status;
+
+            fp = response.data.message;
+             //alert("" +fp);
+
+
+             $scope.userFilepath = fp;
+             $scope.userImage = 1;
+             //setImage(filepath);
+
+           }, function(x) {
+               // Request error
+           });
+
          });
        };
+     }
        reader.readAsDataURL(file);
+
      };
      angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
-/**/
+
+
+
 
 function setCroppedImageDataURL(success, error) {
 
@@ -148,12 +192,18 @@ var onSuccess = function(e){
        if (answer){
              // save original cropped image
              setCroppedImageDataURL(onSuccess, onError);
+             $scope.browseImage = false;
 
               //These are the important points, the x,y position and the width/length of the new image
               $('#pulled_position').html('Position: ' + $scope.myOriginalX +', '+$scope.myOriginalY );
               $('#pulled_size').html('Size: ' +$scope.myCroppedOriginalW +', '+$scope.myCroppedOriginalH );
 
-              var filepath = $scope.img_info_at.fullsize_orig_filepath;
+              if ($scope.userImage == 1){
+                var filepath = $scope.userFilepath;
+              }
+              else {
+                var filepath = $scope.img_info_at.fullsize_orig_filepath;
+              }
               var email = localStorageService.get('email');
 
               $scope.showLoadingWidget = true;
@@ -184,6 +234,7 @@ var onSuccess = function(e){
                   // set segmented image as src
                   var filepath = $scope.segmentedArray[$scope.selectedIndex];
                   setImage(filepath);
+                  setImage($scope.segmentedArray[slider1.value]);
 
               }, function(x) {
                   // Request error
@@ -221,7 +272,18 @@ var onSuccess = function(e){
 
                   $scope.showLoadingWidget = false;
 
+                  if (localStorageService.get('json_str') === null) {
+
+                  }
+                  else {
+                    localStorageService.remove('json_str');
+
+                  }
+
+
+
                   // retrieve JSON
+
                   localStorageService.set('json_str', response.data.message.json_data);
 
                   // hmm. fails on first attempt when ?loaded bit in polygonDraw
@@ -233,7 +295,7 @@ var onSuccess = function(e){
 
        }
        else{
-         alert("Cancelled!");
+         //alert("Cancelled!");
        }
      }
 
