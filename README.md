@@ -69,6 +69,7 @@ When you run the local server and login in, you will be able to see your image w
 
 If something went wrong during this process, refer to the Step by Step Dependancy Installation.
 
+
 ### Method 2: Step by Step Dependancy Installation (Ubuntu 14.04+)
 
 * 1. Install git

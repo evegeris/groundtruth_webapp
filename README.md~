@@ -4,7 +4,14 @@
 
 ### New Features
 1. Full Client-Server Interactions
-2. Easy Installer for Ubuntu 14.04
+2. Easy Installer for Ubuntu 14.04+ 
+<<<<<<< HEAD
+3. File Uploaded (upload an image for a quick demo)
+4. SQL Database Reset Helper
+5. Major Bug Fixes (caching overlay issue, segmentation error)
+6. Updated labelling interface
+=======
+>>>>>>> c57e7c92d9e6167f35fcc327e5d2621e5a36fc67
 
 ### Introduction
 
@@ -30,8 +37,8 @@ Below are a few screenshots of the application.
 We are doing our best to convert this research project into something more user friendly, such that it can be used out of the box with very little programming. Currently our application is only supported on Ubuntu 14.04 and will soon be extended to 16.04. For installation there are two methods.
 
 
-### Method 1: Easy-Installation (Ubuntu 14.04)
-A bash script ('installer/installer-ubuntu1404.sh') has been developed which runs through most of the instructions provided below. There are many python dependancies, needs for an SQL server, some angularJS dependancies, and the Flask Framework. We highly recommend that you read through the installer script carefully as there may be conflicting dependancies with your current system. 
+### Method 1: Easy-Installation (Ubuntu 14.04+)
+A bash script ('installer/installer-ubuntu14+.sh') has been developed which runs through most of the instructions provided below. There are many python dependancies, needs for an SQL server, some angularJS dependancies, and the Flask Framework. We highly recommend that you read through the installer script carefully as there may be conflicting dependancies with your current system. 
 
 As well, we use the assumption that you do not currently have mysql in your machine. If this is not the case, please remove the commands from line 23 - line 99. You may then manually enter the mysql database commands located in the 'installer/cmds.txt' file and remove line 147, or alternatively you can switch your password into the mysql login command on line 147 of the installer. 
 
@@ -65,7 +72,11 @@ When you run the local server and login in, you will be able to see your image w
 
 If something went wrong during this process, refer to the Step by Step Dependancy Installation.
 
-### Step by Step Dependancy Installation (Ubuntu 14.04)
+<<<<<<< HEAD
+### Method 2: Step by Step Dependancy Installation (Ubuntu 14.04+)
+=======
+### Step by Step Dependancy Installation (Ubuntu 14.04+)
+>>>>>>> c57e7c92d9e6167f35fcc327e5d2621e5a36fc67
 
 * 1. Install git
 * $sudo apt-get update
@@ -110,6 +121,12 @@ If something went wrong during this process, refer to the Step by Step Dependanc
 * mysql>INSERT INTO images (fullsize_orig_filepath) VALUES ('/full/file/path/to/wound_images/otherimage.jpg');
 * mysql>INSERT INTO user_has_image (users_id, images_id, progress) VALUES (1, 1, 0);
 * mysql>INSERT INTO user_has_image (users_id, images_id, progress) VALUES (1, 1, 0);
+
+### New Feature -- File Upload
+
+1. You can now upload files and test out the application without playing with the SQL database every time. The SQL database needs to be initialized at the start however. These files are stored locally on the server after being uploaded.
+
+2. Keep messing up the SQL databse and want to reset it? Run the database_cleaner.sh script to wipe the SQL database for a fresh start! (You will need to create a new account on the server and insert some images first into the database however to use the application)
 
 ### Development
 Want to contribute?
