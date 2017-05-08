@@ -16,6 +16,9 @@ import cv2
 import segmentation
 import json
 import time
+from shutil import copyfile, make_archive
+from io import BytesIO
+import base64
 
 # http://flask.pocoo.org/docs/0.10/patterns/appfactories/
 
@@ -236,6 +239,84 @@ def create_app(config_filename):
         #return Response(segmentedImgStr, direct_passthrough=True)
 
     #End of custom save file on server
+
+
+
+    #Custom save the labelled data to the server
+    @app.route("/get_saveLabel/")
+    def saveLabel():
+        from StringIO import StringIO
+        import base64
+
+        import cv2
+        from matplotlib import pyplot as plt
+
+        
+        data1 = request.args.get('data1')
+        segPath = request.args.get('segPath')
+        print(segPath)
+        left_seg, right_seg = segPath.split('_', 1 )
+        left_seg = left_seg[len(left_seg)-3:len(left_seg)]
+
+        right_seg, garb = right_seg.split('.',1) 
+        right_seg = right_seg[0:len(right_seg)-9]
+
+        date_time_clean = left_seg + '_'+ right_seg
+        right_seg = right_seg + 'labelled'
+
+        date_time = left_seg + '_' + right_seg
+        print(date_time)               
+                        
+        # Saving the file
+        try:
+            fp = os.getcwd()
+            fp = fp.rsplit('/',1)[0] # go back one dir
+            fp_orig = fp
+            fullpath_label = fp + '/labelled/' + date_time + '.json'
+            fh = open(fullpath_label, "wb")
+            fh.write(data1)
+            fh.close()
+
+            #Need to package everything in .zip file for download
+            fp = os.getcwd()
+            fp = fp.rsplit('/',1)[0] # go back one dir
+            fp = fp + '/packaged/' + date_time
+            # Making the directory
+            if not os.path.exists(fp):
+                os.makedirs(fp)
+            fp = fp + '/'
+        
+            #Copying all the files
+            copyfile(fp_orig+'/cropped/'+date_time_clean[4:len(date_time_clean)]+'cropped.jpg', fp+date_time_clean[4:len(date_time_clean)]+'cropped.jpg')
+            copyfile(fp_orig+'/json/'+date_time_clean[0:len(date_time_clean)-1]+'.json', fp+date_time_clean+'.json')
+            copyfile(fp_orig+'/labelled/'+date_time_clean+'labelled.json', fp+date_time_clean+'labelled.json')
+            copyfile(fp_orig+'/segmented/'+date_time_clean+'segmented.jpg', fp+date_time_clean+'segmented.jpg')
+        
+            # Zip the new directory for download
+            make_archive(fp_orig+'/packaged/'+date_time_clean[0:len(date_time_clean)-1], 'zip', fp[0:len(fp)-1])
+
+            # Extract the data to send over http
+            with open(fp_orig+'/packaged/'+date_time_clean[0:len(date_time_clean)-1]+'.zip', 'r') as content_file:
+                content = content_file.read()
+
+        except TypeError:
+            print("Permission Denied!")
+            response = jsonify(message="Permission Denied!")
+            response.status_code = 401
+            return response
+
+        # File Path for the created zip file
+        fp_zip = fp_orig+'/packaged/'+date_time_clean[0:len(date_time_clean)-1]+'.zip'
+
+        # Not allowed to send Binary over HTTP, must be UTF-8 format (base64)
+        with open(fp_zip, 'rb') as fin, open(fp_orig+'/packaged/'+'output.zip.b64', 'w') as fout:
+            base64.encode(fin, fout)
+        
+        #Send the Base64 file and decode on the client side
+        return send_from_directory(fp_orig+'/packaged', 'output.zip.b64')
+
+
+    #End of saving the labelled data
 
 
 

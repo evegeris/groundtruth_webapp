@@ -148,6 +148,10 @@ mkdir json
 
 mkdir segmented
 
+mkdir labelled
+
+mkdir packaged
+
 chmod -R 777 groundtruth_webapp/
 
 chmod -R 777 wound_images/
@@ -155,6 +159,10 @@ chmod -R 777 wound_images/
 chmod -R 777 json/
 
 chmod -R 777 segmented/
+
+chmod -R 777 labelled/
+
+chmod -R 777 packaged/
 
 cd groundtruth_webapp
 

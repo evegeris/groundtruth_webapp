@@ -3,12 +3,9 @@
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/rdash/rdash-angular?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ### New Features
-1. Full Client-Server Interactions
-2. Easy Installer for Ubuntu 14.04+ 
-3. File Uploaded (upload an image for a quick demo)
-4. SQL Database Reset Helper
-5. Major Bug Fixes (caching overlay issue, segmentation error)
-6. Updated labelling interface
+1. Easy Installer for Ubuntu 14.04+  and SQL Database Reset shell script
+2. File Uploaded (upload an image for a quick demo)
+3. File Downloads!
 
 ### Introduction
 
@@ -16,7 +13,7 @@ We are not web-developers but rather want to help provide this research tool to 
 
 The objective of the webapp is to enable the rapid labeling of a database that will be eventually used by a machine learning algorithm. As we are still in the developmental phase, the web-application current runs as a local host and is geared towards labelling medical tissue data. We have plans to generalize the labelling tool such that you can specify within the application how you would like to label your data. The objective is to one day run the polished application on an external server to allow academics free access to a labelling tool, as well as open source access to the project if they wish to host their own flavour of a labelling tool!
 
-The application aims to ease the labelling of data by utilizing the superpixel segmentation algorithm which can divide an image into coherant chunks that provide a compressed method of storing labelled data. My oversegmenting the image, a severely reduced image coplexity with near-complete results (little to no loss of information) helps enable rapid image labelling. 
+The application aims to ease the labelling of data by utilizing the superpixel segmentation algorithm which can divide an image into coherant chunks that provide a compressed method of storing labelled data. My oversegmenting the image, a severely reduced image complexity with near-complete results (little information loss) helps enable rapid image labelling. 
 
 Below are a few screenshots of the application. 
 
@@ -31,10 +28,10 @@ Below are a few screenshots of the application.
 ![Alt text](/readme_images/label.png?raw=true "Labeling the Segmented Image")
 
 
-We are doing our best to convert this research project into something more user friendly, such that it can be used out of the box with very little programming. Currently our application is only supported on Ubuntu 14.04 and will soon be extended to 16.04. For installation there are two methods.
+We are doing our best to convert this research project into something more user friendly, such that it can be used out of the box with very little programming. Currently our application is only supported on Ubuntu 14.04+ machines.
 
 
-### Method 1: Easy-Installation (Ubuntu 14.04+)
+### Installation Method 1: Easy-Installation (Ubuntu 14.04+)
 A bash script ('installer/installer-ubuntu14+.sh') has been developed which runs through most of the instructions provided below. There are many python dependancies, needs for an SQL server, some angularJS dependancies, and the Flask Framework. We highly recommend that you read through the installer script carefully as there may be conflicting dependancies with your current system. 
 
 As well, we use the assumption that you do not currently have mysql in your machine. If this is not the case, please remove the commands from line 23 - line 99. You may then manually enter the mysql database commands located in the 'installer/cmds.txt' file and remove line 147, or alternatively you can switch your password into the mysql login command on line 147 of the installer. 
@@ -70,7 +67,7 @@ When you run the local server and login in, you will be able to see your image w
 If something went wrong during this process, refer to the Step by Step Dependancy Installation.
 
 
-### Method 2: Step by Step Dependancy Installation (Ubuntu 14.04+)
+### Installation Method 2: Step by Step Dependancy Installation (Ubuntu 14.04+)
 
 * 1. Install git
 * $sudo apt-get update
@@ -116,11 +113,24 @@ If something went wrong during this process, refer to the Step by Step Dependanc
 * mysql>INSERT INTO user_has_image (users_id, images_id, progress) VALUES (1, 1, 0);
 * mysql>INSERT INTO user_has_image (users_id, images_id, progress) VALUES (1, 1, 0);
 
-### New Feature -- File Upload
+### Simple Use Mode:
+Instead of playing around with the SQL database to upload images, simply upload a file to the server for labelling on the cropping screen of the application! Note: currently only .jpg and .jpeg are supported, however .png compatability will be coming soon! 
+
+When you are done labelling the file, a handy .zip file will be downloaded to the local machine that includes:
+1. The cropped image
+2. The image with segment overlay (for reference)
+3. A .json file which describes the original integer mask for the segmented image
+4. A .json file which acts as a dictionary relating the labelled superpixels to the corresponding label.
+
+Note: the first array in the dictionary is always set to 0. That is, the first label starts at the second array within the .json dictionary. 
+
+### New Feature -- File Upload, Zip Download, and DB Cleaner
 
 1. You can now upload files and test out the application without playing with the SQL database every time. The SQL database needs to be initialized at the start however. These files are stored locally on the server after being uploaded.
 
-2. Keep messing up the SQL databse and want to reset it? Run the database_cleaner.sh script to wipe the SQL database for a fresh start! (You will need to create a new account on the server and insert some images first into the database however to use the application)
+2. When you finish labelling the image, a Zip file is sent your way with everything you need. How handy!
+
+3. Keep messing up the SQL databse and want to reset it? Run the database_cleaner.sh script to wipe the SQL database for a fresh start! (You will need to create a new account on the server and insert some images first into the database however to use the application)
 
 ### Development
 Want to contribute?

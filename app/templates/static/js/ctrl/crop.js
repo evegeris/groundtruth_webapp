@@ -285,7 +285,7 @@ var onSuccess = function(e){
                   // retrieve JSON
 
                   localStorageService.set('json_str', response.data.message.json_data);
-
+                  localStorageService.set('selected_fp', segmented_filepath);
                   // hmm. fails on first attempt when ?loaded bit in polygonDraw
                   $state.go("polygon");
 

@@ -1010,16 +1010,57 @@ if (window.addEventListener) {
     // Next we need to convert the dictionary to a JSON file
     var data1 = JSON.stringify(dictionary);
 
-    //var data = "{name: 'Bob', occupation: 'Plumber'}";
-    //var a = document.createElement('a');
-    //a.setAttribute('href', 'data:text/plain;charset=utf-u,'+encodeURIComponent(data));
-    //a.setAttribute('download', testOutput.json);
-    //a.click()
+
+    // Get the file path for proper naming of the zip file
+    segPath = localStorageService.get('selected_fp');
+    $http.get('get_saveLabel/', {
+            params:  {data1: data1, segPath: segPath},
+            headers: {'Authorization': 'token'}
+        }
+    )
+    .then(function(response) {
+
+      // Raw UTF-8 data sent
+     content = response.data;
+
+     // Need to convert back to binary BLOB
+      var binary_string =  window.atob(content);
+      var len = binary_string.length;
+      var bytes = new Uint8Array( len );
+      for (var i = 0; i < len; i++)        {
+        bytes[i] = binary_string.charCodeAt(i);
+      }
+      bytes.buffer;
+
+      // Get the number of segments and date for .zip file naming
+      var spl = segPath.split("_");
+      fileName = spl[0].substring(spl[0].length-3, spl[0].length) + "_" + spl[1] + ".zip";
+
+      // Workaround so we can name the download file with a hidden tag
+       var a = document.createElement("a");
+       document.body.appendChild(a);
+       a.style = "display: none";
+
+      // Creating the blob file
+      var blob = new Blob([bytes.buffer], {type: "application/zip"});
+
+      // Setting up the download
+        url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = fileName;
+        a.click();
+        window.URL.revokeObjectURL(url);
+
+
+
+    }, function(x) {
+        // Request error
+    });
 
     // Website display to show what the data looks like
-    var url = 'data:text/json;charset=utf8,' + encodeURIComponent(data1);
-    window.open(url, '_blank');
-    window.focus()
+    //var url = 'data:text/json;charset=utf8,' + encodeURIComponent(data1);
+    //window.open(url, '_blank');
+    //window.focus()
 
   }
 
@@ -1041,7 +1082,7 @@ if (window.addEventListener) {
       window.location.reload(true);
       $scope.showLoadingWidget = true;
     }
-  
+
 
     //delete $http.defaults.headers.common['X-Requested-With'];
 
