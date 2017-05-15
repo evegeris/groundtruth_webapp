@@ -3,9 +3,16 @@
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/rdash/rdash-angular?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ### New Features
-1. Easy Installer for Ubuntu 14.04+  and SQL Database Reset shell script
-2. File Uploaded (upload an image for a quick demo)
-3. File Downloads!
+1. Added many layers of security (SQL Injection, XSS, CSRF)
+2. Multithreaded server (should be good for ~100 hosts)
+3. Easy Installer for Ubuntu 14.04+  and SQL Database Reset shell script
+4. File Uploaded (upload an image for a quick demo)
+5. File Downloads!
+
+### Next Features To Add
+1. Automatic Server Maintenance
+2. Enable PNG files for input
+3. 40x Error Screens
 
 ### Introduction
 
@@ -53,14 +60,15 @@ This script is reliant upon the 'cmds.txt' file which sets up the mysql database
 * 6. Host the local server: $python run.py
 * 7. Go to http://0.0.0.0:8888/ in Firefox
 * 8. Select 'Sign Up' and create generic credentials
-* 9. Sign in with the credentials and then logout by selection selection the drop menu in the top right corner of the Dashboard.
 
 If everything was successful, your credentials will now be in the mysql database as a user. The final steps are to now add some images that you would like to label! Find the full filepath on your machine to the 'wound_images' folder that should be in the same root directory as the application repository. Place your images that you wish to segment in this folder as we will be linking the file paths to your user account.
 
-* 10. login to mysql server: $mysql -u root -pgt_db_pass
-* 11. Select the Database: mysql>USE groundtruth_db;
-* 12. Insert the filepath: mysql>INSERT INTO images (fullsize_orig_filepath) VALUES ('/full/file/path/to/wound_images/myimage.jpg');
-* 13. Associate the image with your user account: mysql>INSERT INTO user_has_image (users_id, images_id, progress) VALUES (1, 1, 0);
+* 9. login to mysql server: $mysql -u root -pgt_db_pass
+* 10. Select the Database: mysql>USE groundtruth_db;
+* 11. Insert the filepath: mysql>INSERT INTO images (relative_orig_filepath) VALUES ('wound_images/myimage.jpg');
+* 12. Associate the image with your user account: mysql>INSERT INTO user_has_image (users_id, images_id, progress) VALUES (1, 1, 0);
+
+See Method 2 for more details on these two SQL commands.
 
 When you run the local server and login in, you will be able to see your image within the application on the 'Continue' screen. As the application runs, server-client interactions will begin to populate the 'json' and 'segmented' directories. 
 
@@ -108,10 +116,12 @@ If something went wrong during this process, refer to the Step by Step Dependanc
 * $ mysql -u root -p
 * mysql> USE groundtruth_db;
 * (example insert statements)
-* mysql>INSERT INTO images (fullsize_orig_filepath) VALUES ('/full/file/path/to/wound_images/myimage.jpg');
-* mysql>INSERT INTO images (fullsize_orig_filepath) VALUES ('/full/file/path/to/wound_images/otherimage.jpg');
+* mysql>INSERT INTO images (relative_orig_filepath) VALUES ('directory/imageName.jpg');
+* mysql>INSERT INTO images (relative_orig_filepath) VALUES ('wound_images/myimage.jpg');
+* mysql>INSERT INTO images (relative_orig_filepath) VALUES ('wound_images/otherimage.jpg');
+* mysql>INSERT INTO user_has_image (users_id, images_id, progress) VALUES (userID, ImageNumber, completed);
 * mysql>INSERT INTO user_has_image (users_id, images_id, progress) VALUES (1, 1, 0);
-* mysql>INSERT INTO user_has_image (users_id, images_id, progress) VALUES (1, 1, 0);
+* mysql>INSERT INTO user_has_image (users_id, images_id, progress) VALUES (1, 2, 0);
 
 ### Simple Use Mode:
 Instead of playing around with the SQL database to upload images, simply upload a file to the server for labelling on the cropping screen of the application! Note: currently only .jpg and .jpeg are supported, however .png compatability will be coming soon! 

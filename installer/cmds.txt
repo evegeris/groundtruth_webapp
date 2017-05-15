@@ -20,7 +20,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `groundtruth_db`.`images` ;
 CREATE TABLE IF NOT EXISTS `groundtruth_db`.`images` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `fullsize_orig_filepath` VARCHAR(250) NULL,
+  `relative_orig_filepath` VARCHAR(250) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 DROP TABLE IF EXISTS `groundtruth_db`.`user_has_image` ;

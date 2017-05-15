@@ -56,7 +56,7 @@ function setImage(filepath){
   $scope.showLoadingWidget = true;
   $scope.croppingStage = false;
   $scope.segmentingStage = true;
-  $http.get('dyn_img/fp=' + filepath).then(function(response) {
+  $http.get('dyn_img/fp=' + '/' + filepath).then(function(response) {
 
     var canvas, container, context;
     $scope.segm_img.onload = function(){
@@ -99,7 +99,14 @@ function setImage(filepath){
        var re = /(\.jpg|\.jpeg)$/i;
         if(!re.exec(fullPath))
         {
-            alert("File extension not supported!");
+
+          toaster.pop({
+           type: 'info',
+           title: 'Invalid Extension',
+           body: fullPath,
+           showCloseButton: true,
+           timeout: 200
+           });
         }
         else {
 
@@ -124,7 +131,12 @@ function setImage(filepath){
 
              $scope.userFilepath = fp;
              $scope.userImage = 1;
-             //setImage(filepath);
+             //setImage(filepath);var theCookies = document.cookie.split(';');
+             var x = document.cookie;
+             //window.alert(x);
+
+
+
 
            }, function(x) {
                // Request error
@@ -202,7 +214,7 @@ var onSuccess = function(e){
                 var filepath = $scope.userFilepath;
               }
               else {
-                var filepath = $scope.img_info_at.fullsize_orig_filepath;
+                var filepath = $scope.img_info_at.relative_orig_filepath;
               }
               var email = localStorageService.get('email');
 
@@ -242,7 +254,14 @@ var onSuccess = function(e){
 
        }
        else{
-         alert("Cancelled!");
+         toaster.pop({
+          type: 'info',
+          title: 'Cancelled',
+          body: '',
+          showCloseButton:  true,
+          timeout: 5000,
+          tapToDismiss: flase
+          });
        }
      }
 
@@ -259,6 +278,7 @@ var onSuccess = function(e){
               var segmented_filepath = $scope.segmentedArray[$scope.selectedIndex];
               var json_filepath = $scope.jsonArray[$scope.selectedIndex];
               var email = localStorageService.get('email');
+
               //$scope.segmentedArray
               //$scope.jsonArray
 
@@ -303,9 +323,9 @@ var onSuccess = function(e){
      function requestImage(index){
 
        $scope.img_info_at = JSON.parse(localStorageService.get('image_info'+index.toString()));
-       var filepath = $scope.img_info_at.fullsize_orig_filepath;
+       var filepath = $scope.img_info_at.relative_orig_filepath;
 
-       $http.get('dyn_img/fp=' + filepath).then(function(response) {
+       $http.get('dyn_img/fp=' + '/' + filepath).then(function(response) {
          $scope.myImage = "data:image/png;base64," + response.data;
        }).catch(function(response) {
 
@@ -320,6 +340,10 @@ var onSuccess = function(e){
        });
 
      }
+
+
+
+
 
 
     // get current image from server

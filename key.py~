@@ -1,0 +1,7 @@
+import os
+from base64 import b64encode
+
+
+k = os.urandom(24)
+token = b64encode(k).decode('utf-8')
+print(token)

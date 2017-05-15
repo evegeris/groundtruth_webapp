@@ -1,5 +1,3 @@
-#Currently not utilized by the web_application
-
 # set root filepath to images on server through config.py
 # standalone script to enter all image filepaths into database
 # currently only looks for img files with extension .jpg or .png

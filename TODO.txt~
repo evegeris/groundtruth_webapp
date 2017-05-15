@@ -15,8 +15,6 @@
 
 - (DONE) note on segmentation screen that CTrl+Z undos previous action
 
-- User can customize their profile labels (# of labels, names, colors)
-
 - change 'bad data' to 'unclassified'
 
 - update 'finish' operation: form dictionary as user classifying
