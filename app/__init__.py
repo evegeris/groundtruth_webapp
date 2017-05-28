@@ -138,12 +138,12 @@ def create_app(config_filename):
 
         if (not segmented_filepath.endswith('.jpg')) or (not segmented_filepath.startswith('segmented')):
             response = jsonify(message='Invalid File')
-            response.status_code = 401
+            response.status_code = 400
             return response
 
         if not json_filepath.endswith('.json') or not json_filepath.startswith('json'):
             response = jsonify(message='Invalid File')
-            response.status_code = 401
+            response.status_code = 400
             return response
     
 
@@ -215,15 +215,15 @@ def create_app(config_filename):
 
         if (not filepath.endswith('.jpg')) or (not filepath.startswith('wound_images')):
             response = jsonify(message='Invalid File')
-            response.status_code = 401
+            response.status_code = 400
             return response
 
         try:
             imDict = segmentation.getSegmentedImage(filepath, app.root_path, int(x), int(y), int(w), int(h))
         except TypeError:
-            print("Image not found")
-            response = jsonify(message="Image not found")
-            response.status_code = 401
+            print("SLIC crashed")
+            response = jsonify(message="Internal Server Error")
+            response.status_code = 500
             return response
 
         dataJSON = json.dumps(imDict)
@@ -301,9 +301,9 @@ def create_app(config_filename):
                 pass
 
         except TypeError:
-            print("Permission Denied")
-            response = jsonify(message="Permission Denied!")
-            response.status_code = 401
+            print("Internal Server Error")
+            response = jsonify(message="Internal Server Error!")
+            response.status_code = 500
             return response
 
 
@@ -323,6 +323,21 @@ def create_app(config_filename):
         import cv2
         from matplotlib import pyplot as plt
 
+        if not request.headers.get('Authorization'):
+            response = jsonify(message='Missing accept header')
+            response.status_code = 401
+            return response
+        try:
+            payload = parse_token(request)
+        except DecodeError:
+            response = jsonify(message='Token is invalid')
+            response.status_code = 401
+            return response
+        except ExpiredSignature:
+            response = jsonify(message='Token has expired')
+            response.status_code = 401
+            return response
+
         
         data1 = request.args.get('data1') #Dictionary
         data2 = request.args.get('data2') #Completed Integer Mask
@@ -332,7 +347,7 @@ def create_app(config_filename):
 
         if (not segPath.endswith('.jpg')) or (not segPath.startswith('segmented')):
             response = jsonify(message='Invalid File')
-            response.status_code = 401
+            response.status_code = 400
             return response
 
         left_seg, right_seg = segPath.split('_', 1 )
@@ -396,9 +411,9 @@ def create_app(config_filename):
                 content = content_file.read()
 
         except:
-            print("Permission Denied!")
-            response = jsonify(message="Permission Denied!")
-            response.status_code = 401
+            print("Internal Server Error!")
+            response = jsonify(message="Internal Server Error!")
+            response.status_code = 500
             return response
 
         # File Path for the created zip file
@@ -421,15 +436,31 @@ def create_app(config_filename):
 
         pathPass = False;
 
+        if not request.headers.get('Authorization'):
+            response = jsonify(message='Missing accept header')
+            response.status_code = 401
+            return response
+        try:
+            payload = parse_token(request)
+        except DecodeError:
+            response = jsonify(message='Token is invalid')
+            response.status_code = 401
+            return response
+        except ExpiredSignature:
+            response = jsonify(message='Token has expired')
+            response.status_code = 401
+            return response
+
+
         if (not (path.endswith('.jpg') or path.endswith('.png'))):
             response = jsonify(message='Invalid File Extension')
-            response.status_code = 401
+            response.status_code = 400
             return response
 
         if (path.startswith('groundtruth_webapp')):
             pathList = path.split('/')
             print(pathList[1])
-            if (pathList[1]=="readme_images"):
+            if (pathList[1]=="server_images"):
                 pathPass = True;
 
         if not ((path.startswith('wound_images')) or (path.startswith('segmented')) or (path.startswith('cropped')) or (pathPass)):
@@ -444,11 +475,13 @@ def create_app(config_filename):
 
         #Encode the image to send over HTTP (only .jpg to save server space)
         try:
-            encoded = cv2.imencode(".jpg", myimg)[1]
+            encoded = cv2.imencode(".png", myimg)[1]
             strImg = base64.encodestring(encoded)
             return Response(strImg, direct_passthrough=True)
         except ValueError:
-            return Response("Image not found!", direct_passthrough=True)
+            response = jsonify(message='Internal Server Error')
+            response.status_code = 500
+            return response
 
 
     #Used for the base call to the webpage to provide index file

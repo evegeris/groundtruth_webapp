@@ -5,5 +5,9 @@ $scope.refreshP = function(){
   window.location.reload(true);
 }
 
+$scope.goTutorial = function(){
+  $state.go('guest_tutorial');
+}
+
 
 });

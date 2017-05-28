@@ -1,4 +1,4 @@
-angular.module('myApp').controller('TutorialCtrl', function($http, $state,  $scope, toaster) {
+angular.module('myApp').controller('TutorialCtrl', function($http, $state,  $scope, localStorageService, toaster) {
 
 
 
@@ -36,8 +36,13 @@ angular.module('myApp').controller('TutorialCtrl', function($http, $state,  $sco
 
        $scope.tut3 = function(){
          $scope.tutStage1 = false;
-         $scope.tutStage2 = true;
+         $scope.tutStage2 = false;
+        if(localStorageService.get('email')=="guest@guest.com"){
          $state.go('guest_crop');
+       }
+       else {
+         $state.go('dashboard');
+       }
 
        }
 
@@ -47,17 +52,17 @@ angular.module('myApp').controller('TutorialCtrl', function($http, $state,  $sco
 
          if (index == 1){
 
-           var filepath = "groundtruth_webapp/readme_images/tutorial1_f.png";
+           var filepath = "groundtruth_webapp/server_images/tutorial1_f.png";
          }
 
          else if (index == 2){
 
-           var filepath = "groundtruth_webapp/readme_images/tutorial2_f.png";
+           var filepath = "groundtruth_webapp/server_images/tutorial2_f.png";
          }
 
          else if (index == 3){
 
-           var filepath = "groundtruth_webapp/readme_images/tutorial3_f.png";
+           var filepath = "groundtruth_webapp/server_images/tutorial3_f.png";
          }
 
 
@@ -66,6 +71,13 @@ angular.module('myApp').controller('TutorialCtrl', function($http, $state,  $sco
            var tutId = document.getElementById("tutId");
            tutId.src = $scope.myImage;
          }).catch(function(response) {
+
+           var r_code = response.status;
+
+           if (r_code != 200){
+              localStorageService.set('error_status', r_code);
+              $state.go('error_status');
+           }
 
            toaster.pop({
             type: 'error',

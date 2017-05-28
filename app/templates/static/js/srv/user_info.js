@@ -8,6 +8,7 @@ angular.module('myApp').service('user_info', function(localStorageService) {
               "full_name": "",
               "classified": "0",
               "in_queue": "0",
+              "error_status": 0,
               "percent_complete": "0",
               "image_info": {},
               "current_img": 0,
@@ -82,6 +83,10 @@ angular.module('myApp').service('user_info', function(localStorageService) {
     this.setPercentComplete = function(pComplete){
       localStorageService.set('percent_complete', pComplete);
       this.user_info_object.data.attributes.percent_complete = pComplete;
+    };
+    this.setErrorStatus = function(errorCode){
+      localStorageService.set('error_status', errorCode);
+      this.user_info_object.data.attributes.error_status = errorCode;
     };
 
 

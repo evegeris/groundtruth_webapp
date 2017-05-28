@@ -10,6 +10,7 @@ angular.module('myApp').controller('CropCtrl', function($http, $state,  $scope, 
   }
 */
 
+
   if(localStorageService.get('email')=="guest@guest.com"){
     toaster.pop({
      type: 'info',
@@ -68,6 +69,15 @@ function setImage(filepath){
   $scope.segmentingStage = true;
   $http.get('dyn_img/fp=' + '/' + filepath).then(function(response) {
 
+
+    var r_code = response.status;
+
+    if (r_code != 200){
+       localStorageService.set('error_status', r_code);
+       $state.go('error_status');
+     }
+
+
     var canvas, container, context;
     $scope.segm_img.onload = function(){
         // Create the canvas element.
@@ -92,6 +102,7 @@ function setImage(filepath){
       $scope.showLoadingWidget = false;
     }catch(e){
         error(e);
+
     }
 
   });
@@ -133,11 +144,13 @@ function setImage(filepath){
                }
            )
            .then(function(response) {
-             r_code = response.status;
 
-            fp = response.data.message;
-             //alert("" +fp);
+             var r_code = response.status;
 
+             if (r_code != 200){
+                localStorageService.set('error_status', r_code);
+                $state.go('error_status');
+              }
 
              $scope.userFilepath = fp;
              $scope.userImage = 1;
@@ -150,6 +163,9 @@ function setImage(filepath){
 
            }, function(x) {
                // Request error
+               var r_code = 400;
+               localStorageService.set('error_status', r_code);
+               $state.go('error_status');
            });
 
          });
@@ -236,7 +252,15 @@ var onSuccess = function(e){
               )
               .then(function(response) {
 
+                var r_code = response.status;
+
+                if (r_code != 200){
+                   localStorageService.set('error_status', r_code);
+                   $state.go('error_status');
+                 }
+
                 //$('hchosen').css({'background-color':'#FFFFAD'})
+
 
                   // parse received data
                   var obj = JSON.parse(response.data.message);
@@ -300,6 +324,13 @@ var onSuccess = function(e){
               )
               .then(function(response) {
 
+                var r_code = response.status;
+
+                if (r_code != 200){
+                   localStorageService.set('error_status', r_code);
+                   $state.go('error_status');
+                }
+
                   $scope.showLoadingWidget = false;
 
                   if (localStorageService.get('json_str') === null) {
@@ -338,6 +369,13 @@ var onSuccess = function(e){
        $http.get('dyn_img/fp=' + '/' + filepath).then(function(response) {
          $scope.myImage = "data:image/png;base64," + response.data;
        }).catch(function(response) {
+
+         var r_code = response.status;
+
+         if (r_code != 200){
+            localStorageService.set('error_status', r_code);
+            $state.go('error_status');
+          }
 
          toaster.pop({
           type: 'error',

@@ -221,6 +221,20 @@ $stateProvider.state('login', {
                 }
               }
             })
+            /* New State Added Here called error_status */
+            .state('error_status', {
+                  url: '/error_status',
+                  title: 'Unresolved Error',
+                  resolve: {
+                        loginRequired: loginRequired
+                      },
+                  views: {
+                    'inner_page': {
+                    templateUrl: '/error-status/error-status.html',
+                    controller: 'ErrorCtrl'
+                  }
+                }
+              })
   .state('home', {
     url: '/',
     title: 'Home',

@@ -47,6 +47,7 @@
     <script type="text/javascript" src="static/js/ctrl/crop.js"></script>
     <script type="text/javascript" src="static/js/ctrl/guestCrop.js"></script>
     <script type="text/javascript" src="static/js/ctrl/tutorial.js"></script>
+    <script type="text/javascript" src="static/js/ctrl/error.js"></script>
     <script type="text/javascript" src="static/js/ctrl/dashboard.js"></script>
     <script type="text/javascript" src="static/js/ctrl/limbo.js"></script>
     <script type="text/javascript" src="static/js/srv/user_info.js"></script>
@@ -166,8 +167,13 @@
                       </a>
                     </li>
                     <li class="link">
+                      <a href ng-click="goTutorial()">
+                        Tutorial
+                      </a>
+                    </li>
+                    <li class="link">
                       <a href ng-click="refreshP()">
-                        Refresh Page
+                        Refresh
                       </a>
                     </li>
                     <li class="divider"></li>

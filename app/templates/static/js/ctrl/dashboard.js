@@ -11,8 +11,6 @@ angular.module('myApp.controllers').controller('DashboardCtrl', function($auth, 
     $state.go("guest_crop");
   }
   else {
-    //alert(localStorageService.get('email'));
-
   }
 
 $scope.selected = {value: -1};

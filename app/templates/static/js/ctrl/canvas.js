@@ -1038,6 +1038,13 @@ if (window.addEventListener) {
     )
     .then(function(response) {
 
+      var r_code = response.status;
+
+      if (r_code != 200){
+         localStorageService.set('error_status', r_code);
+         $state.go('error_status');
+      }
+
       // Raw UTF-8 data sent
      content = response.data;
 
