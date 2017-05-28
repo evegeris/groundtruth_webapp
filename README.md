@@ -3,21 +3,16 @@
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/rdash/rdash-angular?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ### New Features
-1. Guest Login (No need to sign in and modify the SQL database)
-2. Introductory Tutorial
+1. HTML Error Code Screens
+2. Guest Login + Introductory Tutorial
 3. Improved Output Files for download
 4. Automated Server Maintenace
-5. Upload .jpg or .png files securely
-6. Added many layers of security (SQL Injection, XSS, CSRF)
-7. Multithreaded server (should be good for ~100 hosts)
-8. Easy Installer for Ubuntu 14.04+  and SQL Database Reset shell script
+5. Upload .jpg or .png files securely (SQL Injection, XSS, CSRF)
+6. Multithreaded server (should be good for ~100 hosts)
+7. Easy Installer for Ubuntu 14.04+  and SQL Database Reset shell script
 
-### Next Features To Add
-1. 40x Error Screens
-2. Tutorial Screen access for reference
-3. Updated readme images 
-4. User Profiles* (Big Update)
-
+### Next Feature To Add
+1. User Profiles (Big Update)
 ### Introduction
 
 We are not web-developers but rather want to help provide this research tool to the academic community. Please feel free to add suggestions and contribute!
@@ -139,14 +134,12 @@ When you are done labelling the file, a handy .zip file will be downloaded to th
 
 ### New Feature -- File Upload, Zip Download, and DB Cleaner
 
-1. If a guest account is created on the SQL database, then a user can login without needing to create their own credentials. This guest mode has limitted access to the site.
+1. If a guest account is created on the SQL database, then a user can login without needing to create their own credentials. This guest mode has limited access to the site.
 2. In the guest access mode, a tutorial is provided to better explain how the tool works.
 3. The labelled integer mask is now included in the .zip file and was reconstructed from the dictionary.
 4. The server will now clean the clutter of temporary files every night at midnight, or when the folders get too large. Be warned, the file clensing can erase some temoporary, in-use data for labelling!
 5. You can now upload files and test out the application without playing with the SQL database every time. The SQL database needs to be initialized at the start however. These files are stored locally on the server after being uploaded.
-6. The website is much safer than what it was before, but someone could probably crash the server if they had their heart set on it.
-7. The server will spawn multiple threads which should hopefully deal with multiple superpixel segmentations at the same time.
-8. Keep messing up the SQL databse and want to reset it? Run the database_cleaner.sh script to wipe the SQL database for a fresh start! (You will need to create a new account on the server and insert some images first into the database however to use the application)
+6. Keep messing up the SQL databse and want to reset it? Run the database_cleaner.sh script to wipe the SQL database for a fresh start! (You will need to create a new account on the server and insert some images first into the database however to use the application)
 
 ### Development
 Want to contribute? Suggestions? 
