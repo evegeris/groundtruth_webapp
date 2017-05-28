@@ -1,6 +1,18 @@
-angular.module('myApp.controllers').controller('LimboCtrl', function($state, $scope, user_info, localStorageService) {
+angular.module('myApp.controllers').controller('LimboCtrl', function($state, $scope, user_info, localStorageService, toaster) {
 
 // state-change functions
+
+if(localStorageService.get('email')=="guest@guest.com"){
+  toaster.pop({
+   type: 'info',
+   title: 'Not allowed in Guest Mode',
+   body: '',
+   showCloseButton: true,
+   timeout: 200
+   });
+  $state.go("guest_crop");
+}
+
 $scope.goCrop = function(){
   $state.go("crop_image");
 }

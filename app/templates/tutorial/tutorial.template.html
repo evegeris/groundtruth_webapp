@@ -1,0 +1,58 @@
+<body ng-app="app" ng-controller="TutorialCtrl">
+<h2 id="instructions"> Labelling Tool Tutorial Stage 1: Uploading an image </h2>
+  <div class="row">
+  	<div class="col-lg-6">
+    <img image="temp.jpg" id="tutId" >
+
+      <div class="col-lg-3">
+      </div>
+
+  </div>
+</div>
+
+
+
+  <div class="row" ng-show="tutStage1">
+
+    <div class="col-lg-4">
+    </div>
+
+      <div class="col-lg-4">
+        <form ng-submit="tut1()">
+            <input class="btn btn-info" type="submit" value="Next Tutorial Stage">
+        </form>
+      </div>
+
+      <div class="col-lg-4">
+      </div>
+  </div>
+
+  <div class="row" ng-show="tutStage2">
+    <div class="col-lg-4">
+    </div>
+
+      <div class="col-lg-4" >
+        <form ng-submit="tut2()" >
+            <input class="btn btn-info" type="submit" value="Next Tutorial Stage">
+        </form>
+      </div>
+
+      <div class="col-lg-4">
+      </div>
+  </div>
+
+  <div class="row" ng-show="tutStage3">
+    <div class="col-lg-4">
+    </div>
+
+      <div class="col-lg-4" >
+        <form ng-submit="tut3()" >
+            <input class="btn btn-info" type="submit" value="Finish Tutorial">
+        </form>
+      </div>
+
+      <div class="col-lg-4">
+      </div>
+  </div>
+
+</body>

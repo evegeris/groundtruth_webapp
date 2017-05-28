@@ -1,4 +1,4 @@
-angular.module('myApp').controller('CanvasCtrl', function($http, $scope, user_info, localStorageService) {
+angular.module('myApp').controller('CanvasCtrl', function($http, $state, $scope, user_info, localStorageService) {
 
 $scope.showLoadingWidget = true;
 
@@ -181,6 +181,7 @@ else {
 
             // Only colour in the superpixel if it hasn't been coloured yet
             if ($scope.isPainted[mask_value] == 0){
+              $scope.mask_copy[$scope.iter2][$scope.iter1] = $scope.classification;
 
               // Set the fill colour accordingly & colour a rectangle of 1 x 1 pixels
               contextTop.fillStyle = $scope.colour_f;
@@ -188,6 +189,7 @@ else {
             }
             // We want to recolour these pixels
             else {
+              $scope.mask_copy[$scope.iter2][$scope.iter1] = $scope.classification;
               contextTop.clearRect($scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
               contextTop.fillStyle = $scope.colour_f;
               contextTop.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
@@ -265,6 +267,7 @@ else {
 
               // Colour in the single pixel the appropiate colour
               if (mask_value == $scope.mask_data[$scope.iter2][$scope.iter1]){
+                $scope.mask_copy[$scope.iter2][$scope.iter1] = $scope.newValue[p];
                 contextTop.fillStyle = $scope.colour_f;
                 contextTop.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
               }
@@ -389,6 +392,7 @@ else {
 
               // Colour in the single pixel the appropiate colour
               if (mask_value == $scope.mask_data[$scope.iter2][$scope.iter1]){
+                $scope.mask_copy[$scope.iter2][$scope.iter1] = $scope.newValue[p];
                 contextTop.fillStyle = $scope.colour_f;
                 contextTop.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
               }
@@ -433,6 +437,7 @@ else {
 
                 // Colour in the single pixel the appropiate colour
                 if (mask_value == $scope.mask_data[$scope.iter2][$scope.iter1]){
+                  $scope.mask_copy[$scope.iter2][$scope.iter1] = $scope.newValue[p];
                   contextTop.fillStyle = $scope.colour_f;
                   contextTop.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
                 }
@@ -524,6 +529,7 @@ else {
 
                 // Only colour in the superpixel if it hasn't been assigned yet
                 if ($scope.isPainted[mask_value] == 0){
+                  $scope.mask_copy[$scope.iter2][$scope.iter1] = $scope.newValue[p];
 
                   // Colour in the single pixel
                   contextTop.fillStyle = $scope.colour_f;
@@ -532,6 +538,7 @@ else {
                 }
                 // We want to recolour these pixels
                 else{
+                  $scope.mask_copy[$scope.iter2][$scope.iter1] = $scope.newValue[p];
                   contextTop.clearRect($scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
                   contextTop.fillStyle = $scope.colour_f;
                   contextTop.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
@@ -573,7 +580,7 @@ else {
       // Key '2'
       else if (map[50] == true) {
           // Colour 'Green'
-          $scope.colour_f = "rgba(128, 128, 255, 0.4)";
+          $scope.colour_f = "rgba(0, 32, 0, 0.6)";
           $scope.classification = 2;
           $('hchosen').css({'background-color':'#E5FFE5'})
           $('#tissue').html('2 - Scar');
@@ -596,7 +603,7 @@ else {
       }
       else if (map[53] == true) {
         // Colour 'Blue'
-        $scope.colour_f = "rgba(0, 32, 100, 0.6)";
+        $scope.colour_f = "rgba(128, 128, 255, 0.4)";
         $scope.classification = 5;
         $('hchosen').css({'background-color':'#8080ff'})
         $('#tissue').html('5 - Background');
@@ -699,7 +706,7 @@ else {
             if (toRemove == $scope.mask_data[$scope.iter2][$scope.iter1]){
 
               // We want to recolour these pixels
-
+                $scope.mask_copy[$scope.iter2][$scope.iter1] = 0;
                 contextTop.clearRect($scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
               }
 
@@ -922,6 +929,8 @@ if (window.addEventListener) {
   $scope.saveWork = function(){
 
     // Ask if the user wants to set unclassified pixels to Bad Data
+
+
     var answer = confirm("Set any remaing cells to 'Bad Data' classification?")
     if (answer){
       // Recolour any unselected to badData
@@ -932,6 +941,7 @@ if (window.addEventListener) {
       // Ignore unselected (save work for future progress)
       $scope.anyUnasigned = 0;
     }
+
 
     // Need to get most recent work from the user
     contextTop.clearRect(0, 0, canvas.width, canvas.height);
@@ -951,6 +961,14 @@ if (window.addEventListener) {
     dictionary[4] = new Array($scope.necroticCount);
     dictionary[5] = new Array($scope.backgroundCount);
     dictionary[6] = new Array($scope.badDataCount);
+
+
+    var labelled = new Array($scope.mask_copy.length)
+
+    for (z = 0; z < $scope.mask_copy.length; z ++){
+      labelled[z] = new Array($scope.mask_copy[0].length);
+      labelled[z] = $scope.mask_copy[z];
+    }
 
 
     var healthyPosition = 0;
@@ -980,7 +998,7 @@ if (window.addEventListener) {
               dictionary[2][scarPosition] = p;
               scarPosition ++;
           }
-          // Key '3' Infalmatory
+          // Key '3' Infalmatory3
           else if ($scope.newValue[p] == 3) {
 
               dictionary[3][infPosition] = p;
@@ -1009,12 +1027,12 @@ if (window.addEventListener) {
 
     // Next we need to convert the dictionary to a JSON file
     var data1 = JSON.stringify(dictionary);
-
+    var data2 = JSON.stringify($scope.mask_copy);
 
     // Get the file path for proper naming of the zip file
     segPath = localStorageService.get('selected_fp');
     $http.get('get_saveLabel/', {
-            params:  {data1: data1, segPath: segPath},
+            params:  {data1: data1, data2: data2, segPath: segPath},
             headers: {'Authorization': 'token'}
         }
     )
@@ -1096,10 +1114,14 @@ if (window.addEventListener) {
     // The .then determines how we handle the file that has been read
     //******************************************************************//
     // We can only read in a file once. Then the same file is re-used
+
+
     try{
 
       var json_str = localStorageService.get('json_str');
+      var json_str2 = localStorageService.get('json_str');
       $scope.mask_data = json_str;
+      $scope.mask_copy = json_str2;
 
 
 
@@ -1159,6 +1181,13 @@ $scope.restartClassification = function(){
 
   var answer = confirm("You can restart, but all of your progress will be lost for this image!\nProceed?")
   if (answer){
+
+    if (localStorageService.get('email')=="guest@guest.com"){
+      $state.go('guest_crop');
+    }
+    else{
+      $state.go('crop_image');
+    }
          //some code
   }
   else{

@@ -1,4 +1,4 @@
-angular.module('myApp').controller('CropCtrl', function($http, $state,  $scope, user_info, localStorageService, toaster) {
+angular.module('myApp').controller('GuestCropCtrl', function($http, $state,  $scope, user_info, localStorageService, toaster) {
 
 /*
 // investigating whether this is needed
@@ -9,17 +9,6 @@ angular.module('myApp').controller('CropCtrl', function($http, $state,  $scope, 
     //alert('yes auth');
   }
 */
-
-  if(localStorageService.get('email')=="guest@guest.com"){
-    toaster.pop({
-     type: 'info',
-     title: 'Not allowed in Guest Mode',
-     body: '',
-     showCloseButton: true,
-     timeout: 200
-     });
-    $state.go("guest_crop");
-  }
 
 //window.location.reload(true);
 
@@ -113,7 +102,7 @@ function setImage(filepath){
           toaster.pop({
            type: 'info',
            title: 'Invalid Extension',
-           body: '',
+           body: fullPath,
            showCloseButton: true,
            timeout: 200
            });
@@ -224,7 +213,13 @@ var onSuccess = function(e){
                 var filepath = $scope.userFilepath;
               }
               else {
-                var filepath = $scope.img_info_at.relative_orig_filepath;
+
+                if (true){
+                    var filepath = "wound_images/wound.jpg";
+                }
+                else {
+                    var filepath = $scope.img_info_at.relative_orig_filepath;
+                }
               }
               var email = localStorageService.get('email');
 
@@ -332,8 +327,14 @@ var onSuccess = function(e){
      // request image from server
      function requestImage(index){
 
-       $scope.img_info_at = JSON.parse(localStorageService.get('image_info'+index.toString()));
-       var filepath = $scope.img_info_at.relative_orig_filepath;
+       if (index == -999){
+
+         var filepath = "wound_images/wound.jpg";
+       }
+       else {
+         $scope.img_info_at = JSON.parse(localStorageService.get('image_info'+index.toString()));
+         var filepath = $scope.img_info_at.relative_orig_filepath;
+       }
 
        $http.get('dyn_img/fp=' + '/' + filepath).then(function(response) {
          $scope.myImage = "data:image/png;base64," + response.data;
@@ -357,8 +358,9 @@ var onSuccess = function(e){
 
 
     // get current image from server
-    var idx = localStorageService.get('current_img');
-    requestImage(idx);
+    //var idx = localStorageService.get('current_img');
+    requestImage(-999);
+
 
 
   });

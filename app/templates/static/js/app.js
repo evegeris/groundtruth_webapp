@@ -191,6 +191,36 @@ $stateProvider.state('login', {
         }
       }
     })
+
+        /* New State Added Here called guest_crop */
+        .state('guest_crop', {
+              url: '/guestCrop',
+              title: 'Guest Crop Image',
+              resolve: {
+                    loginRequired: loginRequired
+                  },
+              views: {
+                'inner_page': {
+                templateUrl: '/crop-image/guest-crop-image.template.html',
+                controller: 'GuestCropCtrl'
+              }
+            }
+          })
+
+          /* New State Added Here called guest_crop */
+          .state('guest_tutorial', {
+                url: '/tutorial',
+                title: 'Tutorial Page',
+                resolve: {
+                      loginRequired: loginRequired
+                    },
+                views: {
+                  'inner_page': {
+                  templateUrl: '/tutorial/tutorial.template.html',
+                  controller: 'TutorialCtrl'
+                }
+              }
+            })
   .state('home', {
     url: '/',
     title: 'Home',

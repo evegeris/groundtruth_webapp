@@ -47,8 +47,39 @@ def create_app(config_filename):
     #Create a background thread that can be responsible for wiping the directories periodically
     #Note: In debugger mode, two threads are spawned (since Flask makes two threads so that it can restart on the fly)
     def systemCleaner():
-        time.sleep(60)
-        print(time.ctime())
+
+        time.sleep(60) #Scan every 60 seconds
+        clk = time.ctime()        
+        print(clk)
+        clk_list = clk.split(' ')
+        time_list = clk_list[3].split(':')
+
+        fp = os.getcwd()
+        fp = fp.rsplit('/',1)[0]
+        fileListJSON = os.listdir(fp+"/json")
+        fileListCropped = os.listdir(fp+"/cropped")
+        fileListSegmented = os.listdir(fp+"/segmented")
+        fileListLabelled = os.listdir(fp+"/labelled")
+
+        print(len(fileListJSON))
+
+        # Want to erase all temperory (and potentially in use files)
+        # Periodic Clense each day at midnight
+        # Clense if the directories grow to a certain size (could potentially erase someones in progress work)
+        if (time_list[0] == "24" and time_list[1] == "00") or len(fileListJSON) > 500 or len(fileListCropped) > 250 or len(fileListSegmented) > 250 or len(fileListLabelled) > 250:
+            print("server reset...")
+
+
+            for fileNameJSON in fileListJSON:
+                os.remove(fp+"/json"+"/"+fileNameJSON)
+            for fileNameCropped in fileListCropped:
+                os.remove(fp+"/cropped"+"/"+fileNameCropped)
+            for fileNameSegmented in fileListSegmented:
+                os.remove(fp+"/segmented"+"/"+fileNameSegmented)
+            for fileNameLabelled in fileListLabelled:
+                os.remove(fp+"/labelled"+"/"+fileNameLabelled)
+
+
         th = threading.Thread(target=systemCleaner)
         th.daemon = True;
         th.start()
@@ -293,7 +324,10 @@ def create_app(config_filename):
         from matplotlib import pyplot as plt
 
         
-        data1 = request.args.get('data1')
+        data1 = request.args.get('data1') #Dictionary
+        data2 = request.args.get('data2') #Completed Integer Mask
+        data2_split = data2.split("]") 
+  
         segPath = request.args.get('segPath')
 
         if (not segPath.endswith('.jpg')) or (not segPath.startswith('segmented')):
@@ -308,7 +342,7 @@ def create_app(config_filename):
         right_seg = right_seg[0:len(right_seg)-9]
 
         date_time_clean = left_seg + '_'+ right_seg
-        right_seg = right_seg + 'labelled'
+        right_seg = right_seg + 'dictionary'
 
         date_time = left_seg + '_' + right_seg              
                         
@@ -319,8 +353,17 @@ def create_app(config_filename):
             fp_orig = fp
             fullpath_label = fp + '/labelled/' + date_time + '.json'
             fh = open(fullpath_label, "wb")
-            fh.write(data1)
+            fh.write(data1) #Saving the dictionary
             fh.close()
+
+
+            fullpath_label = fp + '/labelled/' + date_time_clean + 'labelled.json'
+            fh = open(fullpath_label, "wb")
+            for i in range(0,len(data2_split)-1):
+                fh.write(data2_split[i]) #Saving the integer mask (formatting for better viewing)
+                fh.write("]\n")                
+            fh.close()
+
 
             #Need to package everything in .zip file for download
             fp = os.getcwd()
@@ -334,8 +377,16 @@ def create_app(config_filename):
             #Copying all the files
             copyfile(fp_orig+'/cropped/'+date_time_clean[4:len(date_time_clean)]+'cropped.jpg', fp+date_time_clean[4:len(date_time_clean)]+'cropped.jpg')
             copyfile(fp_orig+'/json/'+date_time_clean[0:len(date_time_clean)-1]+'.json', fp+date_time_clean+'.json')
+            copyfile(fp_orig+'/labelled/'+date_time_clean+'dictionary.json', fp+date_time_clean+'dictionary.json')
             copyfile(fp_orig+'/labelled/'+date_time_clean+'labelled.json', fp+date_time_clean+'labelled.json')
             copyfile(fp_orig+'/segmented/'+date_time_clean+'segmented.jpg', fp+date_time_clean+'segmented.jpg')
+
+            #Example of how to open a JSON file to extract each row
+            #with open(fp+date_time_clean+'labelled.json') as json_labelled:
+                #d = json.load(json_labelled)
+                #print(d[0])
+                    
+
         
             # Zip the new directory for download
             make_archive(fp_orig+'/packaged/'+date_time_clean[0:len(date_time_clean)-1], 'zip', fp[0:len(fp)-1])
@@ -344,7 +395,7 @@ def create_app(config_filename):
             with open(fp_orig+'/packaged/'+date_time_clean[0:len(date_time_clean)-1]+'.zip', 'r') as content_file:
                 content = content_file.read()
 
-        except TypeError:
+        except:
             print("Permission Denied!")
             response = jsonify(message="Permission Denied!")
             response.status_code = 401
@@ -368,13 +419,21 @@ def create_app(config_filename):
         from StringIO import StringIO
         import base64
 
-        if (not path.endswith('.jpg')):
-            response = jsonify(message='Invalid File')
+        pathPass = False;
+
+        if (not (path.endswith('.jpg') or path.endswith('.png'))):
+            response = jsonify(message='Invalid File Extension')
             response.status_code = 401
             return response
 
-        if not ((path.startswith('wound_images')) or (path.startswith('segmented')) or (path.startswith('cropped'))):
-            response = jsonify(message='Invalid File')
+        if (path.startswith('groundtruth_webapp')):
+            pathList = path.split('/')
+            print(pathList[1])
+            if (pathList[1]=="readme_images"):
+                pathPass = True;
+
+        if not ((path.startswith('wound_images')) or (path.startswith('segmented')) or (path.startswith('cropped')) or (pathPass)):
+            response = jsonify(message='Restricted Access')
             response.status_code = 401
             return response
 
@@ -383,7 +442,7 @@ def create_app(config_filename):
         fullpath = fp+'/'+path
         myimg = cv2.imread( fullpath )
 
-        #Encode the image to send over HTTP
+        #Encode the image to send over HTTP (only .jpg to save server space)
         try:
             encoded = cv2.imencode(".jpg", myimg)[1]
             strImg = base64.encodestring(encoded)

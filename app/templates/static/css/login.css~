@@ -79,15 +79,6 @@
     background: #151515;
 }
 
-#tutorialContainer {
-width:1000px;
-height:600px;
-border:1px solid black;
-overflow:hidden;
-position:relative;
-background: #151515;
-}
-
 .input-color {
     position: relative;
 }
@@ -112,7 +103,7 @@ hh {
    margin-right: 12em;
    font-weight: bold;
    font-size: 18px;
-   background-color: #ff944d;
+   background-color: #ffffff;
 
 }
 

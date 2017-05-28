@@ -1,6 +1,23 @@
-angular.module('myApp.controllers').controller('DashboardCtrl', function($auth, $state, $scope, user_info, localStorageService) {
+angular.module('myApp.controllers').controller('DashboardCtrl', function($auth, $state, $scope, user_info, localStorageService, toaster) {
+
+  if(localStorageService.get('email')=="guest@guest.com"){
+    toaster.pop({
+     type: 'info',
+     title: 'Not allowed in Guest Mode',
+     body: '',
+     showCloseButton: true,
+     timeout: 200
+     });
+    $state.go("guest_crop");
+  }
+  else {
+    //alert(localStorageService.get('email'));
+
+  }
 
 $scope.selected = {value: -1};
+
+
 
 //$scope.image_info = user_info.getImageData();
 //alert($scope.image_info[0].fullsize_orig_filepath);

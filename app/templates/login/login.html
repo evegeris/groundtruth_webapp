@@ -60,8 +60,9 @@
 							-->
 
               <button class="btn btn-lg btn-primary btn-block" type="submit" ng-disabled="loading" >Sign in</button>
-
-
+                <form ng-submit="guestLogin()" >
+                    <input class="btn btn-lg btn-warning btn-secondary btn-block" type="submit" value="Guest Access" ng-click="guestLogin()">
+                </form>
                   <span ng-show="loading">Loading....</span></button>
 
             </form>
@@ -92,8 +93,8 @@
 
 					 <div class="spacer">
              <a href="" id="logIn" ng-click="loginClick()" style="margin-right:5px" ng-hide="login"  >Login </a>
-             <button ng-click="authenticate('google')" class="btn btn-warning btn-secondary">Sign in with Google</button>
-             <button ng-click="authenticate('github')" class="btn btn-warning btn-secondary">Sign in with GitHub</button>
+             <!--button ng-click="authenticate('google')" class="btn btn-warning btn-secondary">Sign in with Google</button-->
+             <!--button ng-click="authenticate('github')" class="btn btn-warning btn-secondary">Sign in with GitHub</button-->
 					 </div>
              <a href="" id="signUp"   ng-click="signUpClick()" ng-hide="signUp" style="margin-right:5px">Sign Up </a>
 

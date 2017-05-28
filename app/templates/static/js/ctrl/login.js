@@ -56,6 +56,17 @@ $http.post(url).success(function (data, status) {
 });
 */
 
+$scope.guestLogin = function () {
+
+  //alert("guest");
+  //$state.go("guest_crop");
+  $scope.email = "guest@guest.com";
+  $scope.password = "guestpw";
+  signIn();
+
+}
+
+
    $scope.signUpClick = function () {
 
      $scope.login = false;
@@ -182,8 +193,20 @@ $http.post(url).success(function (data, status) {
 
               });
 
+              setTimeout(transferPage,500);
+              //user_info.setFullName(user_entry.message.full_name);
+              user_info.setEmail($scope.email);
+              //var classified = user_entry.message.classified;
+              //user_info.setClassified(classified);
+              //var in_queue = user_entry.message.in_queue;
+              //user_info.setInQueue(in_queue);
+              //var pComplete = (classified/(classified+in_queue))*100;
+              //user_info.setPercentComplete(pComplete);
 
-                $state.go('home');
+              // get images assigned to user to display as table
+              //alert(user_entry.message.image_info[0].fullsize_orig_filepath);
+              //user_info.setImageData(user_entry.message.image_info);
+
             })
             .catch(function(response){ // If login is unsuccessful, display relevant error message.
 
@@ -196,6 +219,16 @@ $http.post(url).success(function (data, status) {
                 });
                 $scope.loading = false;
                });
+        }
+
+        transferPage = function() {
+          if ($scope.email == "guest@guest.com"){
+              $state.go('guest_tutorial');
+          }
+          else {
+            $state.go('home');
+          }
+
         }
 
 

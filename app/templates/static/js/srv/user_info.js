@@ -69,7 +69,6 @@ angular.module('myApp').service('user_info', function(localStorageService) {
     this.sayHello = function(){
       return "Hello " + localStorageService.get('full_name');
     };
-
     this.setClassified = function(classified){
       localStorageService.set('classified', classified);
       this.user_info_object.data.attributes.classified = classified;
