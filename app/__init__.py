@@ -423,12 +423,17 @@ def create_app(config_filename):
 
         user = Users.query.filter_by(email=email).first()
 
-        stmt00 = "SELECT * FROM images"
+        stmt00 = "SELECT id FROM images"
 
-        rows = db.session.execute(stmt00)
+        result = db.session.execute(stmt00)
 
-        entries = [(dict(row.items())) for row in rows]
-        entryNum = len(entries)+1 #Number of image entires
+        theRow = result.fetchall()
+
+        rowLen = len(theRow)
+        print(theRow[rowLen-1][0])
+
+        entryNum = theRow[rowLen-1][0]+1 #Number of image entires
+        print(entryNum)
         #print("entries:"+str(entryNum))
 
         #SQL Defense #2: Prepared Statements
@@ -442,6 +447,7 @@ def create_app(config_filename):
 
         db.session.execute(stmt1, {'uPath': pathName})
         db.session.commit()
+        print("pre-execute")
         db.session.execute(stmt2, {'uid': user.id, 'entryNum' : str(entryNum)})
         db.session.commit()
         

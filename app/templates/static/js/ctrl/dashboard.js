@@ -65,6 +65,7 @@ $scope.selected = {value: -1};
 
 
          // Enables sending images of anysize to server without garbled message
+         //alert(myImg);
          $http.post('post_image/', {
                  email: email,
                  imgData:  myImg,
