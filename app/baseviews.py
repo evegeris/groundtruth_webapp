@@ -19,6 +19,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.declarative import DeclarativeMeta
 import json
 import re
+import os
 
 
 login1 = Blueprint('login', __name__)
@@ -160,18 +161,32 @@ class UserInfo(Resource):
         user = Users.query.filter_by(email=email).first()
         if user is not None:
 
-            
-            #SQL Defense #1: Escaped input       
+
+            #SQL Defense #1: Escaped input
             uid = re.escape(str(user.id))
             stmt = "SELECT images.relative_orig_filepath, user_has_image.users_id, user_has_image.images_id, user_has_image.progress, users.classified, users.in_queue FROM user_has_image JOIN images ON images.id = user_has_image.images_id JOIN users ON users.id = user_has_image.users_id where users_id = :uid"
-            
+
             #SQL Defense #2: Prepared Statements
             result = db.session.execute(stmt, {'uid': uid})
             user_images = result.fetchall();
+            #print(user_images)
+            #print("entries:"+str(len(user_images)))
+
+            listClas = [None] * len(user_images)
+            x = 0;
+            inQueue = 0;
+
+            for rows in user_images:
+                listClas[x] = rows[3]
+                if (rows[3] == 0):
+                    inQueue = inQueue + 1;
+                x = x + 1 
+    
+            done = len(user_images) - inQueue;
 
 
+            
             imgs_json = json.dumps([(dict(row.items())) for row in user_images])
-
             #print json.dumps(user, cls=AlchemyEncoder)
             #print(user_images)
 
@@ -182,11 +197,35 @@ class UserInfo(Resource):
             #return token.decode('unicode_escape')
 
             user_info = {
-                'classified': user.classified,
-                'in_queue': user.in_queue,
+                'classified': done,
+                'listClas': listClas,
+                'in_queue': inQueue,
                 'full_name': user.name,
+                'activeLabels': user.activeLabels,
+                'label1': user.label1,
+                'label2': user.label2,
+                'label3': user.label3,
+                'label4': user.label4,
+                'label5': user.label5,
+                'label6': user.label6,
+                'label7': user.label7,
+                'label8': user.label8,
+                'label9': user.label9,
+                'label10': user.label10,
+                'color1': user.color1,
+                'color2': user.color2,
+                'color3': user.color3,
+                'color4': user.color4,
+                'color5': user.color5,
+                'color6': user.color6,
+                'color7': user.color7,
+                'color8': user.color8,
+                'color9': user.color9,
+                'color10': user.color10,
                 'image_info': [(dict(row.items())) for row in user_images]
             }
+
+
 
             response = jsonify(message=user_info)
             response.status_code = 200
@@ -195,7 +234,208 @@ class UserInfo(Resource):
             return {"error": "Invalid email :("}, 404
 
 
+
 api.add_resource(UserInfo, 'userinfo')
+
+
+class UserUpdate(Resource):
+
+    def get(self):
+        email = request.args.get('email')
+        activeLabels = request.args.get('activeLabels')
+        activeLabels = str(activeLabels)
+
+        label1 = request.args.get('label1')
+        label2 = request.args.get('label2')
+        label3 = request.args.get('label3')
+        label4 = request.args.get('label4')
+        label5 = request.args.get('label5')
+        label6 = request.args.get('label6')
+        label7 = request.args.get('label7')
+        label8 = request.args.get('label8')
+        label9 = request.args.get('label9')
+        label10 = request.args.get('label10')
+
+        color1 = request.args.get('color1')
+        color2 = request.args.get('color2')
+        color3 = request.args.get('color3')
+        color4 = request.args.get('color4')
+        color5 = request.args.get('color5')
+        color6 = request.args.get('color6')
+        color7 = request.args.get('color7')
+        color8 = request.args.get('color8')
+        color9 = request.args.get('color9')
+        color10 = request.args.get('color10')
+
+        #print("email:\n"+email)
+        user = Users.query.filter_by(email=email).first()
+        if user is not None:
+
+
+            #
+            #SQL Defense #1: Escaped input
+            activeLabels = re.escape(activeLabels.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            label1 = re.escape(label1.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            label2 = re.escape(label2.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            label3 = re.escape(label3.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            label4 = re.escape(label4.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            label5 = re.escape(label5.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            label6 = re.escape(label6.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            label7 = re.escape(label7.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            label8 = re.escape(label8.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            label9 = re.escape(label9.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            label10 = re.escape(label10.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+
+            color1 = re.escape(color1.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            color2 = re.escape(color2.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            color3 = re.escape(color3.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            color4 = re.escape(color4.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            color5 = re.escape(color5.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            color6 = re.escape(color6.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            color7 = re.escape(color7.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            color8 = re.escape(color8.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            color9 = re.escape(color9.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+            color10 = re.escape(color10.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+
+
+            #SQL Defense #2: Prepared Statements
+            stmt1 = "UPDATE users SET users.activeLabels = :uActiveLabels WHERE users.email = :uEmail"
+
+            stmt2 = "UPDATE users SET color1 = :uColor1, color2 = :uColor2, color3 = :uColor3, color4 = :uColor4, color5 = :uColor5, color6 = :uColor6, color7 = :uColor7, color8 = :uColor8, color9 = :uColor9, color10 = :uColor10 WHERE email = :uEmail"
+
+            stmt3 = "UPDATE users SET label1 = :uLabel1, label2 = :uLabel2, label3 = :uLabel3, label4 = :uLabel4, label5 = :uLabel5, label6 = :uLabel6, label7 = :uLabel7, label8 = :uLabel8, label9 = :uLabel9, label10 = :uLabel10 WHERE email = :uEmail"
+
+            #db.session.execute(stmt1, {'1': activeLabels, 'uEmail': email})
+            db.session.execute(stmt1, {'uActiveLabels': activeLabels, 'uEmail':email})
+
+
+            db.session.execute(stmt2, {'uColor1': color1, 'uColor2': color2, 'uColor3': color3, 'uColor4': color4, 'uColor5': color5, 'uColor6': color6, 'uColor7': color7, 'uColor8': color8, 'uColor9': color9, 'uColor10': color10, 'uEmail': email})
+
+
+            db.session.execute(stmt3, {'uLabel1': label1, 'uLabel2': label2, 'uLabel3': label3, 'uLabel4': label4, 'uLabel5': label5, 'uLabel6': label6, 'uLabel7': label7, 'uLabel8': label8, 'uLabel9': label9, 'uLabel10': label10, 'uEmail': email})
+            db.session.commit()
+
+            user = Users.query.filter_by(email=email).first()
+
+            user_info = {
+                'activeLabels': user.activeLabels,
+                'label1': user.label1,
+                'label2': user.label2,
+                'label3': user.label3,
+                'label4': user.label4,
+                'label5': user.label5,
+                'label6': user.label6,
+                'label7': user.label7,
+                'label8': user.label8,
+                'label9': user.label9,
+                'label10': user.label10,
+                'color1': user.color1,
+                'color2': user.color2,
+                'color3': user.color3,
+                'color4': user.color4,
+                'color5': user.color5,
+                'color6': user.color6,
+                'color7': user.color7,
+                'color8': user.color8,
+                'color9': user.color9,
+                'color10': user.color10
+            }
+            response = jsonify(message=user_info)
+            response.status_code = 200
+            return response
+
+        else:
+            return {"error": "Invalid email :("}, 404
+
+    def post(self):
+        print("inside post")
+        return {"error": "Invalid email :("}, 202
+
+api.add_resource(UserUpdate, 'userupdate')
+
+class UserActiveUpdate(Resource):
+
+    def get(self):
+        email = request.args.get('email')
+        firstTime = request.args.get('firstTime')
+
+        firstTime = str(firstTime)
+
+        #print("email:\n"+email)
+        user = Users.query.filter_by(email=email).first()
+        if user is not None:
+
+            #SQL Defense #1: Escaped input
+            firstTime = re.escape(firstTime.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+
+
+            #SQL Defense #2: Prepared Statements
+            stmt = "UPDATE users SET users.firstTime = :ufirstTime WHERE users.email = :uEmail"
+
+
+
+            # The number 9 represents a "don't update call"
+            if not firstTime == '9':
+                db.session.execute(stmt, {'ufirstTime': firstTime, 'uEmail':email})
+                db.session.commit()
+
+            user = Users.query.filter_by(email=email).first()
+
+            user_info = {
+                'firstTime': user.firstTime
+            }
+            print(user.firstTime)
+            response = jsonify(message=user_info)
+            response.status_code = 200
+            return response
+
+        else:
+            return {"error": "Invalid email :("}, 404
+
+api.add_resource(UserActiveUpdate, 'useractiveupdate')
+
+
+
+class UpdateCompleted(Resource):
+
+    def get(self):
+        email = request.args.get('email')
+        firstTime = request.args.get('firstTime')
+
+        firstTime = str(firstTime)
+
+        #print("email:\n"+email)
+        user = Users.query.filter_by(email=email).first()
+        if user is not None:
+
+            #SQL Defense #1: Escaped input
+            firstTime = re.escape(firstTime.replace(" ","").replace("/","").replace("\\","").replace("#",""))
+
+
+            #SQL Defense #2: Prepared Statements
+            stmt = "UPDATE users SET users.firstTime = :ufirstTime WHERE users.email = :uEmail"
+
+
+
+            # The number 9 represents a "don't update call"
+            if not firstTime == '9':
+                db.session.execute(stmt, {'ufirstTime': firstTime, 'uEmail':email})
+                db.session.commit()
+
+            user = Users.query.filter_by(email=email).first()
+
+            user_info = {
+                'firstTime': user.firstTime
+            }
+            print(user.firstTime)
+            response = jsonify(message=user_info)
+            response.status_code = 200
+            return response
+
+        else:
+            return {"error": "Invalid email :("}, 404
+
+api.add_resource(UpdateCompleted, 'updatecompleted')
 
 
 
@@ -210,12 +450,34 @@ class SignUp(Resource):
             active = 0
             classified = 0
             in_queue = 0
-            user = Users(request_dict['email'], generate_password_hash(request_dict['password']), request_dict['name'], active, role, classified, in_queue)
-            user.add(user)
-            # Should not return password hash
-            query = Users.query.get(user.id)
-            results = schema.dump(query).data
-            return results, 201
+
+            #Check for existing entry
+            userCheck = Users.query.filter_by(email=request_dict['email']).first()
+            if userCheck is None:
+
+                user = Users(request_dict['email'], generate_password_hash(request_dict['password']), request_dict['name'], active, role, classified, in_queue)
+                user.add(user)
+                query = Users.query.get(user.id)
+                # Should not return password hash
+                query.password = "blank"
+                results = schema.dump(query).data
+                fp = os.getcwd()
+                fp = fp.rsplit('/',1)[0] # go back one dir
+                direct = fp + "/GT_USERS/USER_"+str(query.id)
+                if not os.path.exists(direct):
+                    os.makedirs(direct)
+                    os.makedirs(direct+"/cropped")
+                    os.makedirs(direct+"/images")
+                    os.makedirs(direct+"/json")
+                    os.makedirs(direct+"/labelled")
+                    os.makedirs(direct+"/packaged")
+                    os.makedirs(direct+"/segmented")
+                return results, 201
+
+            else:
+                resp = jsonify({"error": "Email already taken"})
+                resp.status_code = 403
+                return resp
 
         except ValidationError as err:
             resp = jsonify({"error": err.messages})

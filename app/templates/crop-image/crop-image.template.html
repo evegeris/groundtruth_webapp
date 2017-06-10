@@ -1,11 +1,11 @@
 <body ng-app="app" ng-controller="CropCtrl">
-  <div ng-show="browseImage">Select an image file (only .jpg or .png): <input type="file" id="fileInput" ng-show="browseImage" /></div>
+  <div ng-show="browseImage"><b>Temporary File Upload: </b><input type="file" id="fileInput" ng-show="browseImage" /></div>
 	<!--p id="pulled_position"> 0, 0 </p-->
 
 
 
   <div class="row" ng-show="croppingStage">
-    <div class="col-lg-2">
+    <div class="col-lg-1">
 
     </div>
 
@@ -74,10 +74,10 @@
         <!--button ng-click="testBtn()" class="btn btn-danger">testBtn</button-->
     </div>
 
-      <div class="col-lg-3" >
+      <div class="col-lg-1" >
           <button type="button" class="btn btn-warning btn-secondary" ng-click="setArea('rectangle')">Rectangle</button>
       </div>
-      <div class="col-lg-3" ng-show="croppingStage">
+      <div class="col-lg-1" ng-show="croppingStage">
             <button type="button" class="btn btn-warning btn-secondary" ng-click="setArea('circle')" >Circle</button>
       </div>
 

@@ -1,4 +1,4 @@
-angular.module('myApp').controller('TutorialCtrl', function($http, $state,  $scope, localStorageService, toaster) {
+angular.module('myApp').controller('GuestTutorialCtrl', function($http, $state,  $scope, localStorageService, toaster) {
 
 
 
@@ -65,8 +65,11 @@ angular.module('myApp').controller('TutorialCtrl', function($http, $state,  $sco
            var filepath = "groundtruth_webapp/server_images/tutorial3_f.png";
          }
 
-
-         $http.get('dyn_img/fp=' + '/' + filepath).then(function(response) {
+         var email = localStorageService.get('email');
+         $http.get('dyn_img/fp=' + '/' + filepath, {
+           params:  {email: email}
+           }
+         ).then(function(response) {
            $scope.myImage = "data:image/png;base64," + response.data;
            var tutId = document.getElementById("tutId");
            tutId.src = $scope.myImage;

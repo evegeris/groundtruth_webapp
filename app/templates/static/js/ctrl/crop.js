@@ -67,7 +67,11 @@ function setImage(filepath){
   $scope.showLoadingWidget = true;
   $scope.croppingStage = false;
   $scope.segmentingStage = true;
-  $http.get('dyn_img/fp=' + '/' + filepath).then(function(response) {
+  var email = localStorageService.get('email');
+  $http.get('dyn_img/fp=' + '/' + filepath, {
+    params:  {email: email}
+    }
+  ).then(function(response) {
 
 
     var r_code = response.status;
@@ -138,8 +142,10 @@ function setImage(filepath){
 
            var email = localStorageService.get('email');
            myImg = evt.target.result;
-           $http.get('get_localsave/', {
-                   params:  {image: myImg, email: email},
+           //alert(myImg);
+           $http.post('post_localsave/', {
+                   email: email,
+                   imgData:  myImg,
                    headers: {'Authorization': 'token'}
                }
            )
@@ -152,7 +158,7 @@ function setImage(filepath){
                 $state.go('error_status');
               }
 
-             $scope.userFilepath = fp;
+             $scope.userFilepath = response.data.message;
              $scope.userImage = 1;
              //setImage(filepath);var theCookies = document.cookie.split(';');
              var x = document.cookie;
@@ -226,7 +232,7 @@ var onSuccess = function(e){
 
        // check if image exists
 
-       var answer = confirm("Save the Cropped Image!\nProceed?")
+       var answer = confirm("Proceed with cropping?")
        if (answer){
              // save original cropped image
              setCroppedImageDataURL(onSuccess, onError);
@@ -366,7 +372,12 @@ var onSuccess = function(e){
        $scope.img_info_at = JSON.parse(localStorageService.get('image_info'+index.toString()));
        var filepath = $scope.img_info_at.relative_orig_filepath;
 
-       $http.get('dyn_img/fp=' + '/' + filepath).then(function(response) {
+
+       var email = localStorageService.get('email');
+       $http.get('dyn_img/fp=' + '/' + filepath, {
+         params:  {email: email}
+         }
+       ).then(function(response) {
          $scope.myImage = "data:image/png;base64," + response.data;
        }).catch(function(response) {
 
@@ -388,7 +399,6 @@ var onSuccess = function(e){
        });
 
      }
-
 
 
 

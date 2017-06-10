@@ -1,0 +1,195 @@
+<body ng-app="app" ng-controller="ProfileCtrl">
+<div class="row">
+	<div class="col-lg-12">
+		<h2> User Profile Settings </h2>
+	</div>
+</div>
+
+
+<div class="row" >
+<!--div class="col-xs-12">
+	<div class="col-xs-2">
+		<h4> # of labels </h4>
+	</div>
+
+</div-->
+
+		<div class="col-xs-12">
+
+
+	<div class="col-xs-1">
+		<form action="">
+			<h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>One </h5> <br>
+  <input type="radio" name="nlabels" value=2 id="n-two"> Two<br><br>
+  <input type="radio" name="nlabels" value=3 id="n-three"> Three<br><br>
+  <input type="radio" name="nlabels" value=4 id="n-four"> Four<br><br>
+	<input type="radio" name="nlabels" value=5 id="n-five"> Five<br><br>
+	<input type="radio" name="nlabels" value=6 id="n-six"> Six<br><br>
+	<input type="radio" name="nlabels" value=7 id="n-seven"> Seven<br><br>
+	<input type="radio" name="nlabels" value=8 id="n-eight"> Eight<br><br>
+	<input type="radio" name="nlabels" value=9 id="n-nine"> Nine<br><br>
+	<input type="radio" name="nlabels" value=10 id="n-ten"> Ten</b><br><br>
+</form>
+	</div>
+<div class="col-xs-2">
+
+	<form ng-show="lTwo">
+	<p ><b> Label #1:</b> </p>
+	<input type="text" name="labelOne" id='labelOne'>
+	</form>
+
+	<form ng-show="lTwo">
+	<p ><b> Label #2:</b> </p>
+	<input type="text" name="labelTwo" id='labelTwo'>
+	</form>
+
+	<form ng-show="lThree">
+	<p ><b> Label #3:</b> </p>
+	<input type="text" name="labelThree" id='labelThree'>
+	</form>
+
+	<form ng-show="lFour">
+	<p ><b> Label #4:</b> </p>
+	<input type="text" name="labelFour" id='labelFour'>
+	</form>
+
+	<form ng-show="lFive">
+	<p ><b> Label #5:</b> </p>
+	<input type="text" name="labelFive" id='labelFive'>
+	</form>
+
+	<form ng-show="lSix">
+	<p ><b> Label #6:</b> </p>
+	<input type="text" name="labelSix" id='labelSix'>
+	</form>
+
+	<form ng-show="lSeven">
+	<p ><b> Label #7:</b> </p>
+	<input type="text" name="labelSeven" id='labelSeven'>
+	</form>
+
+	<form ng-show="lEight">
+	<p ><b> Label #8:</b> </p>
+	<input type="text" name="labelEight" id='labelEight'>
+	</form>
+
+	<form ng-show="lNine">
+	<p ><b> Label #9:</b> </p>
+	<input type="text" name="labelNine" id='labelNine'>
+	</form>
+
+	<form ng-show="lTen">
+	<p ><b> Label #10:</b> </p>
+	<input type="text" name="labelTen" id='labelTen'>
+	</form>
+
+	</div>
+
+
+
+	<div class="col-xs-2">
+		<form ng-show="lTwo">
+		<p ><b> Color #1:</b> </p>
+		<input type="text" name="colorOne" id='colorOne'>
+		</form>
+
+		<form ng-show="lTwo">
+		<p ><b> Color #2:</b> </p>
+		<input type="text" name="colorTwo" id='colorTwo'>
+		</form>
+
+		<form ng-show="lThree">
+		<p ><b> Color #3:</b> </p>
+		<input type="text" name="colorThree" id='colorThree'>
+		</form>
+
+		<form ng-show="lFour">
+		<p ><b> Color #4:</b> </p>
+		<input type="text" name="colorFour" id='colorFour'>
+		</form>
+
+		<form ng-show="lFive">
+		<p ><b> Color #5:</b> </p>
+		<input type="text" name="colorFive" id='colorFive'>
+		</form>
+
+		<form ng-show="lSix">
+		<p ><b> Color #6:</b> </p>
+		<input type="text" name="colorSix" id='colorSix'>
+		</form>
+
+		<form ng-show="lSeven">
+		<p ><b> Color #7:</b> </p>
+		<input type="text" name="colorSeven" id='colorSeven'>
+		</form>
+
+		<form ng-show="lEight">
+		<p ><b> Color #8:</b> </p>
+		<input type="text" name="colorEight" id='colorEight'>
+		</form>
+
+		<form ng-show="lNine">
+		<p ><b> Color #9:</b> </p>
+		<input type="text" name="colorNine" id='colorNine'>
+		</form>
+
+		<form ng-show="lTen">
+		<p ><b> Color #10:</b> </p>
+		<input type="text" name="colorTen" id='colorTen'>
+		</form>
+	</div>
+
+	<div class="col-xs-2">
+		<pC1 id="sample1" style="line-height: 470%;" ng-show="lTwo"> SAMPLE </pC1><br>
+		<pC2 id="sample2" style="line-height: 470%;" ng-show="lTwo"> SAMPLE </pC2><br>
+		<pC3 id="sample3" style="line-height: 470%;" ng-show="lThree"> SAMPLE </pC3><br>
+		<pC4 id="sample4" style="line-height: 470%;" ng-show="lFour"> SAMPLE </pC4><br>
+		<pC5 id="sample5" style="line-height: 470%;" ng-show="lFive"> SAMPLE </pC5><br>
+		<pC6 id="sample6" style="line-height: 470%;" ng-show="lSix"> SAMPLE </pC6><br>
+		<pC7 id="sample7" style="line-height: 470%;" ng-show="lSeven"> SAMPLE </pC7><br>
+		<pC8 id="sample8" style="line-height: 470%;" ng-show="lEight"> SAMPLE </pC8><br>
+		<pC9 id="sample9" style="line-height: 470%;" ng-show="lNine"> SAMPLE </pC9><br>
+		<pC10 id="sample10" style="line-height: 470%;" ng-show="lTen"> SAMPLE </pC10><br>
+
+
+	</div>
+
+
+ </div>
+
+
+
+</div>
+
+	<div class="row" >
+		<div class="col-lg-3">
+
+			</div>
+
+			<div class="col-lg-1">
+			<form ng-submit="showColor()" >
+					<input class="btn btn-warning btn-secondary" type="submit" value="Show Color">
+			</form>
+			</div>
+
+		<div class="col-lg-1">
+			<form ng-submit="saveWork()" >
+					<input class="btn btn-success btn-secondary" type="submit" value="Save Profile">
+			</form>
+		</div>
+		<div class="col-lg-1">
+			<button ng-click="discardProfile()" class="btn btn-danger">Discard Profile</button>
+		</div>
+
+		<div class="col-lg-5">
+
+			</div>
+
+	<div class="col-lg-2">
+
+
+
+	</div>
+
+</div>
+</body>

@@ -10,6 +10,28 @@ CREATE TABLE IF NOT EXISTS `groundtruth_db`.`users` (
   `name` VARCHAR(250) NULL,
   `email` VARCHAR(250) NULL,
   `password` VARCHAR(250) NULL,
+  `firstTime` INT NULL,
+  `activeLabels` INT NULL,
+  `label1` VARCHAR(250) NULL,
+  `label2` VARCHAR(250) NULL,
+  `label3` VARCHAR(250) NULL,
+  `label4` VARCHAR(250) NULL,
+  `label5` VARCHAR(250) NULL,
+  `label6` VARCHAR(250) NULL,
+  `label7` VARCHAR(250) NULL,
+  `label8` VARCHAR(250) NULL,
+  `label9` VARCHAR(250) NULL,
+  `label10` VARCHAR(250) NULL,
+  `color1` VARCHAR(250) NULL,
+  `color2` VARCHAR(250) NULL,
+  `color3` VARCHAR(250) NULL,
+  `color4` VARCHAR(250) NULL,
+  `color5` VARCHAR(250) NULL,
+  `color6` VARCHAR(250) NULL,
+  `color7` VARCHAR(250) NULL,
+  `color8` VARCHAR(250) NULL,
+  `color9` VARCHAR(250) NULL,
+  `color10` VARCHAR(250) NULL,
   `creation_time` TIMESTAMP NULL,
   `modification_time` TIMESTAMP NULL,
   `role` VARCHAR(250) NULL,
@@ -21,7 +43,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `groundtruth_db`.`images` ;
 CREATE TABLE IF NOT EXISTS `groundtruth_db`.`images` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `fullsize_orig_filepath` VARCHAR(250) NULL,
+  `relative_orig_filepath` VARCHAR(250) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 DROP TABLE IF EXISTS `groundtruth_db`.`user_has_image` ;

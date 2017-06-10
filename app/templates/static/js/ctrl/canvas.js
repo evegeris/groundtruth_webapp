@@ -6,16 +6,123 @@ $.ajaxSetup({
   cache:false
 });
 
-/*
-if (window.location.href.indexOf("?") > -1){
+$scope.aLabels = localStorageService.get('activeLabels');
+
+
+$scope.label1 = localStorageService.get('label1');
+$scope.label2 = localStorageService.get('label2');
+$scope.label3 = localStorageService.get('label3');
+$scope.label4 = localStorageService.get('label4');
+$scope.label5 = localStorageService.get('label5');
+$scope.label6 = localStorageService.get('label6');
+$scope.label7 = localStorageService.get('label7');
+$scope.label8 = localStorageService.get('label8');
+$scope.label9 = localStorageService.get('label9');
+$scope.label10 = localStorageService.get('label10');
+
+$scope.color1 = '#' + localStorageService.get('color1');
+$scope.color2 = '#' + localStorageService.get('color2');
+$scope.color3 = '#' + localStorageService.get('color3');
+$scope.color4 = '#' + localStorageService.get('color4');
+$scope.color5 = '#' + localStorageService.get('color5');
+$scope.color6 = '#' + localStorageService.get('color6');
+$scope.color7 = '#' + localStorageService.get('color7');
+$scope.color8 = '#' + localStorageService.get('color8');
+$scope.color9 = '#' + localStorageService.get('color9');
+$scope.color10 = '#' + localStorageService.get('color10');
+
+// Preset screen to hidden
+$scope.textL2 = false;
+$scope.textL3 = false;
+$scope.textL4 = false;
+$scope.textL5 = false;
+$scope.textL6 = false;
+$scope.textL7 = false;
+$scope.textL8 = false;
+$scope.textL9 = false;
+$scope.textL10 = false;
+
+// Initialize the screen
+if ($scope.aLabels >= 2){
+  $scope.textL2 = true;
+}
+if ($scope.aLabels >= 3){
+  $scope.textL3 = true;
+}
+if ($scope.aLabels >= 4){
+  $scope.textL4 = true;
+}
+if ($scope.aLabels >= 5){
+  $scope.textL5 = true;
+}
+if ($scope.aLabels >= 6){
+  $scope.textL6 = true;
+}
+if ($scope.aLabels >= 7){
+  $scope.textL7 = true;
+}
+if ($scope.aLabels >= 8){
+  $scope.textL8 = true;
+}
+if ($scope.aLabels >= 9){
+  $scope.textL9 = true;
+}
+if ($scope.aLabels >= 10){
+  $scope.textL10 = true;
+}
+
+$scope.updateHTML = function(){
+
+$('hh1').css({'background-color':$scope.color1});
+$('hh2').css({'background-color':$scope.color2});
+$('hh3').css({'background-color':$scope.color3});
+$('hh4').css({'background-color':$scope.color4});
+$('hh5').css({'background-color':$scope.color5});
+$('hh6').css({'background-color':$scope.color6});
+$('hh7').css({'background-color':$scope.color7});
+$('hh8').css({'background-color':$scope.color8});
+$('hh9').css({'background-color':$scope.color9});
+$('hh10').css({'background-color':$scope.color10});
+$('hchosen').css({'background-color':$scope.color1});
+
+$('#chosen').html('1 - '+$scope.label1);
+$('#oneL').html('1 - '+$scope.label1);
+$('#twoL').html('2 - '+$scope.label2);
+$('#threeL').html('3 - '+$scope.label3);
+$('#fourL').html('4 - '+$scope.label4);
+$('#fiveL').html('5 - '+$scope.label5);
+$('#sixL').html('6 - '+$scope.label6);
+$('#sevenL').html('7 - '+$scope.label7);
+$('#eightL').html('8 - '+$scope.label8);
+$('#nineL').html('9 - '+$scope.label9);
+$('#tenL').html('10 - '+$scope.label10);
+}
+
+$scope.convertRGBA = function(hex){
+  var c;
+if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
+    c= hex.substring(1).split('');
+    if(c.length== 3){
+        c= [c[0], c[0], c[1], c[1], c[2], c[2]];
+    }
+    c= '0x'+c.join('');
+    return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',0.5)';
+}
+throw new Error('Bad Hex');
 
 }
-else {
-  alert(window.location);
-  window.location = window.location + '?loaded';
-  window.location.reload(true);
-}
-*/
+
+$scope.color1RGBA = $scope.convertRGBA($scope.color1);
+$scope.color2RGBA = $scope.convertRGBA($scope.color2);
+$scope.color3RGBA = $scope.convertRGBA($scope.color3);
+$scope.color4RGBA = $scope.convertRGBA($scope.color4);
+$scope.color5RGBA = $scope.convertRGBA($scope.color5);
+$scope.color6RGBA = $scope.convertRGBA($scope.color6);
+$scope.color7RGBA = $scope.convertRGBA($scope.color7);
+$scope.color8RGBA = $scope.convertRGBA($scope.color8);
+$scope.color9RGBA = $scope.convertRGBA($scope.color9);
+$scope.color10RGBA = $scope.convertRGBA($scope.color10);
+$scope.updateHTML();
 
   // variable Initialization
 
@@ -32,12 +139,17 @@ else {
   $scope.isPainted = [1000];
   $scope.newValue = [1000];
   $scope.classification;
-  $scope.healthyCount = 0;
-  $scope.scarCount = 0;
-  $scope.infCount = 0;
-  $scope.necroticCount = 0;
-  $scope.backgroundCount = 0;
-  $scope.badDataCount = 0;
+  $scope.label1Count = 0;
+  $scope.label2Count = 0;
+  $scope.label3Count = 0;
+  $scope.label4Count = 0;
+  $scope.label5Count = 0;
+  $scope.label6Count = 0;
+  $scope.label7Count = 0;
+  $scope.label8Count = 0;
+  $scope.label9Count = 0;
+  $scope.label10Count = 0;
+
 
   $scope.anyUnasigned = 0;
   var q;
@@ -54,7 +166,7 @@ else {
 
 
   // Default colour of red (1)
-  $scope.colour_f = "rgba(255, 102, 0, 0.4)";
+  $scope.colour_f = $scope.color1RGBA;
   $scope.classification = 1;
 
   // Maybe some uneeded variablesgetElement
@@ -223,34 +335,54 @@ else {
           // Key '1'
           if ($scope.newValue[p] == 1) {
               // Colour 'orange'
-              $scope.colour_f = "rgba(255, 102, 0, 0.4)";
+              $scope.colour_f = $scope.color1RGBA;
           }
           // Key '2'
           else if ($scope.newValue[p] == 2) {
               // Colour 'Green'
-              $scope.colour_f = "rgba(0, 32, 0, 0.6)";
+              $scope.colour_f = $scope.color2RGBA;
 
           }
           // Key '3'
           else if ($scope.newValue[p] == 3) {
               // Colour 'Pink'
               //$scope.colour_f = "rgba(128, 128, 255, 0.4)";
-              $scope.colour_f = "rgba(255, 51, 54, 0.4)";
+              $scope.colour_f = $scope.color3RGBA;
           }
           // Key '4'
           else if ($scope.newValue[p] == 4) {
             // Colour 'Yellow'
-            $scope.colour_f = "rgba(255, 255, 0, 0.4)";
+            $scope.colour_f = $scope.color4RGBA;
           }
           // Key '5'
           else if ($scope.newValue[p] == 5) {
             // Colour 'Blue'
-            $scope.colour_f = "rgba(128, 128, 255, 0.4)";
+            $scope.colour_f = $scope.color5RGBA;
           }
-          // Key '4'
+          // Key '6'
           else if ($scope.newValue[p] == 6) {
             // Colour 'Grey'
-            $scope.colour_f = "rgba(46, 46, 31, 0.7)";
+            $scope.colour_f = $scope.color6RGBA;
+          }
+          // Key '7'
+          else if ($scope.newValue[p] == 7) {
+            // Colour 'Grey'
+            $scope.colour_f = $scope.color7RGBA;
+          }
+          // Key '8'
+          else if ($scope.newValue[p] == 8) {
+            // Colour 'Grey'
+            $scope.colour_f = $scope.color8RGBA;
+          }
+          // Key '9'
+          else if ($scope.newValue[p] == 9) {
+            // Colour 'Grey'
+            $scope.colour_f = $scope.color9RGBA;
+          }
+          // Key '10'
+          else if ($scope.newValue[p] == 10) {
+            // Colour 'Grey'
+            $scope.colour_f = $scope.color10RGBA;
           }
 
           // Very similar to the standard colouring function
@@ -298,12 +430,17 @@ else {
     var p = 0;
     var pMax = 0;
 
-    $scope.healthyCount = 0;
-    $scope.scarCount = 0;
-    $scope.infCount = 0;
-    $scope.necroticCount = 0;
-    $scope.backgroundCount = 0;
-    $scope.badDataCount = 0;
+    $scope.label1Count = 0;
+    $scope.label2Count = 0;
+    $scope.label3Count = 0;
+    $scope.label4Count = 0;
+    $scope.label5Count = 0;
+    $scope.label6Count = 0;
+    $scope.label7Count = 0;
+    $scope.label8Count = 0;
+    $scope.label9Count = 0;
+    $scope.label10Count = 0;
+
 
     // Finding maximum integer mask value
     $scope.length_2 = $scope.mask_data.length;
@@ -344,38 +481,62 @@ else {
           // Key '1'
           if ($scope.newValue[p] == 1) {
               // Colour 'orange'
-              $scope.healthyCount ++;
-              $scope.colour_f = "rgba(255, 102, 0, 0.4)";
+              $scope.label1Count ++;
+              $scope.colour_f = $scope.color1RGBA;
           }
           // Key '2'
           else if ($scope.newValue[p] == 2) {
               // Colour 'Green'
-              $scope.scarCount ++;
-              $scope.colour_f = "rgba(0, 32, 0, 0.6)";
+              $scope.label2Count ++;
+              $scope.colour_f = $scope.color2RGBA;
           }
           // Key '3'
           else if ($scope.newValue[p] == 3) {
               // Colour 'Pink'
-              $scope.infCount ++;
-              $scope.colour_f = "rgba(255, 51, 54, 0.4)";
+              $scope.label3Count ++;
+              $scope.colour_f = $scope.color3RGBA;
           }
           // Key '4'
           else if ($scope.newValue[p] == 4) {
             // Colour 'Yellow'
-            $scope.necroticCount ++;
-            $scope.colour_f = "rgba(255, 255, 0, 0.4)";
+            $scope.label4Count ++;
+            $scope.colour_f = $scope.color4RGBA;
           }
           // Key '5'
           else if ($scope.newValue[p] == 5) {
             // Colour 'Blue'
-            $scope.backgroundCount ++;
-            $scope.colour_f = "rgba(128, 128, 255, 0.4)";
+            $scope.label5Count ++;
+            $scope.colour_f = $scope.color5RGBA;
           }
-          // Key '4'
+          // Key '6'
           else if ($scope.newValue[p] == 6) {
             // Colour 'Grey'
-            $scope.badDataCount ++;
-            $scope.colour_f = "rgba(46, 46, 31, 0.7)";
+            $scope.label6Count ++;
+            $scope.colour_f = $scope.color6RGBA;
+          }
+          // Key '7'
+          else if ($scope.newValue[p] == 7) {
+            // Colour 'Grey'
+            $scope.label7Count ++;
+            $scope.colour_f = $scope.color7RGBA;
+          }
+          // Key '8'
+          else if ($scope.newValue[p] == 8) {
+            // Colour 'Grey'
+            $scope.label8Count ++;
+            $scope.colour_f = $scope.color8RGBA;
+          }
+          // Key '9'
+          else if ($scope.newValue[p] == 9) {
+            // Colour 'Grey'
+            $scope.label9Count ++;
+            $scope.colour_f = $scope.color9RGBA;
+          }
+          // Key '10'
+          else if ($scope.newValue[p] == 10) {
+            // Colour 'Grey'
+            $scope.label10Count ++;
+            $scope.colour_f = $scope.color10RGBA;
           }
 
           // Very similar to the standard colouring function
@@ -411,7 +572,34 @@ else {
 
             // Colour all remaining superpixels as badData cells
             $scope.badDataCount ++;
-            $scope.colour_f = "rgba(46, 46, 31, 0.7)";
+
+            if ($scope.aLabels == 2){
+              $scope.colour_f = $scope.color2RGBA;
+            }
+            if ($scope.aLabels == 3){
+              $scope.colour_f = $scope.color3RGBA;
+            }
+            if ($scope.aLabels == 4){
+              $scope.colour_f = $scope.color4RGBA;
+            }
+            if ($scope.aLabels == 5){
+              $scope.colour_f = $scope.color5RGBA;
+            }
+            if ($scope.aLabels == 6){
+              $scope.colour_f = $scope.color6RGBA;
+            }
+            if ($scope.aLabels == 7){
+              $scope.colour_f = $scope.color7RGBA;
+            }
+            if ($scope.aLabels == 8){
+              $scope.colour_f = $scope.color8RGBA;
+            }
+            if ($scope.aLabels == 9){
+              $scope.colour_f = $scope.color9RGBA;
+            }
+            if ($scope.aLabels == 10){
+              $scope.colour_f = $scope.color10RGBA;
+            }
 
             // Very similar to the standard colouring function
 
@@ -419,7 +607,7 @@ else {
 
             // Disallow recolouring
             $scope.isPainted[mask_value] = 1;
-            $scope.newValue[mask_value] = 6;
+            $scope.newValue[mask_value] = $scope.aLabels;
 
             // Keep track of event for undo feature
             $scope.undoPosition ++;
@@ -571,49 +759,99 @@ else {
       // Key '1'
       if (map[49] == true) {
         // Colour 'Orange' (1)
-        $scope.colour_f = "rgba(255, 102, 0, 0.4)";
+        $scope.colour_f = $scope.color1RGBA;
         $scope.classification = 1;
-        $('hchosen').css({'background-color':'#ff944d'})
-        $('#tissue').html('1 - Healthy');
+        $('hchosen').css({'background-color':$scope.color1})
+        $('#chosen').html('1 - '+$scope.label1);
 
       }
       // Key '2'
       else if (map[50] == true) {
           // Colour 'Green'
-          $scope.colour_f = "rgba(0, 32, 0, 0.6)";
+          $scope.colour_f = $scope.color2RGBA;
           $scope.classification = 2;
-          $('hchosen').css({'background-color':'#E5FFE5'})
-          $('#tissue').html('2 - Scar');
+          $('hchosen').css({'background-color':$scope.color2})
+          $('#chosen').html('2 - '+$scope.label2);
       }
       // Key '3'
       else if (map[51] == true) {
         // Colour 'Pink'
-        $scope.colour_f = "rgba(255, 51, 54, 0.4)";
+        if ($scope.aLabels >= 3){
+        $scope.colour_f = $scope.color3RGBA;
         $scope.classification = 3;
-        $('hchosen').css({'background-color':'#FF99B1'})
-        $('#tissue').html('3 - Inflammatory');
+        $('hchosen').css({'background-color':$scope.color3})
+        $('#chosen').html('3 - '+$scope.label3);
+        }
       }
       // Key '4'
       else if (map[52] == true) {
         // Colour 'Yellow'
-        $scope.colour_f = "rgba(255, 255, 0, 0.4)";
+        if ($scope.aLabels >= 4){
+        $scope.colour_f = $scope.color4RGBA;
         $scope.classification = 4;
-        $('hchosen').css({'background-color':'#FFFFAD'})
-        $('#tissue').html('4 - Necrotic');
+        $('hchosen').css({'background-color':$scope.color4})
+        $('#chosen').html('4 - '+$scope.label4);
+        }
       }
+      // Key '5'
       else if (map[53] == true) {
         // Colour 'Blue'
-        $scope.colour_f = "rgba(128, 128, 255, 0.4)";
+        if ($scope.aLabels >= 5){
+        $scope.colour_f = $scope.color5RGBA;
         $scope.classification = 5;
-        $('hchosen').css({'background-color':'#8080ff'})
-        $('#tissue').html('5 - Background');
+        $('hchosen').css({'background-color':$scope.color5})
+        $('#chosen').html('5 - '+$scope.label5);
+        }
       }
+      // Key '6'
       else if (map[54] == true) {
         // Colour 'Grey'
-        $scope.colour_f = "rgba(46, 46, 31, 0.7)";
+        if ($scope.aLabels >= 6){
+        $scope.colour_f = $scope.color6RGBA;
         $scope.classification = 6;
-        $('hchosen').css({'background-color':'#a6a6a6'})
-        $('#tissue').html('6 - Bad Data');
+        $('hchosen').css({'background-color':$scope.color6})
+        $('#chosen').html('6 - '+$scope.label6);
+        }
+      }
+      // Key '7'
+      else if (map[55] == true) {
+        // Colour 'Grey'
+        if ($scope.aLabels >= 7){
+        $scope.colour_f = $scope.color7RGBA;
+        $scope.classification = 7;
+        $('hchosen').css({'background-color':$scope.color7})
+        $('#chosen').html('7 - '+$scope.label7);
+        }
+      }
+      // Key '8'
+      else if (map[56] == true) {
+        // Colour 'Grey'
+        if ($scope.aLabels >= 8){
+        $scope.colour_f = $scope.color8RGBA;
+        $scope.classification = 8;
+        $('hchosen').css({'background-color':$scope.color8})
+        $('#chosen').html('8 - '+$scope.label8);
+        }
+      }
+      // Key '9'
+      else if (map[57] == true) {
+        // Colour 'Grey'
+        if ($scope.aLabels >= 9){
+        $scope.colour_f = $scope.color9RGBA;
+        $scope.classification = 9;
+        $('hchosen').css({'background-color':$scope.color9})
+        $('#chosen').html('9 - '+$scope.label9);
+        }
+      }
+      // Key '10'
+      else if (map[48] == true) {
+        // Colour 'Grey'
+        if ($scope.aLabels >= 10){
+        $scope.colour_f = $scope.color10RGBA;
+        $scope.classification = 10;
+        $('hchosen').css({'background-color':$scope.color10})
+        $('#chosen').html('10 - '+$scope.label10);
+        }
       }
       // Escape key to fix the mouse
       else if (map[27] == true){
@@ -931,7 +1169,7 @@ if (window.addEventListener) {
     // Ask if the user wants to set unclassified pixels to Bad Data
 
 
-    var answer = confirm("Set any remaing cells to 'Bad Data' classification?")
+    var answer = confirm("Set any remaing cells to label #"+$scope.aLabels + "?")
     if (answer){
       // Recolour any unselected to badData
       $scope.anyUnasigned = 1;
@@ -949,18 +1187,24 @@ if (window.addEventListener) {
 
     var p = 0;
     var i = 0;
-    var dictionary = new Array(7);
+    var dictionary = new Array(11);
 
     // First array value is reserved for specifying the chosen cropped image
     dictionary[0] = 0;
 
     // Creating the perfect sized arrays
-    dictionary[1] = new Array($scope.healthyCount);
-    dictionary[2] = new Array($scope.scarCount);
-    dictionary[3] = new Array($scope.infCount);
-    dictionary[4] = new Array($scope.necroticCount);
-    dictionary[5] = new Array($scope.backgroundCount);
-    dictionary[6] = new Array($scope.badDataCount);
+    dictionary[1] = new Array($scope.label1Count);
+    dictionary[2] = new Array($scope.label2Count);
+    dictionary[3] = new Array($scope.label3Count);
+    dictionary[4] = new Array($scope.label4Count);
+    dictionary[5] = new Array($scope.label5Count);
+    dictionary[6] = new Array($scope.label6Count);
+
+    dictionary[7] = new Array($scope.label7Count);
+    dictionary[8] = new Array($scope.label8Count);
+    dictionary[9] = new Array($scope.label9Count);
+    dictionary[10] = new Array($scope.label10Count);
+
 
 
     var labelled = new Array($scope.mask_copy.length)
@@ -971,12 +1215,16 @@ if (window.addEventListener) {
     }
 
 
-    var healthyPosition = 0;
-    var scarPosition = 0;
-    var infPosition = 0;
-    var necroticPosition = 0;
-    var backgroundPosition = 0;
-    var badDataPosition = 0;
+    var label1Position = 0;
+    var label2Position = 0;
+    var label3Position = 0;
+    var label4Position = 0;
+    var label5Position = 0;
+    var label6Position = 0;
+    var label7Position = 0;
+    var label8Position = 0;
+    var label9Position = 0;
+    var label10Position = 0;
 
 
     // Check every superpixel to see if it has been assigned a colour
@@ -985,43 +1233,57 @@ if (window.addEventListener) {
         // This has been classified, need to add it to the dictionary
         if ($scope.isPainted[p] == 1){
 
-          // Key '1' healthy
+          // Key '1' Label1
           if ($scope.newValue[p] == 1) {
-
-              dictionary[1][healthyPosition] = p;
-              healthyPosition ++;
-
+              dictionary[1][label1Position] = p;
+              label1Position ++;
           }
-          // Key '2' Scar
-          else if ($scope.newValue[p] == 2) {
-
-              dictionary[2][scarPosition] = p;
-              scarPosition ++;
+          // Key '2' Label2
+          if ($scope.newValue[p] == 2) {
+              dictionary[2][label2Position] = p;
+              label2Position ++;
           }
-          // Key '3' Infalmatory3
-          else if ($scope.newValue[p] == 3) {
-
-              dictionary[3][infPosition] = p;
-              infPosition ++;
+          // Key '3' Label3
+          if ($scope.newValue[p] == 3) {
+              dictionary[3][label3Position] = p;
+              label3Position ++;
           }
-          // Key '4' Necrotic
-          else if ($scope.newValue[p] == 4) {
-
-            dictionary[4][necroticPosition] = p;
-            necroticPosition ++;
+          // Key '4' Label4
+          if ($scope.newValue[p] == 4) {
+              dictionary[4][label4Position] = p;
+              label4Position ++;
           }
-          // Key '5' Background
-          else if ($scope.newValue[p] == 5) {
-
-            dictionary[5][backgroundPosition] = p;
-            backgroundPosition ++;
+          // Key '5' Label5
+          if ($scope.newValue[p] == 5) {
+              dictionary[5][label5Position] = p;
+              label5Position ++;
           }
-          // Key '6' Bad Data
-          else if ($scope.newValue[p] == 6) {
-
-            dictionary[6][badDataPosition] = p;
-            badDataPosition ++;
+          // Key '6' Label6
+          if ($scope.newValue[p] == 6) {
+              dictionary[6][label6Position] = p;
+              label6Position ++;
           }
+          // Key '7' Label7
+          if ($scope.newValue[p] == 7) {
+              dictionary[7][label7Position] = p;
+              label7Position ++;
+          }
+          // Key '8' Label8
+          if ($scope.newValue[p] == 8) {
+              dictionary[8][label8Position] = p;
+              label8Position ++;
+          }
+          // Key '9' Label9
+          if ($scope.newValue[p] == 9) {
+              dictionary[9][label9Position] = p;
+              label9Position ++;
+          }
+          // Key '10' Label10
+          if ($scope.newValue[p] == 10) {
+              dictionary[10][label10Position] = p;
+              label10Position ++;
+          }
+
         }
     }
 
@@ -1031,8 +1293,13 @@ if (window.addEventListener) {
 
     // Get the file path for proper naming of the zip file
     segPath = localStorageService.get('selected_fp');
-    $http.get('get_saveLabel/', {
-            params:  {data1: data1, data2: data2, segPath: segPath},
+    var email = localStorageService.get('email');
+    $http.post('post_saveLabel/', {
+            email: email,
+            imageId: $scope.current_img,
+            data1: data1,
+            data2: data2,
+            segPath: segPath,
             headers: {'Authorization': 'token'}
         }
     )
@@ -1075,6 +1342,14 @@ if (window.addEventListener) {
         a.download = fileName;
         a.click();
         window.URL.revokeObjectURL(url);
+
+
+        //var classified = localStorageService.get('classified') +1;
+        //user_info.setClassified(classified);
+        //var in_queue = localStorageService.get('in_queue')-1;
+        //user_info.setInQueue(in_queue);
+        //var pComplete = Math.floor((classified/(classified+in_queue))*100);
+        //user_info.setPercentComplete(pComplete);
 
 
 

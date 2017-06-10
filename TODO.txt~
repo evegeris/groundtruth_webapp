@@ -2,35 +2,24 @@
 // from final 41X design meeting
 // additional development for groundtruthing app
 
-- 256x256 imgs:
-- take user crop, generate 256x256 imgs
 
+
+Task 0:
 - crop option: no crop
 
-- allow login through Google and GitHub
-(restrict eg. Google auth to certain domains)
-* Note that we still need to be able to associate users with images,
-* so we'll still need to have a users table with entries for everyone.
-* Letting people login through another domain is nice though, convenient.
 
-- (DONE) note on segmentation screen that CTrl+Z undos previous action
+Task 4:
+- let users re-download the .zip files for each image once completed equals '1'
 
-- change 'bad data' to 'unclassified'
+DONE - Contact Dhanesh/Graham
 
-- update 'finish' operation: form dictionary as user classifying
 
-- function to convert JSON to 2d array for dhanesh
 
+Optional:
 - allow user tomodify boundaries on classification
 - eg. select segment to apply k-means to resegment or manually draw
 
-Graham Taylor
-1:59 PM
-I'm going to need to log off in a minute, so just typing up a couple of points:
-1. Try to move forward on the features/bug fixes we discussed today, knock off as many of these as possible
-2. Work with Justin to get the labeler into the hands of a "professional" labeler, and try to label, e.g. 20-100 images to get their feedback
+- 256x256 imgs:
+- take user crop, generate 256x256 imgs
 
 
-- on timeout, delete localstorage?
-- update user info eg. in_queue
-- assume full filepaths stored in db?

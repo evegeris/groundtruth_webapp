@@ -11,7 +11,8 @@ mysql_db_hostname = 'localhost'
 
 # WARNING: Set DEBUG to false if external hosting
 DEBUG = True
-PORT = 8888
+MAINTAIN = True
+PORT = 8080
 HOST = "0.0.0.0"
 SQLALCHEMY_ECHO = False
 SECRET_KEY = "UTjESWmH6J443pqMTgJvomiMoKrm1CCH"

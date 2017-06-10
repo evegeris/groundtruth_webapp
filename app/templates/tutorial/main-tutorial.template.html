@@ -1,5 +1,5 @@
-<body ng-app="app" ng-controller="TutorialCtrl">
-<h2 id="instructions"> Labelling Tool Tutorial Stage 1: Uploading an image </h2>
+<body ng-app="app" ng-controller="MainTutorialCtrl">
+<h2 id="instructions">Labelling Tool Tutorial Stage 1: Setting up Your Profile</h2>
   <div class="row">
   	<div class="col-lg-6">
     <img image="temp.jpg" id="tutId" >
@@ -40,13 +40,40 @@
       <div class="col-lg-4">
       </div>
   </div>
-
   <div class="row" ng-show="tutStage3">
     <div class="col-lg-4">
     </div>
 
       <div class="col-lg-4" >
         <form ng-submit="tut3()" >
+            <input class="btn btn-info" type="submit" value="Next Tutorial Stage">
+        </form>
+      </div>
+
+      <div class="col-lg-4">
+      </div>
+  </div>
+
+  <div class="row" ng-show="tutStage4">
+    <div class="col-lg-4">
+    </div>
+
+      <div class="col-lg-4" >
+        <form ng-submit="tut4()" >
+            <input class="btn btn-info" type="submit" value="Next Tutorial Stage">
+        </form>
+      </div>
+
+      <div class="col-lg-4">
+      </div>
+  </div>
+
+  <div class="row" ng-show="tutStage5">
+    <div class="col-lg-4">
+    </div>
+
+      <div class="col-lg-4" >
+        <form ng-submit="tut5()" >
             <input class="btn btn-info" type="submit" value="Finish Tutorial">
         </form>
       </div>

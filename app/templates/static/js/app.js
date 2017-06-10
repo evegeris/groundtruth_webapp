@@ -207,20 +207,34 @@ $stateProvider.state('login', {
             }
           })
 
-          /* New State Added Here called guest_crop */
+          /* New State Added Here called guest_tutorial */
           .state('guest_tutorial', {
                 url: '/tutorial',
-                title: 'Tutorial Page',
+                title: 'Guest Tutorial Page',
                 resolve: {
                       loginRequired: loginRequired
                     },
                 views: {
                   'inner_page': {
-                  templateUrl: '/tutorial/tutorial.template.html',
-                  controller: 'TutorialCtrl'
+                  templateUrl: '/tutorial/guest-tutorial.template.html',
+                  controller: 'GuestTutorialCtrl'
                 }
               }
             })
+            /* New State Added Here called main_tutorial */
+            .state('main_tutorial', {
+                  url: '/maintutorial',
+                  title: 'Main Tutorial Page',
+                  resolve: {
+                        loginRequired: loginRequired
+                      },
+                  views: {
+                    'inner_page': {
+                    templateUrl: '/tutorial/main-tutorial.template.html',
+                    controller: 'MainTutorialCtrl'
+                  }
+                }
+              })
             /* New State Added Here called error_status */
             .state('error_status', {
                   url: '/error_status',
@@ -235,6 +249,20 @@ $stateProvider.state('login', {
                   }
                 }
               })
+              /* New State Added Here called user_profile */
+              .state('user_profile', {
+                    url: '/user_profile',
+                    title: 'Profile Settings',
+                    resolve: {
+                          loginRequired: loginRequired
+                        },
+                    views: {
+                      'inner_page': {
+                      templateUrl: '/user-profile/user-profile.html',
+                      controller: 'ProfileCtrl'
+                    }
+                  }
+                })
   .state('home', {
     url: '/',
     title: 'Home',

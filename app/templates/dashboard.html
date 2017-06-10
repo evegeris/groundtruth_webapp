@@ -48,6 +48,7 @@
 		</rd-widget>
 
 	</div>
+	<div ><b>Upload Images to Label:</b> <input type="file" id="fileInput" name="fileInput" class="inputfile"/></div>
 </div>
 
 
@@ -63,7 +64,7 @@
 					<table class="table">
 				  <tbody>
 						<tr><td>Index</td><td>Image ID</td><td>Progress</td></tr>
-						<tr ng:repeat="img in image_info" ng-click="setSelectedImg();"><td>{{$index}}</td><td>{{img.id}}</td><td>{{img.progress}}</td></tr>
+						<tr ng:repeat="img in image_info" ng-click="setSelectedImg();" ng-style="{'background-color': colors[$index]}"><td>{{$index}}</td><td>{{img.id}}</td><td>{{img.progress}}</td><td width="5%"><button class="editbtn" id="button-{{$index}}">delete</button></td></tr>
 						 </tbody>
 				 </table>
 		 </div>
@@ -72,35 +73,3 @@
 	</div>
 </div>
 </div>
-
-
-<!--
-<div class="row">
-	<div class="col-lg-6">
-   		<rd-widget>
-   			<rd-widget-header icon="fa-plus" title="Extras">
-   				<button class="btn btn-sm btn-info">Button</button>
-   			</rd-widget-header>
-   			<rd-widget-body>
-				<div class="message">
-					This is a standard message which will also work the ".no-padding" class, I can also <span class="error">be an error message!</span>
-				</div>
-				<hr />
-				<div class="message">
-					<a href="http://angular-ui.github.io/bootstrap/" target="_blank">UI Bootstrap</a> is included, so you can use <a href="#" tooltip="I'm a tooltip!">tooltips</a> and all of the other native Bootstrap JS components!
-				</div>
-   			</rd-widget-body>
-   		</rd-widget>
-	</div>
-	<div class="col-lg-6">
-		<rd-widget>
-			<rd-widget-header icon="fa-cog fa-spin" title="Loading Directive">
-				<a href="http://tobiasahlin.com/spinkit/" target="_blank">SpinKit</a>
-			</rd-widget-header>
-			<rd-widget-body>
-				<rd-loading></rd-loading>
-			</rd-widget-body>
-		</rd-widget>
-	</div>
-</div>
--->

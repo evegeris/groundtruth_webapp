@@ -2,7 +2,7 @@
 
 apt-get update
 
-apt-get install git -y 
+apt-get install git -y
 
 apt-get install python-setuptools -y
 
@@ -142,29 +142,28 @@ cd ..
 
 cd ..
 
-mkdir wound_images
+mkdir GT_USERS
 
-mkdir json
+#mkdir json
 
-mkdir segmented
+#mkdir segmented
 
-mkdir labelled
+#mkdir labelled
 
-mkdir packaged
+#mkdir packaged
+
+chmod -R 777 GT_USERS/
 
 chmod -R 777 groundtruth_webapp/
 
-chmod -R 777 wound_images/
+#chmod -R 777 wound_images/
 
-chmod -R 777 json/
+#chmod -R 777 json/
 
-chmod -R 777 segmented/
+#chmod -R 777 segmented/
 
-chmod -R 777 labelled/
+#chmod -R 777 labelled/
 
-chmod -R 777 packaged/
+#chmod -R 777 packaged/
 
 cd groundtruth_webapp
-
-
-

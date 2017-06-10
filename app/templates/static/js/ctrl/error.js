@@ -51,8 +51,11 @@ angular.module('myApp').controller('ErrorCtrl', function($http, $state,  $scope,
          //Error status code is consumed
          localStorageService.set('error_status', 0);
 
-
-         $http.get('dyn_img/fp=' + '/' + filepath).then(function(response) {
+         var email = localStorageService.get('email');
+         $http.get('dyn_img/fp=' + '/' + filepath, {
+           params:  {email: email}
+           }
+         ).then(function(response) {
            $scope.myImage = "data:image/png;base64," + response.data;
            var errorId = document.getElementById("errorImg");
            errorId.src = $scope.myImage;

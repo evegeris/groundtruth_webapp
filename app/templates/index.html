@@ -46,8 +46,10 @@
     <script type="text/javascript" src="static/js/ctrl/canvas.js"></script>
     <script type="text/javascript" src="static/js/ctrl/crop.js"></script>
     <script type="text/javascript" src="static/js/ctrl/guestCrop.js"></script>
-    <script type="text/javascript" src="static/js/ctrl/tutorial.js"></script>
+    <script type="text/javascript" src="static/js/ctrl/guest-tutorial.js"></script>
+    <script type="text/javascript" src="static/js/ctrl/main-tutorial.js"></script>
     <script type="text/javascript" src="static/js/ctrl/error.js"></script>
+    <script type="text/javascript" src="static/js/ctrl/profile.js"></script>
     <script type="text/javascript" src="static/js/ctrl/dashboard.js"></script>
     <script type="text/javascript" src="static/js/ctrl/limbo.js"></script>
     <script type="text/javascript" src="static/js/srv/user_info.js"></script>
@@ -162,7 +164,7 @@
                   <span class="caret"></span></button>
                   <ul class="dropdown-menu">
                     <li class="link">
-                      <a href="#">
+                      <a href ng-click="goProfile()">
                         Profile
                       </a>
                     </li>

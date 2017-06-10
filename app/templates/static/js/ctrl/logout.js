@@ -68,6 +68,7 @@ angular.module('myApp').controller('LogoutCtrl', function($auth, $state, $window
 
                      });
 
+             localStorageService.clearAll();
              $state.go('timeout');
 
            });
