@@ -21,24 +21,37 @@ This application is now in its **Alpha testing phase**; complete end-to-end, cli
 
 
 Below are a few screen shots of the web-application. Some examples of the different application uses can be seen throughout.
-
+#### Login Screen:
 ![Alt text](/readme_images/login.png?raw=true "Login Screen")
-
+Secure storage of user's information in the MySql backend.
+&nbsp;
+#### Central Application Dashboard:
 ![Alt text](/readme_images/dashboard.png?raw=true "Central Dashboard")
-
+Provides means to upload images for labeling.
+&nbsp;
+#### User Tutorial:
 ![Alt text](/readme_images/tutorial.png?raw=true "User Tutorials")
-
+A quick run through of the application work flow.
+&nbsp;
+#### Profile Settings:
 ![Alt text](/readme_images/profile.png?raw=true "Profile Settings")
-
+Can select the number of labels, names, and colors.
+&nbsp;
+#### Cropping Screen:
 ![Alt text](/readme_images/crop.png?raw=true "Image Cropping Tool")
-
+Can focus in on the area of interest for labeling.
+&nbsp;
+#### Superpixel Granularity:
 ![Alt text](/readme_images/segment.png?raw=true "Image Processed with the Superpixel Algorithm")
-
+Can vary the granularity of the segmentation algorithm.
+&nbsp;
+#### Labelling Screen:
 ![Alt text](/readme_images/labelled1.png?raw=true "Labeling the Segmented Image")
 
 ![Alt text](/readme_images/labelled2.png?raw=true "Labeling the Segmented Image")
 
 ![Alt text](/readme_images/labelled3.png?raw=true "Labeling the Segmented Image")
+Can be used for labeling different images.
 
 As mentioned, the web-application is not currently public available for access, but can be downloaded for local hosting purposes on a private network. Instructions for the downloading and installation of the application are found below. 
 

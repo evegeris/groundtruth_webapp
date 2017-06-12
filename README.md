@@ -144,6 +144,10 @@ Want to contribute? Suggestions?
 
 Open a github comment thread or email me at: mmccar04@mail.uoguelph.ca! I would love some support with this tool!
 
+### Current Hosted IP Address:
+Contact mmccar04@mail.uoguelph.ca to set up a hosting time.
+Hosted occasionally on the evenings and weekends.
+IP address (updated 11/06/2017): **99.233.250.172:8080**
 
 #### Modules & Packages
 TO add additional modules/packages not included with rdash-angular, add them to `bower.json` and then update `index.html`, to include them in the minified distribution output.
