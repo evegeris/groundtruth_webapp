@@ -84,6 +84,7 @@ class PostProc:
             newIm = self.im;
 
             # apply SLIC and extract (approximately) the supplied number of segments
+            print("segmentation: " + str(i))
             segments = slic(self.im, n_segments=n[i], sigma=s[i])
 
             b = segments.tolist() # nested lists with same data, indices

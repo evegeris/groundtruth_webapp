@@ -101,8 +101,8 @@
 
 
     #customContainer {
-    width:2000px;
-    height:2000px;
+    width:800px;
+    height:800px;
     border:1px solid black;
     overflow:hidden;
     position:relative;

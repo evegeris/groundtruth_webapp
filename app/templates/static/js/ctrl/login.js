@@ -303,7 +303,7 @@ $scope.guestLogin = function () {
 
                                 // Setting up user profile
                                 var user_entry = user.UserUpdate.get({ email: $scope.email, activeLabels: 6, label1: "Healthy", label2: "Scar", label3: "inflammatory", label4: "Necrotic", label5: "Background", label6: "Unclassified", label7: "null", label8: "null", label9: "null", label10: "null",
-                                    color1: "AF9FFD", color2: "E5FFE5", color3: "FF99B1", color4: "FFFFAD", color5: "8080FF", color6: "A6A6A6", color7: "FFFFFF", color8: "FFFFFF", color9: "FFFFFF", color10: "FFFFFF"}, function() {
+                                    color1: "FF6600", color2: "00FF00", color3: "FF99B1", color4: "FFFFAD", color5: "8080FF", color6: "A6A6A6", color7: "FFFFFF", color8: "FFFFFF", color9: "FFFFFF", color10: "FFFFFF"}, function() {
                                     });
                                // Setting up firstTime active
                                var user_entry_active = user.UserActiveUpdate.get({email: $scope.email, firstTime: 1});

@@ -185,28 +185,42 @@ def create_app(config_filename):
         fp = os.getcwd()
         fp = fp.rsplit('/',1)[0] # go back one dir
         fp = fp +"/GT_USERS/USER_"+str(user.id)
+        print(left_seg)
 
         if (left_seg != "466"):
+            try:
                 os.remove(fp + '/segmented/466_'+right_seg)
                 os.remove(fp + '/json/466_'+right_json) 
+            except:
+                pass
         if (left_seg != '500'):
+            try:
                 os.remove(fp + '/segmented/500_'+right_seg)
                 os.remove(fp + '/json/500_'+right_json) 
+            except:
+                pass
         if (left_seg != '566'):
+            try:
                 os.remove(fp + '/segmented/566_'+right_seg)
                 os.remove(fp + '/json/566_'+right_json) 
+            except:
+                pass
         if (left_seg != '600'):
+            try:
                 os.remove(fp + '/segmented/600_'+right_seg)
                 os.remove(fp + '/json/600_'+right_json) 
+            except:
+                pass
         if (left_seg != '666'):
                 os.remove(fp + '/segmented/666_'+right_seg)
-                os.remove(fp + '/json/666_'+right_json)            
+                os.remove(fp + '/json/666_'+right_json)  
+            except:
+                pass          
 
         with open(fp + '/' + json_filepath) as json_file:
             json_data = json.load(json_file)
 
         response = {"json_data": json_data}
-        #print(response)
         #response.status_code = 200
         return jsonify(message=response)
 

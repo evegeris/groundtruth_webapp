@@ -39,7 +39,7 @@ angular.module('myApp').controller('GuestCropCtrl', function($http, $state,  $sc
     //console.log('slider: ');
     //console.log(slider1.value);
     //console.log($scope.segmentedArray[slider1.value]);
-    setImage($scope.segmentedArray[slider1.value]);
+    setImage(slider1.value);
 
     $('#slidePosition').html('Granularity: '+ slider1.value);
 
@@ -49,57 +49,143 @@ angular.module('myApp').controller('GuestCropCtrl', function($http, $state,  $sc
     $scope.cropType=value;
   }
 
-function setImage(filepath){
 
-  // set segmented image as src
-  $scope.showLoadingWidget = true;
-  $scope.croppingStage = false;
-  $scope.segmentingStage = true;
-  var email = localStorageService.get('email');
-  $http.get('dyn_img/fp=' + '/' + filepath, {
-    params:  {email: email}
-    }
-  ).then(function(response) {
+  function getAllImages(filepath1, filepath2, filepath3, filepath4, filepath5){
 
-    var r_code = response.status;
+    var email = localStorageService.get('email');
+    $http.get('dyn_img/fp=' + '/' + filepath1, {
+      params:  {email: email}
+      }
+    ).then(function(response) {
+      var r_code = response.status;
+      if (r_code != 200){
+         localStorageService.set('error_status', r_code);
+         $state.go('error_status');
+       }
 
-    if (r_code != 200){
-       localStorageService.set('error_status', r_code);
-       $state.go('error_status');
-     }
+       $scope.sentImg1 = "data:image/png;base64," + response.data;
+       $scope.fpImg1 = filepath1;
+    });
 
-    var canvas, container, context;
-    $scope.segm_img.onload = function(){
-        // Create the canvas element.
-        canvas = document.getElementById('segmenting_canvas');
-        container = $('#segmContainer');
-        var contWidth = container.width();
-        var contHeight = container.height();
-        canvas.width = contWidth;
-        canvas.height = contHeight;
-        //alert($scope.segm_img.width);
-        //alert($scope.segm_img.height);
-        var imgAspectRatio = $scope.segm_img.width/$scope.segm_img.height;
-        context = canvas.getContext('2d');
-        context.drawImage($scope.segm_img, 0, 0, canvas.height*imgAspectRatio, canvas.height);
-         //$('#slidePosition').html('Granularity: '+ slider1);
-         $('#slidePosition').html('Granularity: '+ slider1.value);
-    }
-    // Load image URL.
-    try{
-      $scope.segm_img.src = "data:image/png;base64," + response.data;
-      localStorageService.set('segmented_img', "data:image/png;base64," + response.data);
-      $scope.showLoadingWidget = false;
-    }catch(e){
-        error(e);
+    $http.get('dyn_img/fp=' + '/' + filepath2, {
+      params:  {email: email}
+      }
+    ).then(function(response) {
+      var r_code = response.status;
+      if (r_code != 200){
+         localStorageService.set('error_status', r_code);
+         $state.go('error_status');
+       }
 
-    }
+       $scope.sentImg2 = "data:image/png;base64," + response.data;
+       $scope.fpImg2 = filepath2;
+    });
 
-  });
+    $http.get('dyn_img/fp=' + '/' + filepath3, {
+      params:  {email: email}
+      }
+    ).then(function(response) {
+      var r_code = response.status;
+      if (r_code != 200){
+         localStorageService.set('error_status', r_code);
+         $state.go('error_status');
+       }
 
-  $scope.showLoadingWidget = false;
+       $scope.sentImg3 = "data:image/png;base64," + response.data;
+       $scope.fpImg3 = filepath3;
+       setTimeout(function(){  setImage(2);},100);
+    });
 
-}
+    $http.get('dyn_img/fp=' + '/' + filepath4, {
+      params:  {email: email}
+      }
+    ).then(function(response) {
+      var r_code = response.status;
+      if (r_code != 200){
+         localStorageService.set('error_status', r_code);
+         $state.go('error_status');
+       }
+
+       $scope.sentImg4 = "data:image/png;base64," + response.data;
+       $scope.fpImg4 = filepath4;
+    });
+
+    $http.get('dyn_img/fp=' + '/' + filepath5, {
+      params:  {email: email}
+      }
+    ).then(function(response) {
+      var r_code = response.status;
+      if (r_code != 200){
+         localStorageService.set('error_status', r_code);
+         $state.go('error_status');
+       }
+
+       $scope.sentImg5 = "data:image/png;base64," + response.data;
+       $scope.fpImg5 = filepath5;
+    });
+  }
+
+
+
+  function setImage(index){
+
+    // set segmented image as src
+    $scope.showLoadingWidget = true;
+    $scope.croppingStage = false;
+    $scope.segmentingStage = true;
+
+
+      var canvas, container, context;
+      $scope.segm_img.onload = function(){
+          // Create the canvas element.
+          canvas = document.getElementById('segmenting_canvas');
+          container = $('#segmContainer');
+          var contWidth = container.width();
+          var contHeight = container.height();
+          canvas.width = contWidth;
+          canvas.height = contHeight;
+          //alert($scope.segm_img.width);
+          //alert($scope.segm_img.height);
+          var imgAspectRatio = $scope.segm_img.width/$scope.segm_img.height;
+          context = canvas.getContext('2d');
+          context.drawImage($scope.segm_img, 0, 0, canvas.height*imgAspectRatio, canvas.height);
+           //$('#slidePosition').html('Granularity: '+ slider1);
+           $('#slidePosition').html('Granularity: '+ slider1.value);
+      }
+      // Load image URL.
+
+      if (index == 0) {
+        var imgData = $scope.sentImg1;
+        var imgFp = $scope.fpImg1;
+      }
+      if (index == 1) {
+        var imgData = $scope.sentImg2;
+        var imgFp = $scope.fpImg2;
+      }
+      if (index == 2) {
+        var imgData = $scope.sentImg3;
+        var imgFp = $scope.fpImg3;
+      }
+      if (index == 3) {
+        var imgData = $scope.sentImg4;
+        var imgFp = $scope.fpImg4;
+      }
+      if (index == 4) {
+        var imgData = $scope.sentImg5;
+        var imgFp = $scope.fpImg5;
+      }
+
+      try{
+        $scope.segm_img.src = imgData;
+        localStorageService.set('segmented_img', imgFp);
+        $scope.showLoadingWidget = false;
+      }catch(e){
+          error(e);
+
+      }
+    $scope.showLoadingWidget = false;
+
+  }
 
 
     // Changes the image from a loaded local file!
@@ -278,8 +364,8 @@ var onSuccess = function(e){
 
                   // set segmented image as src
                   var filepath = $scope.segmentedArray[$scope.selectedIndex];
-                  setImage(filepath);
-                  setImage($scope.segmentedArray[slider1.value]);
+                  getAllImages($scope.segmentedArray[0],$scope.segmentedArray[1],$scope.segmentedArray[2],$scope.segmentedArray[3],$scope.segmentedArray[4]);
+
 
               }, function(x) {
                   // Request error
@@ -316,42 +402,14 @@ var onSuccess = function(e){
               //$scope.jsonArray
 
               $scope.showLoadingWidget = true;
-              $http.get('get_json/', {
-                      params:  {segmented_filepath: segmented_filepath, json_filepath: json_filepath, email: email},
-                      headers: {'Authorization': 'token'}
-                  }
-              )
-              .then(function(response) {
+              var didSave = localStorageService.set('json_str', json_filepath);
+              while (didSave == false);
+              didSave = false;
+              didSave = localStorageService.set('selected_fp', segmented_filepath);
+              // hmm. fails on first attempt when ?loaded bit in polygonDraw
+              while(didSave == false);
+              setTimeout(function(){  $state.go("polygon");},500);
 
-                var r_code = response.status;
-
-               if (r_code != 200){
-                 localStorageService.set('error_status', r_code);
-                 $state.go('error_status');
-               }
-
-                  $scope.showLoadingWidget = false;
-
-                  if (localStorageService.get('json_str') === null) {
-
-                  }
-                  else {
-                    localStorageService.remove('json_str');
-
-                  }
-
-
-
-                  // retrieve JSON
-
-                  localStorageService.set('json_str', response.data.message.json_data);
-                  localStorageService.set('selected_fp', segmented_filepath);
-                  // hmm. fails on first attempt when ?loaded bit in polygonDraw
-                  $state.go("polygon");
-
-              }, function(x) {
-                  // Request error
-              });
 
        }
        else{

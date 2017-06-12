@@ -1,11 +1,11 @@
 angular.module('myApp').controller('CanvasCtrl', function($http, $state, $scope, user_info, localStorageService) {
 
 $scope.showLoadingWidget = true;
-
+/*
 $.ajaxSetup({
   cache:false
 });
-
+*/
 $scope.aLabels = localStorageService.get('activeLabels');
 
 
@@ -83,9 +83,10 @@ $('hh7').css({'background-color':$scope.color7});
 $('hh8').css({'background-color':$scope.color8});
 $('hh9').css({'background-color':$scope.color9});
 $('hh10').css({'background-color':$scope.color10});
-$('hchosen').css({'background-color':$scope.color1});
 
+$('hchosen').css({'background-color':$scope.color1});
 $('#chosen').html('1 - '+$scope.label1);
+
 $('#oneL').html('1 - '+$scope.label1);
 $('#twoL').html('2 - '+$scope.label2);
 $('#threeL').html('3 - '+$scope.label3);
@@ -208,6 +209,7 @@ $scope.updateHTML();
     // If its a left click, we want to colour the canavs
     if ($scope.mouseDown == 1){
       //$('#status').html($scope.posx_1 +', '+ $scope.posy_1);
+      //alert("coloring");
       colourCanvas();
     }
     // Mouse wheel click implements the dragging feature
@@ -269,6 +271,7 @@ $scope.updateHTML();
 
     // Getting the integer mask at the clicked location
     var mask_value = $scope.mask_data[$scope.posy_1][$scope.posx_1];
+    $('#maskID').html(mask_value);
 
     // Only run if it will result in a new colour to be painted
     if (($scope.newValue[mask_value] != $scope.classification) && (toggle == 0)){
@@ -717,7 +720,7 @@ $scope.updateHTML();
 
                 // Only colour in the superpixel if it hasn't been assigned yet
                 if ($scope.isPainted[mask_value] == 0){
-                  $scope.mask_copy[$scope.iter2][$scope.iter1] = $scope.newValue[p];
+                  $scope.mask_copy[$scope.iter2][$scope.iter1] = $scope.classification;
 
                   // Colour in the single pixel
                   contextTop.fillStyle = $scope.colour_f;
@@ -726,11 +729,17 @@ $scope.updateHTML();
                 }
                 // We want to recolour these pixels
                 else{
-                  $scope.mask_copy[$scope.iter2][$scope.iter1] = $scope.newValue[p];
+                  $scope.mask_copy[$scope.iter2][$scope.iter1] = $scope.classification;
                   contextTop.clearRect($scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
                   contextTop.fillStyle = $scope.colour_f;
                   contextTop.fillRect( $scope.scaleImgX*$scope.iter1, $scope.scaleImgY*$scope.iter2, 1, 1 );
                 }
+
+
+
+
+
+
               }
               // Do nothing
               else {
@@ -880,6 +889,8 @@ $scope.updateHTML();
     //***************************************************************//
     function toggleOverlay(){
 
+
+
       // Clear canvas
       if (toggle == 0){
         toggle = 1;
@@ -919,6 +930,8 @@ $scope.updateHTML();
     var toRemove = 0;
     var i = 0;
     var k = 0;
+
+    $('#undoID').html($scope.undoPosition );
 
     // Only undo if there is something there to remove
     if (($scope.undoPosition > 0) && (toggle == 0)){
@@ -1372,7 +1385,7 @@ if (window.addEventListener) {
   $scope.readJSON = function(){
 
 
-
+    /*
     if (window.location.href.indexOf("?") > -1){
         $scope.showLoadingWidget = false;
     }
@@ -1382,6 +1395,9 @@ if (window.addEventListener) {
       window.location.reload(true);
       $scope.showLoadingWidget = true;
     }
+    */
+
+
 
 
     //delete $http.defaults.headers.common['X-Requested-With'];
@@ -1400,11 +1416,62 @@ if (window.addEventListener) {
 
     try{
 
-      var json_str = localStorageService.get('json_str');
-      var json_str2 = localStorageService.get('json_str');
-      $scope.mask_data = json_str;
-      $scope.mask_copy = json_str2;
+      //var json_str = localStorageService.get('json_str');
+      //var json_str2 = localStorageService.get('json_str');
+      //$scope.mask_data = localStorageService.get('json_str');
+      //$scope.mask_copy = localStorageService.get('json_str');
+      //alert($scope.mask_data);
 
+      var email = localStorageService.get('email');
+      var segmented_filepath = localStorageService.get('selected_fp');
+      var json_filepath = localStorageService.get('json_str');
+
+
+      $http.get('get_json/', {
+              params:  {segmented_filepath: segmented_filepath, json_filepath: json_filepath, email: email},
+              headers: {'Authorization': 'token'}
+          }
+      )
+      .then(function(response) {
+
+        var r_code = response.status;
+
+        if (r_code != 200){
+           localStorageService.set('error_status', r_code);
+           $state.go('error_status');
+        }
+
+          // retrieve JSON
+          $scope.mask_data = response.data.message.json_data;
+
+            $scope.showLoadingWidget = false;
+
+      }, function(x) {
+          // Request error
+      });
+
+      $http.get('get_json/', {
+              params:  {segmented_filepath: segmented_filepath, json_filepath: json_filepath, email: email},
+              headers: {'Authorization': 'token'}
+          }
+      )
+      .then(function(response) {
+
+        var r_code = response.status;
+
+        if (r_code != 200){
+           localStorageService.set('error_status', r_code);
+           $state.go('error_status');
+        }
+
+          // retrieve JSON
+          $scope.mask_copy = response.data.message.json_data;
+
+            $scope.showLoadingWidget = false;
+
+      }, function(x) {
+          // Request error
+      });
 
 
 
@@ -1434,7 +1501,7 @@ if (window.addEventListener) {
       //alert("readBackimg");
       //alert(localStorageService.get('cropped_img'));
       myImageBack.src = localStorageService.get('cropped_img');
-
+      readMiddleImage();
     }
 
 
@@ -1443,7 +1510,23 @@ if (window.addEventListener) {
     //***************************************************************//
     function readMiddleImage(){
       //alert("readMiddleimg");
-      myImageMiddle.src = localStorageService.get('segmented_img');
+
+      var fpToSend = localStorageService.get('segmented_img');
+
+      var email = localStorageService.get('email');
+      $http.get('dyn_img/fp=' + '/' + fpToSend, {
+        params:  {email: email}
+        }
+      ).then(function(response) {
+        var r_code = response.status;
+        if (r_code != 200){
+           localStorageService.set('error_status', r_code);
+           $state.go('error_status');
+         }
+
+         myImageMiddle.src = "data:image/png;base64," + response.data;
+      });
+
 
       //var tstimg = document.getElementById('test_img');
       //tstimg.src = localStorageService.get('segmented_img');
@@ -1451,7 +1534,7 @@ if (window.addEventListener) {
     }
 
     readBackImage();
-    readMiddleImage();
+
     //myImageBack.src = "static/images/test_image_swift.jpg";
     //myImageMiddle.src = "static/images/test_image_swift_segment_n566_s14.jpg";
 
@@ -1552,7 +1635,8 @@ function resize(value) {
       contextTop.canvas.height = $scope.draw_h;
 
        contextMiddle.drawImage(myImageMiddle, 0, 0, $scope.draw_w, $scope.draw_h);
-       $scope.readJSON();
+       setTimeout(function(){  $scope.readJSON();},500);
+
 
 
        resize(0);

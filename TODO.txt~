@@ -8,9 +8,6 @@ Task 0:
 - crop option: no crop
 
 
-Task 4:
-- let users re-download the .zip files for each image once completed equals '1'
-
 DONE - Contact Dhanesh/Graham
 
 
@@ -18,6 +15,8 @@ DONE - Contact Dhanesh/Graham
 Optional:
 - allow user tomodify boundaries on classification
 - eg. select segment to apply k-means to resegment or manually draw
+
+- Partially finished re-load
 
 - 256x256 imgs:
 - take user crop, generate 256x256 imgs

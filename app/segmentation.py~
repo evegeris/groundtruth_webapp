@@ -163,7 +163,7 @@ def getSegmentedImage(filepath, rootpath, cropStartX, cropStartY, cropWidth, cro
         fp = fp.rsplit('/',1)[0] # go back one dir
 
         fullpath_json = fp+'/GT_USERS/USER_'+uid+'/json/' + postprocessor.out_files[idx] +'.json'
-
+        relative_json = 'json/' + postprocessor.out_files[idx] +'.json'
 
         with open(fullpath_json, 'a+') as outfile:
             json.dump(postprocessor.segm_lists[idx], outfile, indent=2)
