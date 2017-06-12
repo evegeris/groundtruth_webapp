@@ -1500,8 +1500,22 @@ if (window.addEventListener) {
     function readBackImage(){
       //alert("readBackimg");
       //alert(localStorageService.get('cropped_img'));
-      myImageBack.src = localStorageService.get('cropped_img');
-      readMiddleImage();
+      var email = localStorageService.get('email');
+      var croppedPT = localStorageService.get('cropped_img');
+      $http.get('dyn_img/fp=' + '/' + croppedPT, {
+        params:  {email: email}
+        }
+      ).then(function(response) {
+        var r_code = response.status;
+        if (r_code != 200){
+           localStorageService.set('error_status', r_code);
+           $state.go('error_status');
+         }
+
+         myImageBack.src = "data:image/png;base64," + response.data;
+         readMiddleImage();
+      });
+
     }
 
 

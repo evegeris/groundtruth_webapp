@@ -282,6 +282,7 @@ function setCroppedImageDataURL(success, error) {
     // Load image URL.
     try{
         img.src = $scope.myCroppedImage;
+
     }catch(e){
         error(e);
     }
@@ -289,7 +290,7 @@ function setCroppedImageDataURL(success, error) {
 
 var onSuccess = function(e){
   //document.body.appendChild(e.image);
-  localStorageService.set('cropped_img', e.data );
+
  };
 
  var onError = function(e){
@@ -402,6 +403,13 @@ var onSuccess = function(e){
               //$scope.jsonArray
 
               $scope.showLoadingWidget = true;
+              var croppedPT = json_filepath.split("/")[1];
+              croppedPT = croppedPT.split(".")[0];
+              croppedPT = croppedPT.split("_")[1]+"_"+croppedPT.split("_")[2];
+              croppedPT = "cropped/"+ croppedPT+"_cropped.jpg";
+
+              localStorageService.set('cropped_img', croppedPT );
+
               var didSave = localStorageService.set('json_str', json_filepath);
               while (didSave == false);
               didSave = false;

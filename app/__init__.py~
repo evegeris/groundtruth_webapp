@@ -212,6 +212,7 @@ def create_app(config_filename):
             except:
                 pass
         if (left_seg != '666'):
+            try:
                 os.remove(fp + '/segmented/666_'+right_seg)
                 os.remove(fp + '/json/666_'+right_json)  
             except:
@@ -444,9 +445,12 @@ def create_app(config_filename):
         theRow = result.fetchall()
 
         rowLen = len(theRow)
-        print(theRow[rowLen-1][0])
-
-        entryNum = theRow[rowLen-1][0]+1 #Number of image entires
+        print(rowLen)
+        if (rowLen == 0):
+            entryNum = 1
+        else:   
+            print(theRow[rowLen-1][0])
+            entryNum = theRow[rowLen-1][0]+1 #Number of image entires
         print(entryNum)
         #print("entries:"+str(entryNum))
 
