@@ -10,7 +10,7 @@ mysql_db_name = 'groundtruth_db'
 mysql_db_hostname = 'localhost'
 
 # WARNING: Set DEBUG to false if external hosting
-DEBUG = True
+DEBUG = False
 MAINTAIN = True
 PORT = 8080
 HOST = "0.0.0.0"

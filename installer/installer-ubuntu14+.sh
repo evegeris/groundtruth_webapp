@@ -66,13 +66,13 @@ cd ..
 
 mkdir GT_USERS
 
-chmod -R 644 GT_USERS/
+chmod -R 777 GT_USERS/
 
 chmod -R 700 groundtruth_webapp/
 
-chmod _R 744 groundtruth_webapp/app/
+chmod -R 755 groundtruth_webapp/app/
 
-chmod _R 744 groundtruth_webapp/server_images/
+chmod -R 744 groundtruth_webapp/server_images/
 
 chmod -R 700 groundtruth_webapp/installer/
 

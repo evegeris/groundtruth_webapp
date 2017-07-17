@@ -580,21 +580,23 @@ def create_app(config_filename):
             response.status_code = 400
             return response
 
-
-        #First we find the image_id based on the row count
-        stmt01 = "SELECT * from user_has_image WHERE users_id = :uid ORDER BY users_id ASC LIMIT :rowNum , 1"
-        result = db.session.execute(stmt01, {'uid': user.id, 'rowNum': rowNum})
-
-        #stmt01 = "SELECT * from user_has_image WHERE users_id = 1 ORDER BY users_id ASC LIMIT 2 , 1"
-        #result = db.session.execute(stmt01)
-        theRow = result.fetchall()
-        imgID = theRow[0][1]
+        if (user.id != 1):
+            #First we find the image_id based on the row count
+            stmt01 = "SELECT * from user_has_image WHERE users_id = :uid ORDER BY users_id ASC LIMIT :rowNum , 1"
+            result = db.session.execute(stmt01, {'uid': user.id, 'rowNum': rowNum})
 
 
-        #Then we update the row since we now have the true image_id
-        stmt02 = "UPDATE user_has_image SET progress = 100 WHERE users_id = :uid AND images_id = :imgID"
-        db.session.execute(stmt02, {'uid': user.id, 'imgID': imgID})
-        db.session.commit()
+       
+            #stmt01 = "SELECT * from user_has_image WHERE users_id = 1 ORDER BY users_id ASC LIMIT 2 , 1"
+            #result = db.session.execute(stmt01)
+            theRow = result.fetchall()
+            imgID = theRow[0][1]
+
+
+            #Then we update the row since we now have the true image_id
+            stmt02 = "UPDATE user_has_image SET progress = 100 WHERE users_id = :uid AND images_id = :imgID"
+            db.session.execute(stmt02, {'uid': user.id, 'imgID': imgID})
+            db.session.commit()
 
 
         left_seg, right_seg = segPath.split('_', 1 )
@@ -668,10 +670,12 @@ def create_app(config_filename):
         fp_zip_store = 'packaged/'+date_time_clean[0:len(date_time_clean)-1]+'.zip'
 
 
-        #Then we update the row since we now have the true image_id
-        stmt02 = "UPDATE user_has_image SET packaged_filepath = :pfp WHERE users_id = :uid AND images_id = :imgID"
-        db.session.execute(stmt02, {'pfp': fp_zip_store, 'uid': user.id, 'imgID': imgID})
-        db.session.commit()
+
+        if (user.id != 1):
+            #Then we update the row since we now have the true image_id
+            stmt02 = "UPDATE user_has_image SET packaged_filepath = :pfp WHERE users_id = :uid AND images_id = :imgID"
+            db.session.execute(stmt02, {'pfp': fp_zip_store, 'uid': user.id, 'imgID': imgID})
+            db.session.commit()
 
         # Not allowed to send Binary over HTTP, must be UTF-8 format (base64)
         with open(fp_zip, 'rb') as fin, open(fp_orig+'/packaged/'+'output.zip.b64', 'w') as fout:

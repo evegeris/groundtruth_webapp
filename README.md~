@@ -1,7 +1,7 @@
 # Web app for ground-truthing ML datasets
 
 
-### New Features (Alpha -- V 3.0)
+### New Features (Alpha -- V 3.1)
 1. Upload & delete images from the client side
 2. Interactive user feedback
 2. Guest login & tutorials
@@ -72,11 +72,10 @@ Installation steps:
 
 1. Pull the github repository into a rootfolder that will also house the user-specific input and output files for the application.
 2. Read carefully through the 'installer-ubuntu14+.sh'.
-3. Give the installer bash script execution privilages.
+3. Give the installer bash script execution privilages. **Example:**
+* chmod +x installer-ubuntu14+.sh
 4. Run the scipt as as super user: $sudo ./installer-ubuntu14+.sh
 5. Fix any of the failed dependancies: *Step by Step Dependancy Installation* below.
-
-
 6. Give the non-root user access to the 'groundtruth_db' database. **Example**:
 * CREATE USER 'gtapp'@'localhost' IDENTIFIED BY '(insert password)';
 * grant all privileges on groundtruth_db.* to 'gtapp'@'localhost';
@@ -119,6 +118,8 @@ Follow these step-by-step instructions to install the application if the first m
 * apt-get install python-setuptools
 * apt-get install python-dev build-essential
 * apt-get install libpq-dev python-dev
+* apt-get install python-tk
+* apt-get install python-opencv
 7. Get bower
 * $npm install -g bower
 8. Get Pip dependancies
@@ -139,11 +140,8 @@ Follow these step-by-step instructions to install the application if the first m
 * pip install pycrypto==2.6.1
 * pip install uWSGI==2.0.11.2
 * pip install scikit-image
-
 9. Get mysql-server (if not already installed)
 * apt-get install mysql-server
-* mysql_secure_installation
-* mysql_install_db
 10. Set up the 'groundtruth_db' database in MySql (installer directory)
 * $./database_cleaner.sh
 11. Create a new user for the MySql database
@@ -155,13 +153,21 @@ Follow these step-by-step instructions to install the application if the first m
 * mysql_db_password = '(insert password)'
 13. Modify the file 'config.py' with a new 32-character Secret Key
 * SECRET_KEY = "(insert secret key)"
-14. Run the program
+14. Create a directory 'GT_USERS' outside of the'groudtruth_webapp' directory
+* mkdir GT_USERS
+15. Set permissons for the application
+* chmod 777 GT_USERS/
+* chmod 700 groundtruth_webapp/
+* chmod 755 groundtruth_webapp/app/
+* chmod 744 groundtruth_webapp/server_images/
+* chmod 700 groundtruth_webapp/installer/
+15. Run the program
 * $python run.py
-13. Access the client side
+16. Access the client side
 * http://0.0.0.0:8080
-14. Create the guest account on the login page
+17. Create the guest account on the login page
 * **Name:** 'Guest'; **Email:** 'guest@guest.com' **Password:** 'guestpw'
-15. Insert a test image into 'GT_USER/USER_1/images/' called 'wound.jpg'.
+18. Insert a test image into 'GT_USER/USER_1/images/' called 'wound.jpg'.
 
 ### Whats does the Web-Application Provide?
 After you have uploaded an image to label and completed the labelling process, a .zip file is sent to the client's browser that should include all of the necessary files for training a supervised ML model. The files include:
