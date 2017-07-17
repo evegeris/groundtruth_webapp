@@ -58,69 +58,110 @@ As mentioned, the web-application is not currently public available for access, 
 **Note:** it is recommended that this application be run either in a virtual environment or with **DEBUG** mode set to **False**. Furthermore there should be careful monitoring of connections as there may be vulnerabilities that could result in loss of user-information within the MySQL back-end. Common security measures have been followed and at worst, a DDOS will take down the server.
 
 ### Installation Method 1: Easy-Installation (Ubuntu 14.04+)
-A bash script ('installer/installer-ubuntu14+.sh') has been developed which runs through most of the instructions provided below. There are many python dependencies, needs for an SQL server, some angularJS dependencies, and the Flask Framework. We highly recommend that you read through the installer script carefully as there may be conflicting dependencies with your current system. 
 
-As well, we use the assumption that you do not currently have mysql in your machine. If this is not the case, please remove the commands from line 23 - line 99. You may then manually enter the mysql database commands located in the 'installer/cmds.txt' file and remove line 147, or alternatively you can input your password into the MySql login command on line 147 of the installer script. 
+**Prerequisites:**
+* OpenCV: python-opencv
+* MySql Server: apt-get install mysql-server
+* non-root user for MySql
 
-**Note:** For simplicity, MySql is set up with a username of 'root' and a password of 'gt_db_pass'. If you already have MySql and wish to use your current login credentials, you also need to edit line 13 and line 14 in 'config.py'. This file allows the application to access the back-end MySql database. **We highly recommend changing the username and password.**
+A bash script ('installer/installer-ubuntu14+.sh') runs through most of the instructions provided below. There are many python dependencies, needs for an MySql server, some angularJS dependencies, and the Flask Framework. Please read through the dpendencies in the ('installer/installer-ubuntu14+.sh') prior to installation. 
 
-One final comment is that the application creates on directory that is in the same root directory that holds the pulled github repository. We chose to keep this directory out of the main repository to separate user data with applications functionality. When pulling this repository, keep in mind this current restriction. 
+Note that one directory is created inside of the root directory in which the GitHub repository is located. This directory contains all of the user files for the application. As well, the shell script is reliant upon the 'cmds.txt' file which sets up the MySql database accordingly.
 
-With that out of the way, the following steps to install the webapp are as follows:
+Installation steps:
 
-* 1. Pull the github repository into a rootfolder that will also house the user-specific input and output files for the application.
-* 2. Read carefully through the 'installer-ubuntu1404.sh' script so you don't ruin your machines environment.
-* 3. Give the installer bash script execution privilages.
-* 4. Run the scipt as as super user: $sudo ./installer-ubuntu1404.sh
-* 5. Find any failed dependancies by re-running script and fix problems, or examine the *Step by Step Dependancy Installation* below.
+1. Pull the github repository into a rootfolder that will also house the user-specific input and output files for the application.
+2. Read carefully through the 'installer-ubuntu14+.sh'.
+3. Give the installer bash script execution privilages.
+4. Run the scipt as as super user: $sudo ./installer-ubuntu14+.sh
+5. Fix any of the failed dependancies: *Step by Step Dependancy Installation* below.
 
-This script is reliant upon the 'cmds.txt' file which sets up the MySql database accordingly. If everything installed correctly, you should now be in the groundtruth_webapp directory. Now the server can be hosted:
 
-* 6. Host the local server: $python run.py
-* 7. Go to http://0.0.0.0:8888/ in Firefox or Chrome.
-* 8. Select 'Sign Up' and create the guest credentials:
-* 9. **Name:** 'Guest'; **Email:** 'guest@guest.com' **Password:** 'guestpw'
+6. Give the non-root user access to the 'groundtruth_db' database. **Example**:
+* CREATE USER 'gtapp'@'localhost' IDENTIFIED BY '(insert password)';
+* grant all privileges on groundtruth_db.* to 'gtapp'@'localhost';
+* flush privileges;
+7. Modify the file 'config.py' to use the non-root user
+* mysql_db_username = '(insert username)'
+* mysql_db_password = '(insert password)'
+8. Modify the file 'config.py' with a new 32-character Secret Key
+* SECRET_KEY = "(insert secret key)"
+9. Host the local server: $python run.py
+10. Go to http://0.0.0.0:8888/ in Firefox or Chrome.
+11. Select 'Sign Up' and create the guest credentials:
+12. **Name:** 'Guest'; **Email:** 'guest@guest.com' **Password:** 'guestpw'
+13. Insert a test image into 'GT_USER/USER_1/images/' called 'wound.jpg'.
 
-If everything was successful, the guest-credentials have been added to the MySql database and you should be able to login with the 'Guest Access' button on the login screen, gaining limited access to the application. For full access, sign-up using any other email. **Note:** These emails are used for back-end login and profile tracking purposes. It is recommended that the emails be kept generic at this time.
+If everything was successful, the guest-credentials have been added to the MySql database and you should be able to login with the 'Guest Access' button on the login screen, gaining limited access to the application. For full access, sign-up using any other email. **Note:** These emails are used for back-end login and profile tracking purposes. It is recommended that the emails be kept generic at this time. **Example:** madison@mail.com or user2@mail.com.
 
 
 ### Installation Method 2: Step by Step Dependancy Installation (Ubuntu 14.04+)
 
+**Prerequisites:**
+* OpenCV: python-opencv
+* MySql Server: apt-get install mysql-server
+* non-root user for MySql
+
+Follow these step-by-step instructions to install the application if the first method fails.
+
 1. Install git
-* $apt-get update
-* $apt-get install git
+* apt-get update
+* apt-get install git
 2. Clone Repository
-* $git clone https://github.com/evegeris/groundtruth_webapp.git
+* git clone https://github.com/evegeris/groundtruth_webapp.git
 3. Get pip
-* $apt-get install python-pip
+* apt-get install python-pip
 4. Get nodejs
-* $apt-get install nodejs
+* apt-get install nodejs
 5. Get npm
-* $apt-get install npm
-6. Get python developer
-* $apt-get install python-dev
-* $apt-get install libpq-dev python-dev
-7. Get Flask
-* $apt-get install Flask
-8. Get bower
+* apt-get install npm
+6. Get python dependancies
+* apt-get install python-setuptools
+* apt-get install python-dev build-essential
+* apt-get install libpq-dev python-dev
+7. Get bower
 * $npm install -g bower
-9. Get mysql-server (password should match that in config.py)
-* $apt-get update
-* $apt-get install mysql-server
-* $mysql_secure_installation
-* $mysql_install_db
-10. Set up the 'groundtruth_db' database (installer directory)
+8. Get Pip dependancies
+* pip install Flask==0.10.1
+* pip install Flask-Mail==0.9.1
+* pip install Flask-Migrate==1.4.0
+* pip install Flask-RESTful==0.3.4
+* pip install Flask-SQLAlchemy==2.0
+* pip install Flask-Script==2.0.5
+* pip install PyJWT==1.4.0
+* pip install PyMySQL==0.6.6
+* pip install PyYAML==3.11
+* pip install autopep8==1.2.1
+* pip install inflect==0.2.5
+* pip install marshmallow==2.3.0
+* pip install marshmallow-jsonapi==0.3.0
+* pip install psycopg2==2.6
+* pip install pycrypto==2.6.1
+* pip install uWSGI==2.0.11.2
+* pip install scikit-image
+
+9. Get mysql-server (if not already installed)
+* apt-get install mysql-server
+* mysql_secure_installation
+* mysql_install_db
+10. Set up the 'groundtruth_db' database in MySql (installer directory)
 * $./database_cleaner.sh
-11. Install additional pip requirements
-* $pip install -r requirements.txt
-12. Run the program
+11. Create a new user for the MySql database
+* CREATE USER 'gtapp'@'localhost' IDENTIFIED BY '(insert password)';
+* grant all privileges on groundtruth_db.* to 'gtapp'@'localhost';
+* flush privileges;
+12. Modify the file 'config.py' to use the non-root user
+* mysql_db_username = '(insert username)'
+* mysql_db_password = '(insert password)'
+13. Modify the file 'config.py' with a new 32-character Secret Key
+* SECRET_KEY = "(insert secret key)"
+14. Run the program
 * $python run.py
 13. Access the client side
 * http://0.0.0.0:8080
 14. Create the guest account on the login page
 * **Name:** 'Guest'; **Email:** 'guest@guest.com' **Password:** 'guestpw'
-15. Create a full account with anyother email address
-* **Name:** 'User'; **Email:** 'user@email.com' **Password:** 'userpw'
+15. Insert a test image into 'GT_USER/USER_1/images/' called 'wound.jpg'.
 
 ### Whats does the Web-Application Provide?
 After you have uploaded an image to label and completed the labelling process, a .zip file is sent to the client's browser that should include all of the necessary files for training a supervised ML model. The files include:
@@ -144,6 +185,10 @@ Want to contribute? Suggestions?
 
 Open a github comment thread or email me at: mmccar04@mail.uoguelph.ca! I would love some support with this tool!
 
+### Current Hosted IP Address:
+Contact mmccar04@mail.uoguelph.ca to set up a hosting time.
+Hosted occasionally on the evenings and weekends.
+IP address (updated 11/06/2017): **99.233.250.172:8080**
 
 #### Modules & Packages
 TO add additional modules/packages not included with rdash-angular, add them to `bower.json` and then update `index.html`, to include them in the minified distribution output.

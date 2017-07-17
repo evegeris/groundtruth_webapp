@@ -1,4 +1,4 @@
 #!/bin/sh
 
-mysql -u root -pgt_db_pass < cleaner.txt
+mysql -u root -p < cleaner.txt
 

@@ -7,6 +7,7 @@ app = create_app('config')
 if __name__ == '__main__':
     app.run(threaded=True, host=app.config['HOST'],
             port=app.config['PORT'],
-            debug=app.config['DEBUG'])
+            debug=app.config['DEBUG'],
+            ssl_context='adhoc')
 
 

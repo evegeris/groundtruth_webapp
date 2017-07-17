@@ -4,8 +4,8 @@ dataset_root = 'dataset'
 # DATABASE SETTINGS
 
 # MYSQL
-mysql_db_username = 'root'
-mysql_db_password = 'gt_db_pass'
+mysql_db_username = '(insert username)'
+mysql_db_password = '(insert password)'
 mysql_db_name = 'groundtruth_db'
 mysql_db_hostname = 'localhost'
 
@@ -15,7 +15,7 @@ MAINTAIN = True
 PORT = 8080
 HOST = "0.0.0.0"
 SQLALCHEMY_ECHO = False
-SECRET_KEY = "UTjESWmH6J443pqMTgJvomiMoKrm1CCH"
+SECRET_KEY = "(insert secret key)"
 
 
 
