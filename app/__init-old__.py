@@ -8,8 +8,8 @@ def create_app(config_filename):
     '''
 
 from flask import Flask, render_template, stream_with_context, Response, request, jsonify
-#import jwt
-#from jwt import DecodeError, ExpiredSignature, decode
+import jwt
+from jwt import DecodeError, ExpiredSignature, decode
 from config import SECRET_KEY, PASSWORD_RESET_EMAIL, MAINTAIN
 import urllib
 import cv2
@@ -134,8 +134,7 @@ def create_app(config_filename):
     #Function used to decode the authentication Key which prevents CSRF
     def parse_token(req):
         token = req.headers.get('Authorization').split()[1]
-        #return jwt.decode(token, SECRET_KEY, algorithms='HS256')
-        return token;
+        return jwt.decode(token, SECRET_KEY, algorithms='HS256')
 
     #Called from the 'crop.js' script when the user is ready to proceed to the labelling screen
     #Authenticates, does security check, cleans any unused files, returns the JSON file for the labeling algorithm
@@ -149,16 +148,16 @@ def create_app(config_filename):
             response = jsonify(message='Missing accept header')
             response.status_code = 401
             return response
-        #try:
-        payload = parse_token(request)
-        #except DecodeError:
-            #response = jsonify(message='Token is invalid')
-            #response.status_code = 401
-            #return response
-        #except ExpiredSignature:
-            #response = jsonify(message='Token has expired')
-            #response.status_code = 401
-            #return response
+        try:
+            payload = parse_token(request)
+        except DecodeError:
+            response = jsonify(message='Token is invalid')
+            response.status_code = 401
+            return response
+        except ExpiredSignature:
+            response = jsonify(message='Token has expired')
+            response.status_code = 401
+            return response
 
         segmented_filepath = request.args.get('segmented_filepath')
         json_filepath = request.args.get('json_filepath')
@@ -241,16 +240,16 @@ def create_app(config_filename):
             response = jsonify(message='Missing accept header')
             response.status_code = 401
             return response
-        #try:
-        payload = parse_token(request)
-        #except DecodeError:
-            #response = jsonify(message='Token is invalid')
-            #response.status_code = 401
-            #return response
-        #except ExpiredSignature:
-            #response = jsonify(message='Token has expired')
-            #response.status_code = 401
-            #return response
+        try:
+            payload = parse_token(request)
+        except DecodeError:
+            response = jsonify(message='Token is invalid')
+            response.status_code = 401
+            return response
+        except ExpiredSignature:
+            response = jsonify(message='Token has expired')
+            response.status_code = 401
+            return response
 
         x = request.args.get('x')
         y = request.args.get('y')
@@ -299,19 +298,19 @@ def create_app(config_filename):
             response = jsonify(message='Missing accept header')
             response.status_code = 401
             return response
-        #try: 
-        payload = parse_token(request)
+        try: 
+            payload = parse_token(request)
             #print(request.headers.get('Authorization'))
             #print(payload)
 
-        #except DecodeError:
-            #response = jsonify(message='Token is invalid')
-            #response.status_code = 401
-            #return response
-        #except ExpiredSignature:
-            #response = jsonify(message='Token has expired')
-            #response.status_code = 401
-            #return response
+        except DecodeError:
+            response = jsonify(message='Token is invalid')
+            response.status_code = 401
+            return response
+        except ExpiredSignature:
+            response = jsonify(message='Token has expired')
+            response.status_code = 401
+            return response
 
         img = request.json['imgData']
         email = request.json['email']
@@ -420,19 +419,19 @@ def create_app(config_filename):
             response = jsonify(message='Missing accept header')
             response.status_code = 401
             return response
-        #try: 
-        payload = parse_token(request)
+        try: 
+            payload = parse_token(request)
             #print(request.headers.get('Authorization'))
             #print(payload)
 
-        #except DecodeError:
-            #response = jsonify(message='Token is invalid')
-            #response.status_code = 401
-            #return response
-        #except ExpiredSignature:
-            #response = jsonify(message='Token has expired')
-            #response.status_code = 401
-            #return response
+        except DecodeError:
+            response = jsonify(message='Token is invalid')
+            response.status_code = 401
+            return response
+        except ExpiredSignature:
+            response = jsonify(message='Token has expired')
+            response.status_code = 401
+            return response
     
         img = request.json['imgData']
         email = request.json['email']
@@ -555,16 +554,16 @@ def create_app(config_filename):
             response = jsonify(message='Missing accept header')
             response.status_code = 401
             return response
-        #try:
-        payload = parse_token(request)
-        #except DecodeError:
-            #response = jsonify(message='Token is invalid')
-            #response.status_code = 401
-            #return response
-        #except ExpiredSignature:
-            #response = jsonify(message='Token has expired')
-            #response.status_code = 401
-            #return response
+        try:
+            payload = parse_token(request)
+        except DecodeError:
+            response = jsonify(message='Token is invalid')
+            response.status_code = 401
+            return response
+        except ExpiredSignature:
+            response = jsonify(message='Token has expired')
+            response.status_code = 401
+            return response
 
         rowNum = request.json['imageId']
         
@@ -699,16 +698,16 @@ def create_app(config_filename):
             response = jsonify(message='Missing accept header')
             response.status_code = 401
             return response
-        #try:
-        payload = parse_token(request)
-        #except DecodeError:
-            #response = jsonify(message='Token is invalid')
-            #response.status_code = 401
-            #return response
-        #except ExpiredSignature:
-            #response = jsonify(message='Token has expired')
-            #response.status_code = 401
-            #return response
+        try:
+            payload = parse_token(request)
+        except DecodeError:
+            response = jsonify(message='Token is invalid')
+            response.status_code = 401
+            return response
+        except ExpiredSignature:
+            response = jsonify(message='Token has expired')
+            response.status_code = 401
+            return response
 
         rowNum = request.json['imgID']
         email = request.json['email']
@@ -762,16 +761,16 @@ def create_app(config_filename):
             response = jsonify(message='Missing accept header')
             response.status_code = 401
             return response
-        #try:
-        payload = parse_token(request)
-        #except DecodeError:
-            #response = jsonify(message='Token is invalid')
-            #response.status_code = 401
-            #return response
-        #except ExpiredSignature:
-            #response = jsonify(message='Token has expired')
-            #response.status_code = 401
-            #return response
+        try:
+            payload = parse_token(request)
+        except DecodeError:
+            response = jsonify(message='Token is invalid')
+            response.status_code = 401
+            return response
+        except ExpiredSignature:
+            response = jsonify(message='Token has expired')
+            response.status_code = 401
+            return response
 
         print("prior")
 
@@ -821,16 +820,16 @@ def create_app(config_filename):
             response = jsonify(message='Missing accept header')
             response.status_code = 401
             return response
-        #try:
-        payload = parse_token(request)
-        #except DecodeError:
-            #response = jsonify(message='Token is invalid')
-            #response.status_code = 401
-            #return response
-        #except ExpiredSignature:
-            #response = jsonify(message='Token has expired')
-            #response.status_code = 401
-            #return response
+        try:
+            payload = parse_token(request)
+        except DecodeError:
+            response = jsonify(message='Token is invalid')
+            response.status_code = 401
+            return response
+        except ExpiredSignature:
+            response = jsonify(message='Token has expired')
+            response.status_code = 401
+            return response
 
 
         if (not (path.endswith('.jpg') or path.endswith('.png'))):
