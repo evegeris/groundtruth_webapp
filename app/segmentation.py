@@ -91,7 +91,11 @@ class PostProc:
 
             self.segm_lists.append(b)
 
+            print("before")
+
             newIm = mark_boundaries(self.im, segments, color=(52, 205, 195)) # fn normalises img bw 1 and 0 apparently
+            #newIm = drawContours(self.im, segments, -1, (52, 205, 195), 1)
+            print("passed here")
 
             newIm = (newIm * 255.0).astype('u1')
             self.imArray.append(newIm)

@@ -136,10 +136,11 @@ background: #151515;
 
 
 hh1 {
-   margin-top: 0.67em;
-   margin-bottom: 0.67em;
+   display:inline-block;
+   margin-top: 0.1em;
+   margin-bottom: 0.1em;
    margin-left: 0;
-   margin-right: 12em;
+   margin-right: 0em;
    font-weight: bold;
    font-size: 18px;
    background-color: #ff944d;
@@ -147,10 +148,11 @@ hh1 {
 }
 
 hh2{
+  display:inline-block;
   margin-top: 0.1em;
-  margin-bottom: 0.67em;
+  margin-bottom: 0.1em;
   margin-left: 0;
-  margin-right: 12em;
+  margin-right: 0em;
   font-weight: bold;
   font-size: 18px;
   background-color: #E5FFE5;
@@ -158,86 +160,95 @@ hh2{
 }
 
 hh3{
+  display:inline-block;
   margin-top: 0.1em;
-  margin-bottom: 0.67em;
+  margin-bottom: 0.1em;
   margin-left: 0;
-  margin-right: 8em;
+  margin-right: 0em;
   font-weight: bold;
   font-size: 18px;
   background-color: #FF99B1;
 }
 
 hh4 {
+  display:inline-block;
   margin-top: 0.1em;
-  margin-bottom: 1.5em;
+  margin-bottom: 0.1em;
   margin-left: 0;
-  margin-right: 8em;
+  margin-right: 0em;
   font-weight: bold;
   font-size: 18px;
   background-color: #FFFFAD;
 }
 
 hh5 {
+  display:inline-block;
   margin-top: 0.1em;
-  margin-bottom: 1.5em;
+  margin-bottom: 0.1em;
   margin-left: 0;
-  margin-right: 8em;
+  margin-right: 0em;
   font-weight: bold;
   font-size: 18px;
   background-color: #8080ff;
 }
 
 hh6 {
+  display:inline-block;
   margin-top: 0.1em;
-  margin-bottom: 1.5em;
+  margin-bottom: 0.1em;
   margin-left: 0;
-  margin-right: 8em;
+  margin-right: 0em;
   font-weight: bold;
   font-size: 18px;
   background-color: #a6a6a6;
 }
 hh7 {
+  display:inline-block;
   margin-top: 0.1em;
-  margin-bottom: 1.5em;
+  margin-bottom: 0.1em;
   margin-left: 0;
-  margin-right: 8em;
+  margin-right: 0em;
   font-weight: bold;
   font-size: 18px;
   background-color: #a6a6a6;
 }
 hh8 {
+  display:inline-block;
   margin-top: 0.1em;
-  margin-bottom: 1.5em;
+  margin-bottom: 0.1em;
   margin-left: 0;
-  margin-right: 8em;
+  margin-right: 0em;
   font-weight: bold;
   font-size: 18px;
   background-color: #a6a6a6;
 }
 hh9 {
+  display:inline-block;
   margin-top: 0.1em;
-  margin-bottom: 1.5em;
+  margin-bottom: 0.1em;
   margin-left: 0;
-  margin-right: 8em;
+  margin-right: 0em;
   font-weight: bold;
   font-size: 18px;
   background-color: #a6a6a6;
 }
 hh10 {
+  display:inline-block;
   margin-top: 0.1em;
-  margin-bottom: 1.5em;
+  margin-bottom: 0.1em;
   margin-left: 0;
-  margin-right: 8em;
+  margin-right: 0em;
   font-weight: bold;
   font-size: 18px;
   background-color: #a6a6a6;
 }
 
 hselected {
+  display:inline-block;
   margin-top: 0.1em;
   margin-bottom: 0.1em;
   margin-left: 0;
-  margin-right: 8em;
+  margin-right: 2em;
   font-size: 1.5em;
   text-decoration: underline;
 }
@@ -245,10 +256,11 @@ hselected {
 
 
 hchosen {
+  display:inline-block;
   margin-top: 0.1em;
-  margin-bottom: 0.67em;
+  margin-bottom: 0.1em;
   margin-left: 0;
-  margin-right: 8em;
+  margin-right: 2em;
   font-weight: bold;
   font-size: 18px;
   background-color: #ff944d;
