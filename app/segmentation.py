@@ -13,6 +13,8 @@ import array
 import os
 import time
 import datetime
+from resizeimage import resizeimage
+from PIL import Image
 #import multiprocessing
 
 class MyEncoder(json.JSONEncoder):
@@ -91,13 +93,15 @@ class PostProc:
 
             self.segm_lists.append(b)
 
-            print("before")
+            #print("before")
 
-            newIm = mark_boundaries(self.im, segments, color=(52, 205, 195)) # fn normalises img bw 1 and 0 apparently
-            #newIm = drawContours(self.im, segments, -1, (52, 205, 195), 1)
-            print("passed here")
+            doubleNewIm = mark_boundaries(self.im, segments, color=(52, 205, 195), mode='subpixel') # fn normalises img bw 1 and 0 apparently
 
-            newIm = (newIm * 255.0).astype('u1')
+            newIm = (doubleNewIm * 255.0).astype('u1')
+            newIm = cv2.resize(newIm, (0,0), fx=0.5, fy=0.5) 
+            #print("passed here")
+
+            #newIm = (newIm * 255.0).astype('u1')
             self.imArray.append(newIm)
 
 
