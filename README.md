@@ -1,13 +1,13 @@
 # Web app for ground-truthing ML datasets
 
 
-### New Features (Alpha -- V 3.1)
+### New Features (Alpha -- V 3.2)
 1. Upload & delete images from the client side
 2. Interactive user feedback
-2. Guest login & tutorials
-3. Improved output files (.zip)
-7. Easy Installer for Ubuntu 14.04+  and SQL Database reset shell script
-
+3. Guest login & tutorials
+4. Improved output files (.zip)
+5. Easy Installer for Ubuntu 14.04+  and SQL Database reset shell script
+6. Decreased segmentation line width
 ### Introduction
 
 The steady increase in computation power alongside with the decreasing cost of GPUs has enabled the rapid integration of machine learning (ML) applications into daily life. Although the greatest challenge with bringing these ML applications to fruition is the development of the algorithm's model, another underlying issue is getting the necessary data to train that model (assuming **supervised learning** applications). In particular, **pixel level** labeling for images still poses a great challenge due to the resources needed to produce a complete 
@@ -136,10 +136,15 @@ Follow these step-by-step instructions to install the application if the first m
 * pip install inflect==0.2.5
 * pip install marshmallow==2.3.0
 * pip install marshmallow-jsonapi==0.3.0
+* pip install Numpy==1.11
+* pip install Cython==0.23
+* pip install Six=1.7.3
+* pip install Scipy==0.17.0
+* pip install numpydoc==0.6
 * pip install psycopg2==2.6
 * pip install pycrypto==2.6.1
 * pip install uWSGI==2.0.11.2
-* pip install scikit-image
+* pip install scikit-image==0.13.0
 9. Get mysql-server (if not already installed)
 * apt-get install mysql-server
 10. Set up the 'groundtruth_db' database in MySql (installer directory)

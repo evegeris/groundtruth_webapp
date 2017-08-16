@@ -50,13 +50,23 @@ pip install marshmallow==2.3.0
 
 pip install marshmallow-jsonapi==0.3.0
 
+pip install Numpy==1.11
+
+pip install Cython==0.23
+
+pip install Six=1.7.3
+
+pip install Scipy==0.17.0
+
+pip install numpydoc==0.6
+
 pip install psycopg2==2.6
 
 pip install pycrypto==2.6.1
 
 pip install uWSGI==2.0.11.2
 
-pip install scikit-image
+pip install scikit-image==0.13.0
 
 mysql -u root -p < cmds.txt
 
